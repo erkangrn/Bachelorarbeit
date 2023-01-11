@@ -1,0 +1,3 @@
+Requirements-Engineering und -Management : das Handbuch für Anforderungen in jeder Situation
+https://opac.lbs-braunschweig.gbv.de/DB=5/SET=14/TTL=1/SHW?FRST=3
+---------------------------------------------------------------------------

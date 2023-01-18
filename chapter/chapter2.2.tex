@@ -10,7 +10,6 @@ beinhalten. Ein Projekt hingegen ist ein spezieller Ordner, der alle Daten für 
 Ordner als auch für Projekte können die Zugriffsrechte indiviuell eingestellt werden \cite[S.173]{DOORS}. Dabei existieren die Optionen
 read, modify, create, delete und administer (RMCDA). 
 
-
 \subsection{Module}
 
 Es existieren zwei verschiedene Arten von Modulen im Anforderungsmanagement-Tool \acs{DOORS}. Module, die die eigentlichen Anforderungen
@@ -33,15 +32,48 @@ gespeichert.
 
 
 \subsection{Objekte und Attribute}
-Innerhalb eines Moduls werden die Daten in Objekten gespeichert.
+Innerhalb eines Moduls werden Daten in Objekten gespeichert. In der Regel bestehen Objekte aus mindestens zwei Spalten. Die erste 
+Spalte enthält eine ID, die sich aus einem Präfix und einem Integerwert zusammensetzt. Der Integerwert wird bei jedem neu angelegtem 
+Objekt inkrementiert, so dass jedem Objekt innerhalb eines Moduls eine eindeutige ID zugeordnet werden kann.
+Die zweite Spalte besteht dabei entweder aus einer Sektions-Nummer und einer Überschrift, wie im ersten Objekt in der Abbildung 
+\ref*{fig:Modul Doors} zu sehen ist, oder aus einem Objekt Text, der bspw. eine Anforderung beinhalten kann. Ein Beispiel für 
+einen Objekt Text, der eine Anforderung beinhaltet ist das vierte Objekt der Abbildung \ref*{fig:Modul Doors} \cite[S.178]{DOORS}.
+Einem Objekt können beliebig viele weitere Attribute hinzugefügt werden. 
+
+Attribute beinhalten relevante Informationen über Module oder Objekte. Modulattribute speichern Informationen über das Modul, wie bspw.
+den Ersteller des Moduls, das letzte Änderungsdatum und Ähnliches. Diese Modulattribute findet der User über die Eigenschaften des Moduls, 
+welche mit einem Rechtsklick auf das Modul in der grafischen Oberfläche geöffnet werden können. Objektattribute hingegen
+speichern Informationen über die Objekte. In der Abbildung \ref*{fig:Modul Doors} ist die Spalte STD Object Type z.B. ein Objektattribut,
+das definiert, ob es sich bei dem Objekt um eine Anforderung oder um Prosa, also z.B. eine Überschrift handelt.
+
 \subsection{Baseline}
+Eine Baseline friert den aktuellen Stand der Anforderungen eines Projekts mit ihren Attributen ein und ist eine nicht veränderbare Kopie von 
+formalen Modulen \cite[S.182]{DOORS}. Baselines werden in der Regel zu Releases von Systemen oder Subsystemen erstellt \cite[S.60]{RM-PE}. 
+Wenn ein Formal Module geöffnet ist, kann der User unter File \textrightarrow{} Baseline eine Baseline erstellen oder eine bereits vorhandene 
+Baseline ansehen. Abbildung \ref*{fig:Baselines} zeigt das Dialogfenster zum Öffnen bereits vorhandener Baselines. Dort wird deutlich, 
+dass Baselines versioniert werden können.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{abbildungen/Baselines.PNG}
+    \caption{Baselines eines Moduls in \acs{DOORS}}
+    \label{fig:Baselines}
+\end{figure}
 
 \subsection{Links}
+In der Abbildung \ref*{fig:Modul Doors} sind an der rechten Kante der zweiten Spalte zwei Arten von Pfeilen zu erkennen. Diese Pfeile
+symbolisieren Links in \acs{DOORS}. Links sind gerichtete Verbindungen von einem Quellobjekt zu einem Zielobjekt. Sie werden in \acs{DOORS} 
+genutzt, um die Verfolgbarkeit von Anforderungen zu gewährleisten. Der User kann 
+dabei, ungeachtet von der Richtung des Links, vom Quellobjekt zum Zielobjekt oder auch andersherum navigieren \cite[S.183]{DOORS}. 
+Ein nach links zeigender gelber Pfeil ist dabei ein In-Link, das heißt, dass dieses Objekt als Zielobjekt dient und ein anderes Objekt 
+eine Verbindung zu diesem Objekt hat. Das Gegenstück zum In-Link ist ein Out-Link. Dieser wird in der grafischen Benutzeroberfläche von 
+\acs{DOORS} als roter nach rechts zeigender Pfeil dargestellt. Hat ein Objekt einen Out-Link, heißt das, dass dieses Objekt als Quellobjekt 
+dient und eine Verbindung zu einem anderem Objekt, welches als Zielobjekt dient, hat.   
 
 \subsection{DXL}
 
 \ac*{DXL} ist eine Skript-Sprache, die speziell für das Anforderungsmanagement-Tool \acs{DOORS} entwickelt wurde. Durch diese Skript-Sprache
-besteht die Möglichkeit die grafische Benutzeroberfläche von \acs{DOORS} um neue entwickelte Anwendungen zu
+besteht die Möglichkeit, die grafische Benutzeroberfläche von \acs{DOORS} um neue entwickelte Anwendungen zu
 erweitern. Von der Syntax ähnelt die Sprache den Programmiersprachen C und C++ \cite[S.1]{DXL}. Zudem können Skripte geschrieben werden,
 die als Batch-Script ausgeführt werden können. Diese Skripte bieten neben der grafischen Benutzeroberfläche eine weitere Möglichkeit, 
 um mit \acs{DOORS} zu arbeiten. 

@@ -1,0 +1,6 @@
+- weitere Features sammeln!
+	-> Access Datenbank über Pfad des Projekts
+	-> Welche Produkte nutzt Projekt XY, Übereinstimmungsgrad 
+- in Bachelorarbeit darauf eingehen, dass Text alleine als Feature nicht ausreicht
+	-> keine Intelligenz dahinter, nur schauen was am häufigsten vorkam
+- verschiedene Versionen eines Produkts berücksichtigen

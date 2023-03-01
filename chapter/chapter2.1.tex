@@ -1,12 +1,14 @@
 \section{Requirements Engineering}
 \label{chap:Requirements Engineering}
-Nach der Definition des International Requirements Engineering Boards(IREB) bezeichnet das Requirements Engineering die systematische und disziplinierte Vorgehensweise bei der Spezifikation
-und dem Management von Anforderungen. Das Ziel des Requirements Engineering ist dabei, die Wünsche und Bedürfnisse der Stakeholder zu verstehen \cite[S.30]{IREB_Glossary}. Stakeholder sind Personen 
-oder Organisationen, die die Anforderungen des Systems direkt oder indirekt beeinflussen oder die von dem System betroffen sind \cite[S.33]{IREB_Glossary}. Beispielsweise können Kunden oder Nutzer, 
-aber auch der Gesetzgeber, potentielle Stakeholder sein. Außerdem soll das Risiko minimiert werden, dass diese Wünsche und Bedürfnisse nicht oder nur unzureichend erfüllt werden \cite[S.30]{IREB_Glossary}.
+Nach der Definition des International Requirements Engineering Boards(IREB) bezeichnet das Requirements Engineering die systematische 
+und disziplinierte Vorgehensweise bei der Spezifikation und dem Management von Anforderungen. Das Ziel des Requirements Engineering ist dabei, 
+die Wünsche und Bedürfnisse der Stakeholder zu verstehen \cite[vgl. S.30]{IREB_Glossary}. Stakeholder sind Personen oder Organisationen, die die 
+Anforderungen des Systems direkt oder indirekt beeinflussen oder die von dem System betroffen sind \cite[vgl. S.33]{IREB_Glossary}. 
+Beispielsweise können Kunden oder Nutzer, aber auch der Gesetzgeber, potentielle Stakeholder sein. Außerdem soll das Risiko minimiert werden, 
+dass diese Wünsche und Bedürfnisse nicht oder nur unzureichend erfüllt werden \cite[vgl. S.30]{IREB_Glossary}.
 
-Einen Teilbereich des Requirements Engineering stellt das Requirements Management dar. Dieser Prozess beschreibt die Verwaltung, Speicherung, Änderung sowie die Rückverfolgung 
-von Anforderungen \cite[S.8]{IREB_Glossary}.
+Einen Teilbereich des Requirements Engineering stellt das \ac{RM} dar. Dieser Prozess beschreibt die Verwaltung, Speicherung, 
+Änderung sowie die Rückverfolgung von Anforderungen \cite[vgl. vgl. S.8]{IREB_Glossary}.
 
 \subsection{Anforderungen}
 Die IEEE definiert eine Anforderung wie folgt: 
@@ -16,8 +18,32 @@ Die IEEE definiert eine Anforderung wie folgt:
         or possessed by a system or system component to satisfy a contract, standard, specification, or other formally imposed documents.\\
     (3) A documented representation of a condition or capability as in (1) or (2). \cite[S.62]{IEEE_Glossary}
 \end{quote}
-Daher bilden Anforderung die Basis eines jeden Projekts, da diese definieren, welche Bedingungen ein System erfüllen muss bzw. welche Fähigkeiten es besitzen muss. Sie werden idealerweise 
-unter Berücksichtigung und in Zusammenarbeit mit den Stakeholdern des Projekts ermittelt. Neben den Stakeholdern können unter Anderem auch Normen, Gesetze oder Vorgänger eines Systems 
-weitere Quellen für Anforderungen sein.     
+
+Daher bilden Anforderung die Basis eines jeden Projekts, da diese definieren, welche Bedingungen ein System erfüllen muss bzw. welche Fähigkeiten 
+es besitzen muss. Sie werden idealerweise unter Berücksichtigung und in Zusammenarbeit mit den Stakeholdern des Projekts ermittelt. Neben den 
+Stakeholdern können unter Anderem auch Normen, Gesetze oder Vorgänger eines Systems weitere Quellen für Anforderungen sein. Um von jedem 
+Partizipierendem des Projekts verstanden zu werden, werden Anforderungen in der Regel in natürlicher Sprache formuliert. Da natürliche Sprache Raum für 
+Interpretation bieten kann, muss darauf geachtet werden, dass die Anforderungen so klar und unmissverständlich wie möglich formuliert werden und dabei 
+trotzdem vollständig bleiben. Zudem wird voraussichtlich nicht jeder Stakeholder über die fachlichen Kenntnisse verfügen um Fachsprache oder 
+Konventionen zu verstehen, weshalb darauf verzichtet werden sollte \cite[vgl. S.2]{DOORS}. Um sicherzustellen, dass Anforderungen korrekt 
+formuliert werden, wurden in der Norm ISO/IEC/IEEE 29148:2018(E) Eigenschaften definiert, welche Anforderungen erfüllen sollen. 
+Diese Eigenschaften werden nachfolgend dargestellt und kurz beschrieben:
+
+\begin{enumerate}[leftmargin=*,labelindent=16pt,font=\bfseries, nolistsep]
+    \item[Notwendig] Die Anforderung definiert eine wesentliche Fähigkeit, Eigenschaft, Einschränkung und/oder einen Qualitätsfaktor \cite[vgl. S.12]{RE-ISO}.
+    \item[Angemessen] Die Anforderung verfügt über einen angemessenen Detaillierungsgrad und erlaubt dabei bei der Implementierung größtmögliche Unabhängigkeit \cite[vgl. S.12]{RE-ISO}.
+    \item[Eindeutig] Die Anforderung ist leicht zu verstehen, einfach formuliert und kann nur auf eine einzige Weise interpretiert werden \cite[vgl. S.12]{RE-ISO}.
+    \item[Komplett] Die Anforderung ist hinreichend beschrieben und benötigt keine weiteren Informationen um verstanden zu werden \cite[vgl. S.12]{RE-ISO}.
+    \item[Atomar] Die Anforderung beschreibt eine einzige Fähigkeit oder Bedingung \cite[vgl. S.12]{RE-ISO}.
+    \item[Durchführbar] Die Anforderung kann innerhalb der Beschränkungen des Systems mit akzeptablem Risiko durchgeführt werden \cite[vgl. S.13]{RE-ISO}.
+    \item[Verifizierbar] Die Umsetzung der Anforderung kann überprüft werden \cite[vgl. S.13]{RE-ISO}.
+    \item[Korrekt] Die Anforderung ist eine genaue Darstellung des Bedürfnisses ihrer Quelle \cite[vgl. S.13]{RE-ISO}.
+    \item[Konform] Die Anforderung wurde, wenn möglich, mithilfe einer genehmigten Standardvorlage und -stil verfasst \cite[vgl. S.13]{RE-ISO}.
+\end{enumerate}
+
+Nach einer Umfrage aus dem Chaos Report der Standish Group nennen mehr als die Hälfte der Befragten als Faktor für die Beeinträchtigung von Projekten
+einen Grund, der direkt im Zusammenhang mit mangelndem \ac{RE} und \ac{RM} steht. Dazu gehören z.B. Gründe wie unvollständige Anforderungen, Nutzer nicht
+ausreichend involviert, unrealistische Erwartungen, geänderte Anforderungen und Spezifikationen \cite[vgl. S.5]{Chaos}. Gut durchgeführtes 
+\ac{RE} und \ac{RM} ist also essentiell für den Erfolg von Projekten.
 
 \subsection{Bewerten von Anwendungsregeln}

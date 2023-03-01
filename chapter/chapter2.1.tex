@@ -62,10 +62,33 @@ Anwendungsregeln von Komponenten importieren, die im jeweiligen Projekt genutzt 
 Anwendungsregeln für das Projekt anwendbar sind und welche nicht. Die anwendbaren Anwendungsregeln müssen daraufhin mit einer Designlösung
 abgeschlossen werden oder einem oder mehreren Teilsystemen zugeordnet werden. Diese Bewertung der Anwendungsregeln erfolgt ebenfalls in \ac{DOORS}
 wie in der Abbildung \ref*{fig:BewerteteAR} gezeigt wird.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width = \textwidth]{abbildungen/Bewertete AR.png}
     \caption{Bewerten einer Anwendungsregel}
     \label{fig:BewerteteAR}
 \end{figure}
-Dafür werden die Attribute REQ Statement und REQ Progress genutzt. 
+
+Dafür werden die Attribute REQ Statement und REQ Progress genutzt. Im Attribut REQ Progress kann der System Manager eine von fünf verschiedenen
+Ausprägungen wählen. Eine Auflistung und Erklärung dieser Ausprägungen kann der Tabelle \ref*{tab:REQProgress} entnommen werden. Der System 
+Manager muss daraufhin ein Statement darüber abgeben, warum er welchen REQ Progress gewählt hat. Dieses Statement wird in Textform im
+Attribut REQ Statement gespeichert. Die Anwendungsregel in der Abbildung \ref*{fig:BewerteteAR} wurde beispielsweise mit closed bewertet,
+da die Anwendungsregel für das Projekt anwendbar ist und zudem auch abgeschlossen ist, da die Streckenlänge, wie in der Anwendungsregel gefordert,
+weniger als 6,5km beträgt.
+
+\begin{table}[h]
+    \begin{center}
+        \caption{Ausprägungen des Attributs REQ Progress \cite[vgl. S.28f.]{SMO-AR}}
+        \label{tab:REQProgress}
+        \begin{tabularx}{\textwidth}{|l|>{\raggedright\arraybackslash}X |}
+            \hline
+            \textbf{REQ Progress} & \textbf{Erklärung}\\ \hline
+            not applicable & Anwendungsregel ist nicht anwendbar \\ \hline
+            forwarded & Anwendungsregel soll an Subsystem weitergeleitet werden \\ \hline
+            closed & Anwendungsregel auf System Design Ebene mit einem Statement abgeschlossen \\ \hline
+            open &  Bewertung der Anwendungsregel noch offen \\ \hline
+            compliant & Anwendungsregel anwendbar, noch nicht bewertet \\ \hline
+        \end{tabularx}
+    \end{center}
+\end{table}

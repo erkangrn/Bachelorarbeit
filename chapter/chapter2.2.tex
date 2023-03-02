@@ -29,17 +29,16 @@ gespeichert.
     \label{fig:Modul Doors}
 \end{figure}
 
-
 \subsection{Objekte und Attribute}
 Innerhalb eines Moduls werden Daten in Objekten gespeichert. In der Regel bestehen Objekte aus mindestens zwei Spalten. Die erste 
 Spalte enthält eine ID, die sich aus einem Präfix und einem Integerwert zusammensetzt. Der Integerwert wird bei jedem neu angelegtem 
 Objekt inkrementiert, so dass jedem Objekt innerhalb eines Moduls eine eindeutige ID zugeordnet werden kann.
 Die zweite Spalte besteht dabei entweder aus einer Sektions-Nummer und einer Überschrift, wie im ersten Objekt in der Abbildung 
-\ref*{fig:Modul Doors} zu sehen ist, oder aus einem Objekt Text, der bspw. eine Anforderung beinhalten kann. Ein Beispiel für 
+\ref*{fig:Modul Doors} zu sehen ist, oder aus einem Objekt Text, der beispielsweise eine Anforderung beinhalten kann. Ein Beispiel für 
 einen Objekt Text, der eine Anforderung beinhaltet ist das vierte Objekt der Abbildung \ref*{fig:Modul Doors} \cite[vgl. S.178]{DOORS}.
 Einem Objekt können beliebig viele weitere Attribute hinzugefügt werden. 
 
-Attribute beinhalten relevante Informationen über Module oder Objekte. Modulattribute speichern Informationen über das Modul, wie bspw.
+Attribute beinhalten relevante Informationen über Module oder Objekte. Modulattribute speichern Informationen über das Modul, wie beispielsweise
 den Ersteller des Moduls, das letzte Änderungsdatum und Ähnliches. Diese Modulattribute findet der User über die Eigenschaften des Moduls, 
 welche mit einem Rechtsklick auf das Modul in der grafischen Oberfläche geöffnet werden können. Objektattribute hingegen
 speichern Informationen über die Objekte. In der Abbildung \ref*{fig:Modul Doors} ist die Spalte STD Object Type z.B. ein Objektattribut,
@@ -75,4 +74,10 @@ dient und eine Verbindung zu einem anderem Objekt, welches als Zielobjekt dient,
 besteht die Möglichkeit, die grafische Benutzeroberfläche von \ac{DOORS} um neue entwickelte Anwendungen zu
 erweitern. Von der Syntax ähnelt die Sprache den Programmiersprachen C und C++ \cite[vgl. S.1]{DXL}. Zudem können Skripte geschrieben werden,
 die als Batch-Script ausgeführt werden können. Diese Skripte bieten neben der grafischen Benutzeroberfläche eine weitere Möglichkeit, 
-um mit \ac{DOORS} zu arbeiten. 
+um mit \ac{DOORS} zu arbeiten. \ac{DXL} wurde im Praxisprojekt zum Sammeln von bewerteten Anwendungsregeln aus Projekten der Siemens Mobility GmbH 
+genutzt, indem Batch-Skripte geschrieben wurden, welche im zentralen Projekt, das die Anwendungsregeln von Komponenten beinhaltet, die Links der Objekte
+verfolgt hat und dort in den Modulen nach korrekt bewerteten Anwendungsregeln gesucht hat. Diese wurden dann nach Projekt und Komponente gruppiert und 
+jeweils in neue Module geschrieben. Der Inhalt dieser Module dient als Datensatz für diese Bachelorarbeit. Ebenfalls wird \ac{DOORS} dazu benötigt,
+um in der grafischen Oberfläche eines Moduls mit neu importierten Anwendungsregeln ein Programm zu starten, was mit den Informationen aus dem Modul
+ein weiteres Skript in der Programmiersprache Python startet, in der das KI-Modell angelernt wird und mit den Daten über die Anwendungsregeln aus 
+dem Modul Vorschläge zur Bewertung der Anwendungsregeln treffen soll.

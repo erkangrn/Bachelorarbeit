@@ -53,33 +53,33 @@ einer Vorlage verfasst wurde, könnte wie folgt aussehen:
 Nach einer Umfrage aus dem Chaos Report der Standish Group nennen mehr als die Hälfte der Befragten als Faktor für die Beeinträchtigung von Projekten
 einen Grund, der direkt im Zusammenhang mit mangelndem \ac{RE} und \ac{RM} steht. Dazu gehören z.B. Gründe wie unvollständige Anforderungen, Nutzer nicht
 ausreichend involviert, unrealistische Erwartungen oder geänderte Anforderungen und Spezifikationen \cite[vgl. S.5]{Chaos}. Gut durchgeführtes 
-\ac{RE} und \ac{RM} ist also essentiell für den Erfolg von Projekten.
+\ac{RE} und \ac{RM} ist also essenziell für den Erfolg von Projekten.
 
 \subsection{Anwendungsregeln}
 Eine spezielle Form von Anforderungen stellen die Anwendungsregeln dar. Diese Anforderungen werden an Komponenten gestellt, um einen sicheren
 und zuverlässigen Einsatz von Komponenten im System zu gewährleisten. Dafür müssen sie von dem Kunden oder dem Projekt, welches die jeweiligen 
 Komponenten nutzt, berücksichtigt werden \cite[vgl. S.9]{SMO-AR}. Alle Anwendungsregeln von Komponenten der \ac{SMO RI} in all ihrer Versionen
-befinden sich zentral gespeichert in einem Projekt im Tool \ac{DOORS}. Von dort kann der zuständige System Manager eines Projekts alle 
+befinden sich zentral gespeichert in einem Projekt im Tool \ac{DOORS}. Von dort kann der zuständige System-Manager eines Projekts alle 
 Anwendungsregeln von Komponenten importieren, die im jeweiligen Projekt genutzt werden. Als Nächstes muss er bewerten, welche 
 Anwendungsregeln für das Projekt anwendbar sind und welche nicht. Die anwendbaren Anwendungsregeln müssen daraufhin mit einer Designlösung
 abgeschlossen werden oder einem oder mehreren Teilsystemen zugeordnet werden. Diese Bewertung der Anwendungsregeln erfolgt ebenfalls in \ac{DOORS}
 wie in der Abbildung \ref*{fig:BewerteteAR} gezeigt wird.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{abbildungen/Bewertete AR.png}
     \caption{Bewerten einer Anwendungsregel}
     \label{fig:BewerteteAR}
 \end{figure}
 
-Dafür werden die Attribute REQ Statement und REQ Progress genutzt. Im Attribut REQ Progress kann der System Manager eine von fünf verschiedenen
-Ausprägungen wählen. Eine Auflistung und Erklärung dieser Ausprägungen kann der Tabelle \ref*{tab:REQProgress} entnommen werden. Der System 
-Manager muss daraufhin ein Statement darüber abgeben, warum er welchen REQ Progress gewählt hat. Dieses Statement wird in Textform im
+Dafür werden die Attribute REQ Statement und REQ Progress genutzt. Im Attribut REQ Progress kann der System-Manager eine von fünf verschiedenen
+Ausprägungen wählen. Eine Auflistung und Erklärung dieser Ausprägungen kann der Tabelle \ref*{tab:REQProgress} entnommen werden. Der 
+System-Manager muss daraufhin ein Statement darüber abgeben, warum er welchen REQ Progress gewählt hat. Dieses Statement wird in Textform im
 Attribut REQ Statement gespeichert. Die Anwendungsregel in der Abbildung \ref*{fig:BewerteteAR} wurde beispielsweise mit closed bewertet,
 da die Anwendungsregel für das Projekt anwendbar ist und zudem auch abgeschlossen ist, da die Streckenlänge, wie in der Anwendungsregel gefordert,
 weniger als 6,5 km beträgt.
 
-\begin{table}[h]
+\begin{table}[H]
     \begin{center}
         \caption{Ausprägungen des Attributs REQ Progress \cite[vgl. S.28f.]{SMO-AR}}
         \label{tab:REQProgress}

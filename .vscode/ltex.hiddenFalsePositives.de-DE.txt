@@ -1,0 +1,1 @@
+{"rule":"GERMAN_SPELLER_RULE","sentence":"^\\Q\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q ist ein Akronym, das für Dynamic Object-Oriented Requirements System steht.\\E$"}

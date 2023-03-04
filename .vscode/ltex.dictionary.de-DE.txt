@@ -1,0 +1,7 @@
+REQ
+closed
+ChatGPT
+Object
+DXL
+Deep-Learning-Bibliothek
+Chollet

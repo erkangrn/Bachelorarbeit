@@ -15,7 +15,7 @@ Es existieren zwei verschiedene Arten von Modulen im Anforderungsmanagement-Tool
 beinhalten, werden Formal Module genannt. Abbildung \ref*{fig:Modul Doors} zeigt ein Beispiel für so ein Modul. Zu erkennen ist dort
 ein geöffnetes Formal Module. Auf der linken Seite ist ein Explorer zu sehen, auf der rechten Seite die eigentlichen Inhalte des Moduls.
 Durch den Explorer auf der linken Seite, der in einer Baumstruktur organisiert ist, wird es dem User ermöglicht leicht zu einer bestimmten
-Stelle im Modul zu navigieren. Die einzelnen Sektionen können dabei auf- und zugeklappt werden \cite[vgl. S.176]{DOORS}. Die Daten auf der 
+Stelle im Modul zu navigieren. Dabei können die einzelnen Sektionen auf- und zugeklappt werden \cite[vgl. S.176]{DOORS}. Die Daten auf der 
 rechten Seite sind tabellarisch angeordnet. Die Spalten stellen dabei die einzelnen Attribute des Moduls dar, während die Zeilen die 
 Objekte darstellen. 
 
@@ -32,10 +32,10 @@ gespeichert.
 \subsection{Objekte und Attribute}
 Innerhalb eines Moduls werden Daten in Objekten gespeichert. In der Regel bestehen Objekte aus mindestens zwei Spalten. Die erste 
 Spalte enthält eine ID, die sich aus einem Präfix und einem Integerwert zusammensetzt. Der Integerwert wird bei jedem neu angelegtem 
-Objekt inkrementiert, so dass jedem Objekt innerhalb eines Moduls eine eindeutige ID zugeordnet werden kann.
+Objekt inkrementiert, sodass jedem Objekt innerhalb eines Moduls eine eindeutige ID zugeordnet werden kann.
 Die zweite Spalte besteht dabei entweder aus einer Sektions-Nummer und einer Überschrift, wie im ersten Objekt in der Abbildung 
-\ref*{fig:Modul Doors} zu sehen ist, oder aus einem Objekt Text, der beispielsweise eine Anforderung beinhalten kann. Ein Beispiel für 
-einen Objekt Text, der eine Anforderung beinhaltet ist das vierte Objekt der Abbildung \ref*{fig:Modul Doors} \cite[vgl. S.178]{DOORS}.
+\ref*{fig:Modul Doors} zu sehen ist, oder aus einem Objekt-Text, der beispielsweise eine Anforderung beinhalten kann. Ein Beispiel für 
+einen Objekt-Text, der eine Anforderung beinhaltet, ist das vierte Objekt der Abbildung \ref*{fig:Modul Doors} \cite[vgl. S.178]{DOORS}.
 Einem Objekt können beliebig viele weitere Attribute hinzugefügt werden. 
 
 Attribute beinhalten relevante Informationen über Module oder Objekte. Modulattribute speichern Informationen über das Modul, wie beispielsweise
@@ -51,7 +51,7 @@ Wenn ein Formal Module geöffnet ist, kann der User unter File \textrightarrow{}
 Baseline ansehen. Abbildung \ref*{fig:Baselines} zeigt das Dialogfenster zum Öffnen bereits vorhandener Baselines. Dort wird deutlich, 
 dass Baselines versioniert werden können.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{abbildungen/Baselines.PNG}
     \caption{Baselines eines Moduls in \ac{DOORS}}
@@ -66,11 +66,11 @@ dabei, ungeachtet von der Richtung des Links, vom Quellobjekt zum Zielobjekt ode
 Ein nach links zeigender gelber Pfeil ist dabei ein In-Link, das heißt, dass dieses Objekt als Zielobjekt dient und ein anderes Objekt 
 eine Verbindung zu diesem Objekt hat. Das Gegenstück zum In-Link ist ein Out-Link. Dieser wird in der grafischen Benutzeroberfläche von 
 \ac{DOORS} als roter nach rechts zeigender Pfeil dargestellt. Hat ein Objekt einen Out-Link, heißt das, dass dieses Objekt als Quellobjekt 
-dient und eine Verbindung zu einem anderem Objekt, welches als Zielobjekt dient, hat.   
+dient und eine Verbindung zu einem anderen Objekt, welches als Zielobjekt dient, hat.   
 
 \subsection{DXL}
 
-\ac*{DXL} ist eine Skript-Sprache, die speziell für das Anforderungsmanagement-Tool \ac{DOORS} entwickelt wurde. Durch diese Skript-Sprache
+\ac{DXL} ist eine Skript-Sprache, die speziell für das Anforderungsmanagement-Tool \ac{DOORS} entwickelt wurde. Durch diese Skript-Sprache
 besteht die Möglichkeit, die grafische Benutzeroberfläche von \ac{DOORS} um neue entwickelte Anwendungen zu
 erweitern. Von der Syntax ähnelt die Sprache den Programmiersprachen C und C++ \cite[vgl. S.1]{DXL}. Zudem können Skripte geschrieben werden,
 die als Batch-Script ausgeführt werden können. Diese Skripte bieten neben der grafischen Benutzeroberfläche eine weitere Möglichkeit, 

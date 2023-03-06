@@ -5,3 +5,5 @@ Object
 DXL
 Deep-Learning-Bibliothek
 Chollet
+Supervised
+Unsupervised

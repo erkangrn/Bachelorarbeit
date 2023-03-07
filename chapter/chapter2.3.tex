@@ -8,8 +8,8 @@ deshalb Anfragen in einen Kontext einordnen. Dadurch kann es auch vorherige Antw
 des Benutzers eingehen \cite[]{CHATGPT}. 
 
 Die Frage nach \ac{KI} und nach dem ob und wie Maschinen denken können ist jedoch wesentlich älter als dieser Chatbot. 
-Bereits Alan Turing stellte sich diese Frage in den 1950er Jahren. Er schlug vor die Frage, ob Maschinen denken können,
-mit einer anderen Frage zu ersetzen. Dafür formulierte er das Problem mithilfe eines Spiels, dem \glqq Imitation Game\grqq, 
+Bereits Alan Turing stellte sich diese Frage in den 1950er Jahren. Er schlug vor, die Frage, ob Maschinen denken können,
+mit einer anderen Frage zu ersetzen. Dafür formulierte er das Problem mithilfe eines Spiels, dem \glqq Imitation Game\grqq{}, 
 das heute eher als Turing-Test bekannt ist, um. Dieses Spiel wird mit drei Personen gespielt, einem Fragesteller, einem Mann und 
 einer Frau. Ziel des Spiels ist es, dass der Fragesteller mithilfe von Fragen herausfinden muss, welche Person der Mann und welche Person 
 die Frau ist. Der Mann soll dabei versuchen, dass der Fragesteller ihn fälschlicherweise als die Frau identifiziert, während die Frau versuchen soll, 
@@ -26,7 +26,7 @@ intelligent bezeichnet werden könne, wenn eine Maschine in der Lage dazu ist, m
 \end{wrapfigure} 
 
 François Chollet, der Entwickler der Deep-Learning-Bibliothek Keras, welche im Kapitel XXX TODO näher beschrieben wird, definiert
-das Fachgebiet \ac{KI} als \glqq [den] Versuch, normalerweise von Menschen erledigte geistige Aufgaben automatisiert zu lösen\grqq \cite[S.22]{DL_PY}.
+das Fachgebiet \ac{KI} als \glqq [den] Versuch, normalerweise von Menschen erledigte geistige Aufgaben automatisiert zu lösen\grqq{} \cite[S.22]{DL_PY}.
 Nach dieser Definition schließt \ac{KI} weitere Themen wie das \ac{ML} sowie das \ac{DL} ein. Wichtig zu beachten ist dabei,
 dass diese Gebiete sich voneinander unterschieden. Ihre Beziehung zueinander wird in Abbildung \ref*{fig:KI_ML_DL} verdeutlicht.\\
 
@@ -37,7 +37,7 @@ Dieses Kapitel wird näher erläutern, worum es sich bei den Themen \ac{ML} und 
 Das Maschinelle Lernen ist ein Teilgebiet der \ac{KI} und beschäftigt sich mit der Frage, ob ein Computer in der Lage dazu ist selbstständig eine bestimmte Aufgabe
 zu erlernen. Ziel dabei ist es, dass eine Maschine aus einem vorgegebenem Datensatz und den dazugehörigen Antworten Regeln extrahieren soll, die den Datensatz erklären
 können. Anders als bei der klassischen Programmierung soll eine Maschine hier nicht die Antworten aus den Daten und Regeln herausgeben, sondern selber nach einer
-Struktur zu suchen, aus der die Maschine dann Regeln ableiten kann, die auch auf andere Aufgaben angewandt werden können \cite[vgl. S.23f.]{DL_PY}. Angenommen ein Datensatz bestünde aus
+Struktur suchen, aus der die Maschine dann Regeln ableiten kann, die auch auf andere Aufgaben angewendet werden können \cite[vgl. S.23f.]{DL_PY}. Angenommen ein Datensatz bestünde aus
 Bildern von Hunden und Menschen. Bei der klassischen Programmierung würde der Programmierer nun selber Regeln definieren und diese programmieren müssen. Beispiele für 
 mögliche Regeln könnten hier sein:
 \begin{quote}
@@ -59,26 +59,23 @@ Menschen zu sehen sind.
 
 Abbildung \ref*{fig:Programmierparadigma} verdeutlicht nochmal die Unterschiede zwischen der klassischen Programmierung und dem \ac{ML}. Beim \ac{ML} sind also drei Elemente
 notwendig, diese werden anhand des oben genannten Beispiels verdeutlicht: 
-\begin{enumerate}[leftmargin=*,labelindent=16pt,font=\bfseries, nolistsep]
+
+\begin{description}[style=multiline,leftmargin=3cm,font=\bfseries]
     \item[Eingabedaten] Bilder von Menschen und Hunden \cite[S.24]{DL_PY}
     \item[Antworten] Label, ob auf dem Bild ein Mensch oder ein Hund abgebildet ist \cite[S.24]{DL_PY}
     \item[Metrik zur Bewertung des Algorithmus] Benötigt, um die Abweichung zwischen Ausgabe des Modells und eigentlicher Antwort zu bestimmen. Wird als Feedback-Signal genutzt,
     um Algorithmus anzupassen. Beispielsweise wie viel Prozent der Bilder richtig zugeordnet werden. \cite[S.24f.]{DL_PY}.  
-\end{enumerate}
+\end{description}
 
 Die Aufgabe eines \ac{ML}-Modells ist es passende Repräsentationen der Eingabedaten zu erlernen, das heißt, dass die Daten vom Modell sinnvoll umgewandelt werden müssen. 
 Die systematische und automatische Suche nach der bestmöglichen Repräsentationen der Daten, mithilfe eines Feedback-Signals, für eine bestimmte vorgegebene Aufgabe kann als Möglichkeit verstanden werden, wie 
-Maschinen lernen. Mithilfe dieses Ansatzes und der in den letzten Jahren besser werdenden Hardware können große Datenmengen analysiert werden, was das Lösen von Aufgaben wie der Spracherkennung 
-oder das autonome Fahren ermöglicht \cite[vgl. S.24ff.]{DL_PY}.
+Maschinen lernen können. Mithilfe dieses Ansatzes und der in den letzten Jahren besser werdenden Hardware können große Datenmengen analysiert werden, was das Lösen von Aufgaben wie der Spracherkennung 
+oder das autonome Fahren ermöglicht \cite[vgl. S.24ff.]{DL_PY}.\\
 
-
-Die hier beschriebene Variante des Machine Learnings wird auch Supervised Learning, also überwachtes Lernen, genannt. \glqq Supervised\grqq bezieht sich hierbei darauf, dass
+Die hier beschriebene Variante des Machine Learnings wird auch Supervised Learning, also überwachtes Lernen, genannt. \glqq Supervised\grqq{} bezieht sich hierbei darauf, dass
 dem Modell die Antworten vorgegeben werden und es anhand der Antworten versucht Regeln zu finden. Neben dieser Variante existiert auch noch das sogenannte
 Unsupervised Learning. Bei dieser Variante des Machine Learnings werden dem Modell keine Antworten gegeben. Stattdessen versucht das Modell die Daten anhand ihrer
 Beziehung zueinander zu analysieren und die Daten in Kategorien zu klassifizieren. Algorithmen zum Clustern von Datensätze sind typische Beispiele für das Unsupervised Learning
 \cite[vgl. S.47ff.]{AI_Huawei}. In dieser Arbeit finden Unsupervised Learning Algorithmen oder Modelle keine Anwendung, deshalb ist mit \ac{ML} hier immer Supervised Learning gemeint.
 
-
 \subsection{Deep Learning}
-
-wfisjjfsweoi

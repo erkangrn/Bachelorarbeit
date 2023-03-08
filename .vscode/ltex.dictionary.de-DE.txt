@@ -7,3 +7,6 @@ Deep-Learning-Bibliothek
 Chollet
 Supervised
 Unsupervised
+Overfitting
+Underfitting
+Approximationsproblem

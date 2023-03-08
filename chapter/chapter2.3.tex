@@ -95,8 +95,9 @@ verbunden sind \cite[vgl. S.26]{NN}. In der Abbildung \ref*{fig:NN_Modell} wird 
 \end{figure}
 
 Die Verbindungen zwischen den Neuronen, die Kanten genannt werden, sind gerichtet und besitzen ein Gewicht. Wenn jedes Neuron eine Verbindung zu jedem Neuron in der nächsten Schicht hat, 
-dann wird diese Schicht auch als fully-connected bezeichnet. Unabhängig davon bekommt jedes Neuron, welches sich nicht in der Eingabeschicht befindet, eine Netzeingabe, 
-welche sich aus den Ausgaben der Neuronen zusammensetzt, die eine Kante zu dem Neuron haben. Dabei wird jede Ausgabe eines Neurons mit dem Kantengewicht multipliziert.
+dann wird diese Schicht auch als fully-connected bezeichnet. Das \ac{NN} in Abbildung \ref*{fig:NN_Modell} besteht aus drei Schichten, welche logischerweise bis auf die Ausgabeschicht 
+fully-connected sind. Unabhängig davon bekommt jedes Neuron, welches sich nicht in der Eingabeschicht befindet, eine Netzeingabe, welche sich aus den Ausgaben der Neuronen zusammensetzt, 
+die eine Kante zu dem jeweiligen Neuron haben. Dabei wird jede Ausgabe eines Neurons mit dem Kantengewicht multipliziert.
 
 \begin{figure}[H]
     \centering
@@ -115,18 +116,23 @@ verschiedene Aktivierungsfunktionen, in dieser Arbeit wird die \ac{ReLU}-Funktio
 \begin{align}
     f(net) = max(0; net)
 \end{align}
+
 Diese Funktion nimmt die Netzeingabe und wenn die Netzeingabe positiv ist, dann wird die Netzeingabe als Ausgabe ausgegeben, ansonsten gibt das Neuron 0 als Ausgabe aus.
 Eine \ac{ReLU}-Funktion als Aktivierungsfunktion eines Neurons zu benutzen ist typisch im Bereich des \ac{DL} \cite[vgl. S.31]{NN}.
 
 Wie kommen nun die Kantengewichte zustande? Den Kanten werden zunächst zufällige Werte als Gewicht zugeordnet. Danach wird jede Eingabe an das Modell übergeben, die
-daraufhin die einzelnen Layer durchläuft. Die Vorhersage wird nun mit dem tatsächlichen Wert an eine Verlustfunktion übergeben, welche dann dann Verlustscore berechnet.
+daraufhin die einzelnen Layer durchläuft. Die Vorhersage wird nun mit dem tatsächlichen Wert an eine Verlustfunktion übergeben, welche dann den Verlustscore berechnet.
 Für eine Regression, also die Vorhersage eines numerischen Wertes, bietet sich beispielsweise die Berechnung des mittleren quadratischen Fehlers (mean squared error) an.
 Dieser Verlustscore wird als Feedback-Signal genutzt und gibt dann an, wie gut das Modell die Aufgabe lösen kann. Das \ac{DL}-Modell versucht während des Trainings diesen 
 Wert zu minimieren, indem der Verlustscore an einen Optimierer übergeben wird, der anhand des Verlustscores die Gewichtungen der Kanten im \ac{NN} aktualisiert.
 Am Anfang des Trainingsprozesses wird der Verlustscore relativ hoch sein, da die Kantengewichte zufällig ausgewählt wurden. Mit jeder neuen Eingabe werden die Kantengewichte
 jedoch aktualisiert, was zur Folge hat, dass das Modell immer genauer wird und der Verlustscore somit abnimmt \cite[vgl. S.30ff.]{DL_PY}.
-Abbildung \ref*{fig:AnlernenNN} zeigt dabei graphisch den Aufbau des Trainingsprozesses eines \ac{NN}. Je mehr Daten vorhanden sind, desto genauer kann das 
+Abbildung \ref*{fig:AnlernenNN} zeigt dabei grafisch den Aufbau des Trainingsprozesses eines \ac{NN}. Je mehr Daten vorhanden sind, desto genauer kann das 
 Modell somit werden. Die ImageNet-Datenbank mit ihren 1,4 Millionen Bilddateien hatte beispielsweise einen großen Einfluss auf den Erfolg von \ac{DL} \cite[vgl. S.45]{DL_PY}.
+Wichtig zu beachten ist, dass der Datensatz in einen Trainings- und Testdatensatz aufgeteilt werden muss. Ein Modell darf niemals mit den Daten trainiert werden,
+die auch zum Testen genutzt wird. Wird ein Datensatz nicht aufgeteilt, wird das Modell logischerweise beim Testen sehr gute Ergebnisse erzielen, da es die 
+Testdaten bereits kennt. Der Testdatensatz wird zudem genutzt, da nicht nur die Leistung eines Modells auf den Trainingsdaten relevant ist, sondern gerade 
+die Genauigkeit bei unbekannten Daten Auskunft darüber gibt, wie gut ein Modell ist. 
 
 \begin{figure}[H]
     \centering
@@ -136,12 +142,12 @@ Modell somit werden. Die ImageNet-Datenbank mit ihren 1,4 Millionen Bilddateien 
 \end{figure}
 
 \subsection{Overfitting und Underfitting}
-Overfitting und Underfitting, auf deutsch Über- und Unteranpassung, können im Trainingsprozesses von \ac{ML}- sowie \ac{DL}-Aufgaben auftreten.
+Overfitting und Underfitting, auf Deutsch Über- und Unteranpassung, können im Trainingsprozesses von \ac{ML}- sowie \ac{DL}-Aufgaben auftreten.
 Unter dem Begriff Underfitting wird verstanden, dass ein Modell noch nicht alle Zusammenhänge im Trainingsdatensatz erkannt und modelliert hat und somit der Verlustscore noch hoch ist, 
 da das Modell für den Trainingsdatensatz noch keine sinnvollen Repräsentationen gefunden hat. Dieses Problem kann gelöst werden, indem die Anzahl an Trainingsdurchläufen erhöht oder 
 die Komplexität des Modells erweitert wird, also weitere Schichten oder mehr Neuronen in einer Schicht hinzugefügt werden. Overfitting beschreibt dabei den Fall,
 dass ein Model die Eigenheiten der Trainingsdaten sozusagen auswendig lernt und mögliche irrelevante Muster im Trainingsdatensatz erlernt. Das Problem daran ist, dass das Modell 
-dann nicht mehr in der Lage ist, das eigentliche Probleme generalisert zu betrachten und neue Daten korrekt vorherzusagen. Mögliche Lösungen wäre dabei mehr Daten zu beschaffen
+dann nicht mehr in der Lage ist, das eigentliche Probleme generalisiert zu betrachten und neue Daten korrekt vorherzusagen. Mögliche Lösungen wäre dabei mehr Daten zu beschaffen
 oder die Komplexität des Modells zu verringern. Zudem existiert ein Verfahren, das ebenfalls dabei hilft, Overfitting zu verhindern. Dieses Verfahren nennt sich 
 Dropout-Regularisierung. Bei der Dropout-Regularisierung werden während des Trainings einige zufällig ausgewählte Ausgaben von Neuronen in einer Schicht auf 0 gesetzt. Das soll verhindern,
 dass ein \ac{NN} irrelevante Muster im Trainingsdatensatz erlernt \cite[vgl. S.142ff.]{DL_PY}. 
@@ -149,3 +155,16 @@ dass ein \ac{NN} irrelevante Muster im Trainingsdatensatz erlernt \cite[vgl. S.1
 Je weniger Daten vorhanden sind und je komplexer ein Modell ist, desto wahrscheinlicher läuft das Modell Gefahr, von Overfitting betroffen zu sein. Je simpler ein Modell ist und je weniger
 Trainingsdurchläufe durchlaufen werden, desto eher kann es zu einer Unteranpassung des Modells kommen. Es ist also wichtig, ein gutes Mittelmaß zu finden, damit ein Modell in der Lage ist
 ein Problem verallgemeinert und optimal zu lösen.
+
+\subsection{Vor- und Nachteile}
+Der große Vorteil von \ac{DL} und \ac{NN} ist das \glqq Universal Approximation Theorem\grqq{}, welches besagt, dass jeder funktionale Zusammenhang zwischen Ein- und Ausgabe
+durch ein \ac{NN} angenähert werden kann. Das gilt dabei nicht nur für mathematische Zusammenhänge. Voraussetzung dafür ist ein \ac{NN}, dessen Komplexität groß genug gewählt wird. 
+Dafür kann bereits eine versteckte Schicht ausreichen. Durch diese Eigenschaft kann ein \ac{NN} theoretisch jedes Approximationsproblem lösen und interessiert sich dabei nicht dafür, 
+ob eine Kausalität zwischen Ein- und Ausgabe besteht und kann ebenfalls mit unvollständigen und falschen Daten arbeiten \cite[vgl. S.74ff.]{NN}. Zudem sind \ac{NN} nicht anfällig 
+gegenüber leichten Änderungen im Datensatz, stattdessen sind sie fehlertolerant. Selbst wenn ein Teil des Netzes funktionsunfähig werden sollte, spielt das keine allzu große Rolle,
+da die Muster und Strukturen, welches ein Modell gelernt hat, auf das ganze Netz verteilt ist. Diese Tatsache hat zudem den Vorteil, dass wenn neue Daten dazu kommen, nicht 
+das gesamte Netz neu trainiert werden muss, sondern das bestehende Netz upgedatet werden kann \cite[vgl. S.82]{NN}. Weitere Vorteile von \ac{NN} sind ihre Einfachheit und Skalierbarkeit.
+Das Erstellen eines Modells ist einfach und auf eine beliebige Größe skalierbar, weshalb \ac{NN} auch mit großen Datenmengen und einer Vielzahl an Attributen angelernt werden können.
+
+
+

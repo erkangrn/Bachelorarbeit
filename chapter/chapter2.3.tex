@@ -67,9 +67,9 @@ notwendig, diese werden anhand des oben genannten Beispiels verdeutlicht:
 \end{description}
 
 Die Aufgabe eines \ac{ML}-Modells ist es passende Repräsentationen der Eingabedaten zu erlernen, das heißt, dass die Daten vom Modell sinnvoll umgewandelt werden müssen. 
-Die systematische und automatische Suche nach der bestmöglichen Repräsentationen der Daten, mithilfe eines Feedback-Signals, für eine bestimmte vorgegebene Aufgabe kann als Möglichkeit verstanden werden, wie 
-Maschinen lernen können. Mithilfe dieses Ansatzes und der in den letzten Jahren besser werdenden Hardware können große Datenmengen analysiert werden, was das Lösen von Aufgaben wie der Spracherkennung 
-oder das autonome Fahren ermöglicht \cite[vgl. S.24ff.]{DL_PY}.\\
+Die systematische und automatische Suche nach der bestmöglichen Repräsentationen der Daten, mithilfe eines Feedback-Signals, für eine bestimmte vorgegebene Aufgabe kann als Möglichkeit 
+verstanden werden, wie Maschinen lernen können. Mithilfe dieses Ansatzes und der in den letzten Jahren besser werdenden Hardware können große Datenmengen analysiert werden, was das Lösen von 
+Aufgaben wie der Spracherkennung oder das autonome Fahren ermöglicht \cite[vgl. S.24ff.]{DL_PY}.\\
 
 Die hier beschriebene Variante des Machine Learnings wird auch Supervised Learning, also überwachtes Lernen, genannt. \glqq Supervised\grqq{} bezieht sich hierbei darauf, dass
 dem Modell die Antworten vorgegeben werden und es anhand der Antworten versucht Regeln zu finden. Neben dieser Variante existiert auch noch das sogenannte
@@ -115,4 +115,37 @@ verschiedene Aktivierungsfunktionen, in dieser Arbeit wird die \ac{ReLU}-Funktio
 \begin{align}
     f(net) = max(0; net)
 \end{align}
-Diese Funktion nimmt die Netzeingabe und wenn die Netzeingabe positiv ist, dann wird die Netzeingabe als Ausgabe ausgegeben, ansonsten gibt das Neuron 0 als Ausgabe aus \cite[vgl. S.31]{NN}.
+Diese Funktion nimmt die Netzeingabe und wenn die Netzeingabe positiv ist, dann wird die Netzeingabe als Ausgabe ausgegeben, ansonsten gibt das Neuron 0 als Ausgabe aus.
+Eine \ac{ReLU}-Funktion als Aktivierungsfunktion eines Neurons zu benutzen ist typisch im Bereich des \ac{DL} \cite[vgl. S.31]{NN}.
+
+Wie kommen nun die Kantengewichte zustande? Den Kanten werden zunächst zufällige Werte als Gewicht zugeordnet. Danach wird jede Eingabe an das Modell übergeben, die
+daraufhin die einzelnen Layer durchläuft. Die Vorhersage wird nun mit dem tatsächlichen Wert an eine Verlustfunktion übergeben, welche dann dann Verlustscore berechnet.
+Für eine Regression, also die Vorhersage eines numerischen Wertes, bietet sich beispielsweise die Berechnung des mittleren quadratischen Fehlers (mean squared error) an.
+Dieser Verlustscore wird als Feedback-Signal genutzt und gibt dann an, wie gut das Modell die Aufgabe lösen kann. Das \ac{DL}-Modell versucht während des Trainings diesen 
+Wert zu minimieren, indem der Verlustscore an einen Optimierer übergeben wird, der anhand des Verlustscores die Gewichtungen der Kanten im \ac{NN} aktualisiert.
+Am Anfang des Trainingsprozesses wird der Verlustscore relativ hoch sein, da die Kantengewichte zufällig ausgewählt wurden. Mit jeder neuen Eingabe werden die Kantengewichte
+jedoch aktualisiert, was zur Folge hat, dass das Modell immer genauer wird und der Verlustscore somit abnimmt \cite[vgl. S.30ff.]{DL_PY}.
+Abbildung \ref*{fig:AnlernenNN} zeigt dabei graphisch den Aufbau des Trainingsprozesses eines \ac{NN}. Je mehr Daten vorhanden sind, desto genauer kann das 
+Modell somit werden. Die ImageNet-Datenbank mit ihren 1,4 Millionen Bilddateien hatte beispielsweise einen großen Einfluss auf den Erfolg von \ac{DL} \cite[vgl. S.45]{DL_PY}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{abbildungen/NN_anlernen.pdf}
+    \caption{Anlernen eines neuronalen Netzes \cite[S.31]{DL_PY}}
+    \label{fig:AnlernenNN}
+\end{figure}
+
+\subsection{Overfitting und Underfitting}
+Overfitting und Underfitting, auf deutsch Über- und Unteranpassung, können im Trainingsprozesses von \ac{ML}- sowie \ac{DL}-Aufgaben auftreten.
+Unter dem Begriff Underfitting wird verstanden, dass ein Modell noch nicht alle Zusammenhänge im Trainingsdatensatz erkannt und modelliert hat und somit der Verlustscore noch hoch ist, 
+da das Modell für den Trainingsdatensatz noch keine sinnvollen Repräsentationen gefunden hat. Dieses Problem kann gelöst werden, indem die Anzahl an Trainingsdurchläufen erhöht oder 
+die Komplexität des Modells erweitert wird, also weitere Schichten oder mehr Neuronen in einer Schicht hinzugefügt werden. Overfitting beschreibt dabei den Fall,
+dass ein Model die Eigenheiten der Trainingsdaten sozusagen auswendig lernt und mögliche irrelevante Muster im Trainingsdatensatz erlernt. Das Problem daran ist, dass das Modell 
+dann nicht mehr in der Lage ist, das eigentliche Probleme generalisert zu betrachten und neue Daten korrekt vorherzusagen. Mögliche Lösungen wäre dabei mehr Daten zu beschaffen
+oder die Komplexität des Modells zu verringern. Zudem existiert ein Verfahren, das ebenfalls dabei hilft, Overfitting zu verhindern. Dieses Verfahren nennt sich 
+Dropout-Regularisierung. Bei der Dropout-Regularisierung werden während des Trainings einige zufällig ausgewählte Ausgaben von Neuronen in einer Schicht auf 0 gesetzt. Das soll verhindern,
+dass ein \ac{NN} irrelevante Muster im Trainingsdatensatz erlernt \cite[vgl. S.142ff.]{DL_PY}. 
+
+Je weniger Daten vorhanden sind und je komplexer ein Modell ist, desto wahrscheinlicher läuft das Modell Gefahr, von Overfitting betroffen zu sein. Je simpler ein Modell ist und je weniger
+Trainingsdurchläufe durchlaufen werden, desto eher kann es zu einer Unteranpassung des Modells kommen. Es ist also wichtig, ein gutes Mittelmaß zu finden, damit ein Modell in der Lage ist
+ein Problem verallgemeinert und optimal zu lösen.

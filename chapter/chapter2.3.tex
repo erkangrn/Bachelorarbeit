@@ -164,7 +164,18 @@ ob eine Kausalität zwischen Ein- und Ausgabe besteht und kann ebenfalls mit unv
 gegenüber leichten Änderungen im Datensatz, stattdessen sind sie fehlertolerant. Selbst wenn ein Teil des Netzes funktionsunfähig werden sollte, spielt das keine allzu große Rolle,
 da die Muster und Strukturen, welches ein Modell gelernt hat, auf das ganze Netz verteilt ist. Diese Tatsache hat zudem den Vorteil, dass wenn neue Daten dazu kommen, nicht 
 das gesamte Netz neu trainiert werden muss, sondern das bestehende Netz upgedatet werden kann \cite[vgl. S.82]{NN}. Weitere Vorteile von \ac{NN} sind ihre Einfachheit und Skalierbarkeit.
-Das Erstellen eines Modells ist einfach und auf eine beliebige Größe skalierbar, weshalb \ac{NN} auch mit großen Datenmengen und einer Vielzahl an Attributen angelernt werden können.
+Das Erstellen eines Modells ist einfach und auf eine beliebige Größe skalierbar, weshalb \ac{NN} auch mit großen Datenmengen und einer Vielzahl an Attributen angelernt werden 
+können \cite[vgl. S.47]{DL_PY}.
+
+Neben den Vorteilen birgt die Nutzung von \ac{NN} auch einige Nachteile. Zum einen ist die Genauigkeit der Prognose eines Modells stark abhängig von der Qualität der Trainingsdaten.
+Werden Attribute im Trainingsdatensatz genutzt, die irrelevante bei der Beschreibung des Problems sind, wirkt sich das negativ aus auf die Genauigkeit des Modells, weshalb eine
+vorhergehende Analyse der Attribute, die sogenannte \glqq Feature Selection\grqq{}, unausweichlich ist. Zudem kann das Training eines \ac{NN} mit steigender Komplexität
+zeit- und rechenintensiv werden, da die Anzahl an zu berechnenden Parametern bei steigender Komplexität zunimmt. Ein komplexeres Modell hat außerdem zur Folge, dass es nicht mehr 
+möglich ist transparent und nachvollziehbar zu Verstehen, wie ein \ac{NN} eine Ausgabe berechnet. Außerdem muss beim Testen und Validieren eines Modells überprüft werden, 
+ob das Modell nicht eventuell over- oder underfitted und somit nicht in der Lage ist, das zu lösende Problem hinreichend verallgemeinert abzubilden und somit auf neuen Daten
+zu fehlerhaftem Verhalten neigt \cite[vgl. S.84ff.]{NN}.
+
+
 
 
 

@@ -22,7 +22,6 @@ intelligent bezeichnet werden könne, wenn eine Maschine in der Lage dazu ist, m
     \includegraphics[width=\textwidth/2]{abbildungen/KI_ML_DL.pdf}
     \caption{Beziehung zwischen \ac{KI}, \ac{ML} und \ac{DL} \cite[vgl. S.22]{DL_PY}}
     \label{fig:KI_ML_DL}
-
 \end{wrapfigure} 
 
 François Chollet, der Entwickler der Deep-Learning-Bibliothek Keras, welche im Kapitel XXX TODO näher beschrieben wird, definiert
@@ -83,4 +82,37 @@ Wie Abbildung \ref*{fig:KI_ML_DL} zeigt, ist das \ac{DL} ein Teilgebiet des \ac{
 Daten. Das Besondere am \ac{DL} ist dabei, dass das Lernen des Modells in mehreren aufeinanderfolgenden Schichten, auch Layer genannt, stattfindet. Dabei können
 über hundert Schichten eingesetzt werden. Die Anzahl an Schichten wird auch Tiefe des Modells genannt, was auch das \glqq Deep\grqq{} in \ac{DL} beschreibt. Je tiefer dabei eine Schicht liegt,
 desto sinnvoller sollen die Repräsentationen werden \cite[vgl. S.27]{DL_PY}. François Chollet definiert \ac{DL} als \glqq Lernen durch schichtweise Repräsentationen oder 
-Lernen durch hierarchische Repräsentationen\grqq{} \cite[S.27]{DL_PY}. 
+Lernen durch hierarchische Repräsentationen\grqq{} \cite[S.27]{DL_PY}. \ac{DL}-Modelle werden in der Regel als \ac{NN} dargestellt, das aus beliebig vielen Schichten besteht, wobei
+jedes \ac{NN} mindestens eine Eingabe- und eine Ausgabeschicht  besitzt, dazwischen kann es beliebig viele versteckte Schichten, die hidden Layer, beinhalten. 
+Die versteckten Schichten sind für die Verarbeitung der Daten zuständig. Eine Schicht besteht dabei aus einer vom Ersteller des \ac{NN} ausgewählten Anzahl an Neuronen, die miteinander 
+verbunden sind \cite[vgl. S.26]{NN}. In der Abbildung \ref*{fig:NN_Modell} wird der grundlegende Aufbau eines einfachen neuronalen Netzes dargestellt. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{abbildungen/NN_Modell.pdf}
+    \caption{Aufbau eines neuronalen Netzes \cite[S.27]{NN}}
+    \label{fig:NN_Modell}
+\end{figure}
+
+Die Verbindungen zwischen den Neuronen, die Kanten genannt werden, sind gerichtet und besitzen ein Gewicht. Wenn jedes Neuron eine Verbindung zu jedem Neuron in der nächsten Schicht hat, 
+dann wird diese Schicht auch als fully-connected bezeichnet. Unabhängig davon bekommt jedes Neuron, welches sich nicht in der Eingabeschicht befindet, eine Netzeingabe, 
+welche sich aus den Ausgaben der Neuronen zusammensetzt, die eine Kante zu dem Neuron haben. Dabei wird jede Ausgabe eines Neurons mit dem Kantengewicht multipliziert.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth/2]{abbildungen/Aktivierungsfunktion.pdf}
+    \caption{Berechnung Netzeingabe \cite[vgl. S.29]{NN}}
+    \label{fig:Aktivierungsfunktion}
+\end{figure}
+
+Abbildung \ref*{fig:Aktivierungsfunktion} zeigt beispielhaft ein Neuron und die Ausgabe von drei vorherigen Neuronen. Die Netzeingabe des Neurons wird wie folgt berechnet \cite[S.29]{NN}:
+\begin{align}
+    net = o_{1} \cdot w_{1} + o_{2} \cdot w_{2} + o_{3} \cdot w_{3} = 0,8 \cdot 0,6 + 0,3 \cdot 0,5 + 0,4 \cdot 0,7 = 0,91
+\end{align}
+
+Jedes Neuron besitzt eine Aktivierungsfunktion, welche mithilfe der Netzeingabe prüft, ob das jeweilige Neuron eine Ausgabe hat und welchen Wert diese annimmt. Es existieren viele
+verschiedene Aktivierungsfunktionen, in dieser Arbeit wird die \ac{ReLU}-Funktion genutzt. Diese ist definiert als:
+\begin{align}
+    f(net) = max(0; net)
+\end{align}
+Diese Funktion nimmt die Netzeingabe und wenn die Netzeingabe positiv ist, dann wird die Netzeingabe als Ausgabe ausgegeben, ansonsten gibt das Neuron 0 als Ausgabe aus.

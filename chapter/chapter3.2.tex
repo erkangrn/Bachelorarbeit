@@ -1,0 +1,31 @@
+\section{Python}
+\label{chap:Python}
+
+
+\subsection{Keras}
+Keras ist eine Bibliothek für die Programmiersprache Python, welche Klassen und Funktionen liefert, um verschiedene \ac{DL}-Modelle zu erstellen
+und diese anschließend zu trainieren. Operationen zur Berechnung und Bearbeitung von beispielsweise Tensoren bringt diese Bibliothek nicht mit.
+Stattdessen greift Keras auf andere Bibliotheken zurück, die diese Funktionalitäten mitbringen, und nutzt diese dann. Dabei ist Keras kompatibel zu mehreren
+Bibliotheken dieser Art, wie zum Beispiel TensorFlow von Google oder CNTK von Microsoft. Der Entwickler kann aussuchen, welche dieser Bibliotheken
+verwenden will und kann diese auch während der Entwicklung wechseln \cite[vgl. S.89ff.]{DL_PY}. François Chollet empfiehlt standardmäßig TensorFlow zu nutzen, da diese 
+\glqq am weitesten verbreitet, skalierbar und ausgereift\grqq{}\cite[S.91]{DL_PY} sei. Was TensorFlow genau kann und wie es genutzt wird, ist für die Erstellung eines
+\ac{DL}-Modells mit Keras nicht relevant und wird somit nicht genauer beschrieben.
+
+Das Erstellen eines \ac{NN} mithilfe von Keras folgt dabei in der Regel den folgenden vier Schritten:
+\begin{enumerate}
+    \item Trainingsdatensatz definieren und in Ein- und Ausgabewerte aufteilen \cite[vgl. S.92.]{DL_PY}
+    \item \ac{NN} definieren, indem die einzelnen Schichten konfiguriert werden \cite[vgl. S.92.]{DL_PY}
+    \item Verlustfunktion, Optimierer und Metrik(Kennzahl) auswählen \cite[vgl. S.92.]{DL_PY}
+    \item Modell mit Trainingsdaten anlernen \cite[vgl. S.92.]{DL_PY}
+\end{enumerate}
+Ein großer Vorteil der Bibliothek ist, dass Keras bereits die verschiedenen Schichten als Klassen mitbringt, diese also nicht vom Entwickler erst definiert werden müssen.
+Der Entwickler kann dadurch einem Modell beliebig Schichten hinzufügen oder entfernen und diese nach seinen Wünschen konfigurieren. 
+Die Anzahl an Neuronen innerhalb einer Schicht und die Aktivierungsfunktion der Neuronen in der Schicht werden der Schicht einfach als Parameter übergeben 
+und die Aktivierungsfunktion muss ebenfalls nicht selbst definiert werden, denn da reicht es aus, den Namen der Funktion als Parameter anzugeben.
+Das Auswählen der Verlustfunktion, des Optimierers und der Metrik verlaufen ebenfalls genauso einfach. Diese werden, nachdem das Modell mit seinen Schichten 
+definiert wurden, ganz simpel, wie bei der Auswahl der Aktivierungsfunktion, einer Funktion als Parameter übergeben.
+Genau diese Schritte werden in dieser Arbeit durchlaufen, um das \ac{KI}-System zur Bewertung von Anwendungsregeln zu erstellen und anzulernen.
+
+\subsection{Pandas}
+
+\subsection{Matplotlib}

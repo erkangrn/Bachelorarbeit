@@ -10,3 +10,5 @@ Unsupervised
 Overfitting
 Underfitting
 Approximationsproblem
+Series
+Perceptron

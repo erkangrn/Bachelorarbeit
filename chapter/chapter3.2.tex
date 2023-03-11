@@ -1,5 +1,7 @@
 \section{Python}
 \label{chap:Python}
+- Was ist Python? kurz
+- Wieso Python und nicht R oder was anderes
 
 
 \subsection{Keras}
@@ -13,10 +15,10 @@ verwenden will und kann diese auch während der Entwicklung wechseln \cite[vgl. 
 
 Das Erstellen eines \ac{NN} mithilfe von Keras folgt dabei in der Regel den folgenden vier Schritten:
 \begin{enumerate}
-    \item Trainingsdatensatz definieren und in Ein- und Ausgabewerte aufteilen \cite[vgl. S.92.]{DL_PY}
-    \item \ac{NN} definieren, indem die einzelnen Schichten konfiguriert werden \cite[vgl. S.92.]{DL_PY}
-    \item Verlustfunktion, Optimierer und Metrik(Kennzahl) auswählen \cite[vgl. S.92.]{DL_PY}
-    \item Modell mit Trainingsdaten anlernen \cite[vgl. S.92.]{DL_PY}
+    \item Trainingsdatensatz definieren und in Ein- und Ausgabewerte aufteilen \cite[vgl. S.92]{DL_PY}
+    \item \ac{NN} definieren, indem die einzelnen Schichten konfiguriert werden \cite[vgl. S.92]{DL_PY}
+    \item Verlustfunktion, Optimierer und Metrik(Kennzahl) auswählen \cite[vgl. S.92]{DL_PY}
+    \item Modell mit Trainingsdaten anlernen \cite[vgl. S.92]{DL_PY}
 \end{enumerate}
 Ein großer Vorteil der Bibliothek ist, dass Keras bereits die verschiedenen Schichten als Klassen mitbringt, diese also nicht vom Entwickler erst definiert werden müssen.
 Der Entwickler kann dadurch einem Modell beliebig Schichten hinzufügen oder entfernen und diese nach seinen Wünschen konfigurieren. 
@@ -28,14 +30,41 @@ Genau diese Schritte werden in dieser Arbeit durchlaufen, um das \ac{KI}-System 
 
 \subsection{Pandas}
 
-Um unter Anderem das Importieren der Daten, welche im Praxisprojekt gesammelt wurden, zu ermögliche, wird die Datenverarbeitungsbibliothek Pandas genutzt.
+Um unter anderem das Importieren der Daten, welche im Praxisprojekt gesammelt wurden, zu ermöglichen, wird die Datenverarbeitungsbibliothek Pandas genutzt.
 Pandas ist ein Akronym, welches für panel data steht. Diese Bibliothek basiert dabei auf Tabellen, ähnlich wie bei Excel, und bietet die Möglichkeit
 Excel-Dateien, CSV-Dateien und weitere Dateitypen direkt zu importieren oder zu exportieren. Die beiden wichtigsten Datenstrukturen sind dabei die
-Series und die Dataframe \cite[vgl. S.3]{Pandas}. 
+Series und die Dataframe \cite[vgl. S.253]{NumerischesPython}. 
 
-Series... 
+Series können dabei wie eine zweispaltige Tabelle verstanden werden. Die erste Spalte beinhaltet einen Index, dieser kann
+dabei beliebig sein, muss also nicht wie bei einem Array aus Integer-Werten bestehen. Diese Eigenschaft unterscheidet Series von Arrays
+und bietet dadurch die Möglichkeit beliebige Indizes zu nutzen und Daten somit als Key-Value-Paare zu speichern. Wird jedoch kein spezieller Index definiert,
+so besteht der Index, genau wie bei einem Array, aus aufsteigenden Integer-Werten von 0 bis zur Länge des Arrays. In der anderen Spalte
+werden die eigentlichen Werte gespeichert, diese müssen dabei alle vom selben Datentyp sein \cite[vgl. S.254f.]{NumerischesPython}. 
+Weitere Eigenschaften der Datenstruktur Series sind:
+\begin{itemize}
+    \item Indizierung \cite[vgl. S.256]{NumerischesPython}
+    \begin{itemize}
+        \item über Index oder Liste von Indizes auf bestimmte Werte eines Series-Objekts zuzugreifen
+    \end{itemize}
+    \item Filtern nach einer Bedingung, zum Beispiel nur auf Werte zugreifen, die größer als ein Schwellwert sind \cite[vgl. S.256]{NumerischesPython}
+    \item Anwendung von mathematischen Funktionen auf gesamtes Series-Objekt möglich \cite[vgl. S.256]{NumerischesPython}
+\end{itemize}
 
-Dataframes... 
+Dataframes sind eine weitere Datenstruktur, die die Pandas Bibliothek mitbringt. Ein Dataframe hat, wie ein Series-Objekt, ebenfalls Ähnlichkeiten zu einer Tabelle,
+dieses Mal jedoch mit einer unbegrenzten Anzahl an Spalten. Die Werte einer Spalte müssen vom selben Datentyp sein, jedoch können verschiedene Spalten 
+auch verschiedene Datentypen besitzen. Da nun mehrere Spalten mit Werten vorhanden sein können, besitzen Dataframes sowohl einen Zeilen- als auch einen
+Spaltenindex. Die Indizes sind wieder beliebig wählbar. Zudem können mindestens zwei Series-Objekte zu einem Dataframe
+konkateniert werden \cite[vgl. S.263f.]{NumerischesPython}. Also kann über Dataframes gesagt werden, dass sie eine Datenstruktur sind, die aus mehreren einzelnen Series-Objekten bestehen.
+
+Neben den beiden Datenstrukturen liefert die Pandas Bibliothek zahlreiche Funktionen zur Analyse, Bearbeitung und Verwaltung der gespeicherten Daten. Die in dieser Arbeit 
+verwendeten Funktionen werden in Kapitel XXX an den gesammelten Daten aus dem Praxisprojekt vorgestellt und erläutert.
 
 \subsection{Matplotlib}
-Erstellen von Grafiken
+Zur Visualisierung von Daten wird in dieser Arbeit die Bibliothek Matplotlib für Python genutzt. Matplotlib bietet die Möglichkeit verschiedenste Diagramme und Darstellungen,
+wie zum Beispiel Linien-, Balken-, Tortendiagramme und viele mehr, mit wenig Code zu erstellen. Die erstellten Diagramme können vom Entwickler zudem noch beliebig 
+konfiguriert werden \cite[vgl. S.167.]{NumerischesPython}. Das Visualisieren der Daten sorgt für ein besseres Verständnis der Daten im Vergleich zu einer rein textuellen Beschreibung.
+
+Matplotlib eignet sich vor allem in der Verwendung zusammen mit Pandas. Pandas listet Matplotlib als \glqq optionale Abhängigkeit\grqq{}, bedeutet, dass für die Verwendung
+von Pandas Matplotlib nicht zwingend benötigt wird, aber es empfohlen wird \cite[vgl. S.253]{NumerischesPython}.
+Beide Datenstrukturen der Pandas-Bibliothek besitzen zudem eine Plot-Funktion, also eine Funktion um ein Diagramm aus den Daten zu erstellen, 
+die genutzt werden kann, wenn sowohl Pandas als auch Matplotlib als Bibliotheken importiert werden.

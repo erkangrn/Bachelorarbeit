@@ -1,8 +1,33 @@
 \section{Python}
 \label{chap:Python}
-- Was ist Python? kurz
-- Wieso Python und nicht R oder was anderes
 
+Python ist eine interpretierte, high-level, objektorientierte Programmiersprache und wird von einem Artikel 
+im International Research Journal of Engineering and Technology (IRJET) als die am schnellsten wachsende Programmiersprache 
+bezeichnet \cite[vgl. S.354]{Python}. Jacqueline Kazil, ehemaliges Vorstandsmitglied der Python Software Foundation,
+nennt als Hauptgründe für das Wachstum der Programmiersprache die Beliebtheit von Python in den Themen \ac{ML} und Data Science \cite[vgl. S.354]{Python}.
+Weitere Eigenschaften der Programmiersprache sind:
+\begin{itemize}
+    \item Hohe Lesbarkeit durch einfache Syntax \cite[vgl. S.354]{Python}
+    \item Programme haben weniger Zeilen Code als vergleichbare Sprachen wie C \cite[vgl. S.354]{Python}
+    \item hohe Flexibilität durch dynamische Typisierung \cite[vgl. S.354]{Python}
+    \item Automatisches Speichermanagement \cite[vgl. S.354]{Python}
+    \item läuft auf vielen verschiedenen Betriebssystemen \cite[vgl. S.355]{Python}
+\end{itemize}
+Die dynamische Typisierung sorgt zwar auf der einen Seite für eine erhöhte Flexibilität, da Variablen kein fester Typ bei der Deklarierung zugeordnet werden muss,
+liefert aber auf der anderen Seite auch Nachteile. Durch die dynamische Typisierung kann die Ausführung eines Programms zeitintensiver werden und bei größeren 
+Projekten kann es dazu kommen, dass nicht mehr genau nachvollzogen werden kann, welchen Typ eine Variable hat \cite[vgl. S.355]{Python}. Beide Nachteile sind bei der Größe
+dieses Projekts aber vernachlässigbar. 
+
+Ein großer Vorteil von Python sind die Programmierbibliotheken, die die Sprache besitzt und die importiert werden können. Für nahezu jeden Anwendungsfall existiert eine 
+Bibliothek die Python um weitere Klassen und Funktionen erweitert und somit die Entwicklung von Anwendungen beschleunigt und erleichtert. Durch sie muss 
+der Entwickler die Funktionalitäten, die eine Bibliothek mitbringt, nicht selber implementieren und kann stattdessen auf diese Bibliotheken zurückgreifen. 
+In dieser Arbeit wurden drei Bibliotheken verwendet, die für das Erstellen von \ac{KI}-Modellen, für die Datenverarbeitung und das Visualisieren von Daten
+genutzt wurden. Diese werden in den folgenden Kapiteln näher beschrieben.
+
+Aufgrund der Beliebtheit der Sprache im Thema \ac{KI} und den Programmierbibliotheken wird Python in dieser Arbeit dazu genutzt,
+die Daten aus dem Praxisprojekt zu importieren, zu verarbeiten und das \ac{KI}-Modell zu erstellen und mit den Daten anzulernen.
+Eine Alternative dazu wäre die Programmiersprache R, jedoch wird hier Python bevorzugt, da Python weiter verbreitet ist und eine simplere Syntax hat und somit 
+einfacher zu lesen und zu verstehen ist.
 
 \subsection{Keras}
 Keras ist eine Bibliothek für die Programmiersprache Python, welche Klassen und Funktionen liefert, um verschiedene \ac{DL}-Modelle zu erstellen

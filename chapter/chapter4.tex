@@ -41,11 +41,12 @@ zu gewährleisten, dass diese bei der nächsten Verwendung keine Elemente aus vo
         // ...
 \end{lstlisting}
 
-Das Entfernen der Duplikate hatte zur Folge, dass der im Praxisprojekt gesammelte Datensatz von ursprünglich 195.518 auf 15.500 bewertete Anwendungsregeln reduziert wurde.
-Der Grund, weshalb der Datensatz auf rund 8\% seiner eigentlichen Größe geschrumpft ist, liegt darin, dass einige Projekte bis zu 40 Baselines hatten, 
-wo sich aber die meisten Anwendungsregeln nicht verändert hatten. \\
+Das Entfernen der Duplikate hatte zur Folge, dass der im Praxisprojekt gesammelte Datensatz von ursprünglich 195.518 auf 14.572 bewertete Anwendungsregeln reduziert wurde.
+Der Grund, weshalb der Datensatz auf rund 7,5\% seiner eigentlichen Größe geschrumpft ist, liegt darin, dass einige Projekte bis zu 40 Baselines hatten, 
+wo sich aber die meisten Anwendungsregeln nicht verändert hatten. Dieser Schritt war wichtig, um dafür zu sorgen, dass bestimmte Bewertungen stärker gewichtet werden,
+als andere. \\
 
-Nun besteht der Datensatz aus 15.500 Einträgen, die jeweils aus drei Attributen, nämlich dem eigentlichen Text der Anwendungsregel sowie dem Status und dem Statement bestehen.
+Nun besteht der Datensatz aus 14.572 Einträgen, die jeweils aus drei Attributen, nämlich dem eigentlichen Text der Anwendungsregel sowie dem Status und dem Statement bestehen.
 Wie in der Abbildung \ref{fig:Programmierparadigma} dargestellt, benötigt so ein Modell Eingabedaten und die dazugehörigen Antworten. Die Eingabedaten stellen in diesem Fall
 die Texte dar, während die Antworten hier in Form des Status und des Statements dargestellt werden. Angenommen der Status einer Anwendungsregel X wird 15x mit closed
 und 10x mit open bewertet und ein Modell wird mit diesen Daten angelernt. Würde ein neues Projekt nun diese Anwendungsregel X importieren und einen Vorschlag vom Modell
@@ -58,6 +59,124 @@ da wenn Projekte im selben Land durchgeführt werden, es wahrscheinlicher ist, d
 
 Um an mehr Daten über die vorherigen Projekte zu gelangen, muss das Skript aus dem Praxisprojekt erweitert werden. Neben dem Text der Anwendungsregel, dem Status und dem Statement
 muss auch das Produkt und die Version der Komponente berücksichtigt werden, von der die Anwendungsregel stammt. Ebenso spielt der Name des Projekts eine Rolle,
-da durch ihn in einer Access-Datenbank nach Informationen zu dem Projekt gesucht werden kann.
+da durch ihn in einer Access-Datenbank nach Informationen zu dem Projekt gesucht werden kann. 
+Das Produkt und die Version der Komponente lässt sich durch den Link bestimmen, den jedes Objekt auf das zentrale Projekt hat, in der die Anwendungsregeln gespeichert werden.
+Dieses Projekt heißt RA Application Conditions und ist dabei wie folgt aufgebaut:
+
+\begin{quotation}
+    $\textbackslash$RA Application Conditions$\textbackslash$XX\_PG$\textbackslash$Kategorie$\textbackslash$Produkt\dots
+\end{quotation}
+
+Aus dem Zielobjekt des Links lässt sich das Modul bestimmen, in dem die jeweilige Anwendungsregeln gespeichert ist. Das Modul trägt dabei als Namen die Versionsbezeichnung eines Produkts.
+Über den Speicherpfad lässt sich außerdem das Produkt, als das dritte Element des Pfades, bestimmen. Im \ac{DXL}-Skript muss also eine weitere Schleife hinzugefügt werden.
+Diese Schleife soll alle ausgehenden Links eines Objekts durchlaufen, bis ein Link gefunden wurde, dessen Zielobjekt sich im Projekt RA Application Conditions befindet.
+Wenn so ein Link gefunden wurde, dann wird der vollständige Pfad an eine selbstgeschriebene Funktion übergeben, die als Rückgabewert den Namen des Produkts hat.
+Außerdem wird die Versionsbezeichnung ebenfalls dem Link entnommen und in einer Variable gespeichert. Dabei ist zu beachten, dass die Funktion target(Link) überladen ist.
+Im ersten Fall wird eine Referenz auf das Modul zurückgegeben, auf das der Link zeigt. Diese Referenz beinhaltet den kompletten Pfad. Im zweiten Fall wird lediglich der Name des Zielmoduls 
+zurückgegeben \cite[vgl. S.391]{DXL}. Da der Name des Moduls bereits die Produktbezeichnung beinhaltet, ist hier der volle Pfad nicht relevant.
+
+\begin{lstlisting}[language = C++, caption={Produkt- und Versionsbezeichnung bestimmen},captionpos=b, label = lst:getProductVersion, float, floatplacement=H]
+    // ...
+    for l in all o -> "*" do{
+        mnTarget = target(l)
+        if(fullName (getParentProject(mnTarget)) == fullName (project("RA Application Conditions"))){
+            szProduct = getProduct(target(l)) 
+            szVersion = target(l)
+            break;
+        } 
+    }
+    // ...
+\end{lstlisting}
+
+Während des Praxisprojekts wurden alle bewerteten Anwendungsregeln nach Projekt und Komponente gruppiert. Dabei liegen alle bewerteten Anwendungsregeln eines Projekts jeweils in einem Ordner.
+Der Name dieses Ordners trägt den Namen des Projekts. Um nun an den Namen eines Projekts zu kommen, muss lediglich der Name des Ordners geprüft werden, in dem sich das aktuelle Modul befindet.
+Dies wird ermöglicht durch die getParentFolder-Funktion, wie dem Quellcode \ref*{lst:getPath} entnommen werden kann. In der Access-Datenbank steht vor dem Namen des Projekts noch ein 
+Slash, weshalb dieser noch vor den Namen gesetzt werden muss.
+
+\begin{lstlisting}[language = C++, caption={Projektnamen bestimmen},captionpos=b, label = lst:getPath, float, floatplacement=H]
+    // ...
+    for it in f do{
+        if (type(it) == "Formal"){
+            m = edit(fullName(it), false)
+            Folder fParent = getParentFolder(it)
+            String szPath = "/" name fParent
+            // ...
+\end{lstlisting}
+
+Das Ergebnis dieser beiden Schritte ist eine CSV-Datei mit 14.572 Einträgen, die jeweils 6 Attribute (Text der Anwendungsregel, Produkt, Version, Pfad, Status, Statement) besitzen.
+Diese Datei kann nun mittels der Pandas-Bibliothek in ein Python-Skript importiert werden.
+
+\section{Importieren des Datensatzes}
+Um die Pandas-Bibliothek zu nutzen, muss diese zunächst importiert werden. Beim Importieren einer Bibliothek besteht die Möglichkeit dieser Bibliothek einen Alias zuzuweisen,
+wie in Zeile 1 des Quellcodes \ref*{lst:importData} zu erkennen ist. Für die Pandas-Bibliothek ist dabei pd als Alias gebräuchlich.
+
+\begin{lstlisting}[language = python, caption={Pandas und den Datensatz importieren},captionpos=b, label = lst:importData, floatplacement=H]
+    import pandas as pd
+    df = pd.read_csv('SAR_Data.csv')
+    df.shape
+    ---------------------------------------
+    Output:
+    (14572, 6)
+\end{lstlisting}
+
+df.shape gibt hierbei die Anzahl der Zeilen und Spalten des Dataframes zurück. Das Tupel kann dabei als (Anzahl Zeilen, Anzahl Spalten) gelesen werden.
+An der Ausgabe können die 14.572 Zeilen und die 6 Attribute erkannt werden.
+
+\section{Datensatz auf Fehler prüfen}
+Nach dem Einlesen des Datensatzes sollte der Datensatz auf mögliche Fehler und Unregelmäßigkeiten überprüft werden. 
+Die erste potenzielle Fehlerquelle können die verschiedenen Ausprägungen des Attributs Status sein. Alle erlaubten Ausprägungen nach dem 
+Process Manual zu Anwendungsregeln der Siemens Mobility GmbH können der Tabelle \ref*{tab:REQProgress} entnommen werden. Um zu überprüfen, welche Ausprägungen
+das Attribut Status hat und wie oft jede Ausprägung auftritt, kann der Quellcode \ref*{lst:StatusUnique} genutzt werden. Dort wird eine Liste erstellt,
+welche alle einzigartigen Werte der Spalte Status beinhaltet. Im Anschluss wird eine Schleife definiert, die über all diese Werte iteriert.
+Bei jedem Durchgang wird der aktuelle Wert und die Anzahl an Zeilen, bei denen die Spalte Status den aktuellen Wert annimmt, auf der Konsole ausgegeben.
+
+\begin{lstlisting}[language = python, caption={Häufigkeit der Ausprägungen von Status bestimmen},captionpos=b, label = lst:StatusUnique, floatplacement=H]
+    status = df['Status'].unique()
+    for x in status:
+        print(x + " " + str(len(df[df['Status'] == x])))
+    ---------------------------------------
+    Output:
+    In creation 773
+    non applicable 4052
+    closed 6772
+    forwarded 1339
+    open 111
+    postponed 12
+    compliant 1413
+    partly closed 92
+    partly open 8
+\end{lstlisting}
+
+An der Ausgabe des Codes wird deutlich, dass bei der Bewertung der Anwendungsregeln vom Process Manual abgewichen wurde. Um das zu beheben, müssen die Statuswerte gemapped werden.
+Dafür werden die Ausprägungen \glqq In Creation\grqq{}, \glqq postponed\grqq{} und \glqq partly open\grqq{} als \glqq open\grqq{} definiert.
+Die Ausprägung \glqq partly closed\grqq{} wird zu \glqq closed\grqq{} geändert. Zudem wird die Schreibweise \glqq non applicable\grqq{} in \glqq not applicable\grqq{} abgeändert,
+um die Vorgaben des Process Manuals zu erfüllen. 
+
+Um die Häufigkeit der einzelnen Ausprägungen zu visualisieren wird der Quellcode \ref*{lst:StatusPie} ausgeführt.
+Dort wird eine neue Liste erstellt, in der die Häufigkeiten der verschiedenen Statuswerte gespeichert werden.
+Im Anschluss wird wieder die Schleife aus dem Quellcode \ref*{lst:StatusUnique} durchlaufen. Dieses Mal werden die Häufigkeiten aber nicht auf der Konsole ausgegeben,
+sondern sie werden der neuen Liste hinzugefügt.
+
+\begin{lstlisting}[language = python, caption={Visualisierung des Attributs Status},captionpos=b, label = lst:StatusPie, floatplacement=H]
+    status = df['Status'].unique()
+    hauefigkeit = []
+    for x in status:
+        hauefigkeit.append(len(df[df['Status'] == x]))
+    fig, ax = plt.subplots()
+    ax.pie(hauefigkeit, labels=status, autopct='%1.1f%%')
+\end{lstlisting}
+
+Mit den Listen \glqq status\grqq{} und \glqq hauefigkeit\grqq{} kann nun ein Tortendiagramm mithilfe von Matplotlib erstellt werden.
+Dafür muss ein Plot erstellt werden und an die beiden Listen müssen als Parameter an die pie()-Methode übergeben werden.
+Der letzte Parameter bietet die Möglichkeit das Format der Prozentangaben der einzelnen Tortensegmente anzugeben. 
+Die Abbildung \ref*{fig:StatusPie} zeigt das erstelle Tortendiagramm an. Durch diese Abbildung wird zum Beispiel deutlich, dass fast die Hälfte der 
+Anwendungsregeln in der Vergangenheit mit \glqq closed\grqq{} bewertet wurden.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth/2]{abbildungen/Status.png}
+    \caption{Tortendiagramm des Attributs Status}
+    \label{fig:StatusPie}
+\end{figure}
 
 \section{Codierung der Attribute}

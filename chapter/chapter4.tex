@@ -1,0 +1,63 @@
+\chapter{Datensatz}
+\label{chap:Datensatz}
+In dem Praxisprojekt, auf das diese Bachelorarbeit aufbaut, wurden Bewertungen von Anwendungsregeln aus vorherigen Projekten der Siemens Mobility GmbH gesammelt und in eine CSV-Datei geschrieben.
+Wie im Kapitel \ref{chap:Keras} beschrieben, ist der erste Schritt beim Erstellen eines \ac{DL}-Modells als \ac{NN} das Definieren des Datensatzes sowie die Aufteilung
+dessen in Eingabe- und Ausgabewerte. Dieses Kapitel wird sich mit diesem Schritt beschäftigen und den Datensatz so aufbereiten, dass er für das Anlernen des \ac{KI}-Modells genutzt werden
+kann. Zudem werden in diesem Kapitel wichtige Eigenschaften des Datensatzes visualisiert.
+
+\section{Datensatz aus dem Praxisprojekt}
+Das Ergebnis aus dem Praxisprojekt war ein Datensatz mit 195.518 Anwendungsregeln und ihren Bewertungen. Beim Erstellen des Datensatzes wurde jedoch ein entscheidender Fehler begangen.
+Als die Daten aus den Projekten gesammelt wurden, wurde dabei auch jede Baseline eines Moduls berücksichtigt ohne zu überprüfen, ob sich an der Anwendungsregeln und ihrer Bewertung
+etwas geändert hat. Die Folge dessen war, dass der Datensatz eine Vielzahl von Duplikaten enthalten hat, was dazu geführt hätte, dass Projekte mit mehreren Baselines 
+stärker ins Gewicht gefallen wären, obwohl die Anzahl an Baselines nichts über die Signifikanz der Bewertung aussagt. Deshalb mussten die erstellten Module mit den bewerteten Anwendungsregeln
+in \ac{DOORS} überarbeitet werden. 
+
+Dafür wurde ein Skript in \ac{DXL} geschrieben, was in den Modulen nach Duplikaten sucht und diese löscht. Die äußere Schleife durchläuft dazu alle 
+Elemente in dem Ordner, in welchem sich die Module mit den bewerteten Anwendungsregeln befinden. Wenn ein Element ein Formal Module ist, 
+dann wird dieses Modul geöffnet und in einer inneren Schleife werden alle Objekte des Moduls durchlaufen. Für jedes Objekt wird eine 
+Zeichenfolge erstellt, die aus den Attributen ObjectText, Status und Statement besteht. Anschließend wird überprüft, ob diese Zeichenfolge
+in einer Skiplist bereits vorhanden ist. Wenn dies der Fall ist, dann wurde das Objekt als Duplikat erkannt und mittels der softDelete-Funktion
+als gelöscht gekennzeichnet. Wenn diese Zeichenfolge noch nicht in der Skiplist vorhanden ist, dann ist dieses Objekt noch einzigartig und wird der Skiplist
+hinzugefügt, um sicherzustellen, dass zukünftige Duplikate erkannt werden. Anschließend wird die Zeichenfolge geleert. Nachdem die innere Schleife durchlaufen wurde,
+werden alle Objekte, welche als gelöscht gekennzeichnet wurden, endgültig aus dem Modul entfernt. Zudem wird der Inhalt der Skiplist entfernt, bevor das nächste Modul durchlaufen wird, um 
+zu gewährleisten, dass diese bei der nächsten Verwendung keine Elemente aus vorherigen Modulen mehr enthält.
+
+\begin{lstlisting}[language = C++, caption={Duplikate in Modulen löschen},captionpos=b, label = lst:deleteDuplicates, float, floatplacement=H]
+    // ...
+    for it in f do{
+        if (type(it) == "Formal"){
+            m = edit(fullName(it), false)
+            for o in entire m do{
+                szData = o."ObjectText""" o."Status""" o."Statement""";
+                if(find(slUnique, szData)){
+                    softDelete(o);
+                }else{
+                    put(slUnique, szData, szData)
+                }
+                szData = "" 
+            }
+            purgeObjects_(m)
+            delete(slUnique)
+        // ...
+\end{lstlisting}
+
+Das Entfernen der Duplikate hatte zur Folge, dass der im Praxisprojekt gesammelte Datensatz von ursprünglich 195.518 auf 15.500 bewertete Anwendungsregeln reduziert wurde.
+Der Grund, weshalb der Datensatz auf rund 8\% seiner eigentlichen Größe geschrumpft ist, liegt darin, dass einige Projekte bis zu 40 Baselines hatten, 
+wo sich aber die meisten Anwendungsregeln nicht verändert hatten. \\
+
+Nun besteht der Datensatz aus 15.500 Einträgen, die jeweils aus drei Attributen, nämlich dem eigentlichen Text der Anwendungsregel sowie dem Status und dem Statement bestehen.
+Wie in der Abbildung \ref{fig:Programmierparadigma} dargestellt, benötigt so ein Modell Eingabedaten und die dazugehörigen Antworten. Die Eingabedaten stellen in diesem Fall
+die Texte dar, während die Antworten hier in Form des Status und des Statements dargestellt werden. Angenommen der Status einer Anwendungsregel X wird 15x mit closed
+und 10x mit open bewertet und ein Modell wird mit diesen Daten angelernt. Würde ein neues Projekt nun diese Anwendungsregel X importieren und einen Vorschlag vom Modell
+generieren lassen, dann würde das Modell eine Mehrheitsentscheidung durchführen und prüfen, wie oft die Anwendungsregel in der Vergangenheit mit welchem Status bewertet wurde.
+Das Modell würde aufgrund der Mehrheitsentscheidung diese Anwendungsregeln immer mit closed bewerten. Das wäre ein legitimer Ansatz um Vorschläge zu generieren. 
+Dahinter steckt jedoch lediglich keine Struktur, die das Modell erkennen könnte, und somit auch keine Intelligenz. Dieses Problem könnte auch mit einer einfachen Tabelle 
+gelöst werden, das Nutzen eines \ac{NN} wäre hier unnötig. Daher benötigt der Datensatz noch weitere Attribute, da die Bewertung von Anwendungsregeln nicht alleine durch die 
+reine Anzahl an Bewertungen in der Vergangenheit prognostiziert werden kann. Beispielsweise spielen regionale Gegebenheiten eine große Rolle, 
+da wenn Projekte im selben Land durchgeführt werden, es wahrscheinlicher ist, dass sie Anwendungsregeln ähnlich bewerten. 
+
+Um an mehr Daten über die vorherigen Projekte zu gelangen, muss das Skript aus dem Praxisprojekt erweitert werden. Neben dem Text der Anwendungsregel, dem Status und dem Statement
+muss auch das Produkt und die Version der Komponente berücksichtigt werden, von der die Anwendungsregel stammt. Ebenso spielt der Name des Projekts eine Rolle,
+da durch ihn in einer Access-Datenbank nach Informationen zu dem Projekt gesucht werden kann.
+
+\section{Codierung der Attribute}

@@ -73,7 +73,8 @@ dient und eine Verbindung zu einem anderen Objekt, welches als Zielobjekt dient,
 \ac{DXL} ist eine Skript-Sprache, die ein Teil des Anforderungsmanagement-Tools \ac{DOORS} ist. Durch diese Skript-Sprache
 können Skripte geschrieben werden, die als Batch-Skript ausgeführt werden können. Diese Skripte bieten neben der grafischen Benutzeroberfläche eine weitere Möglichkeit, 
 um mit \ac{DOORS} zu arbeiten. Zudem besteht die Möglichkeit die grafische Benutzeroberfläche von \ac{DOORS} um neue, entwickelte Anwendungen zu
-erweitern. Von der Syntax ähnelt die Sprache den Programmiersprachen C und C++ \cite[vgl. S.1]{DXL}.
+erweitern. Von der Syntax ähnelt die Sprache den Programmiersprachen C und C++ \cite[vgl. S.1]{DXL}. Eine Besonderheit von \ac{DXL} ist dabei der Datentyp Skip, 
+welche eine Skiplist als Datenstruktur implementiert. Eine Skiplist besteht aus Key-Value-Paaren und ermöglicht einen schnellen Zugriff auf einzelne Elemente.
 
 \ac{DXL} wurde im Praxisprojekt zum Sammeln von Bewertungen von Anwendungsregeln aus Projekten der Siemens Mobility GmbH 
 genutzt, indem Batch-Skripte geschrieben wurden. Diese Skripte haben im zentralen Projekt, das die Anwendungsregeln von Komponenten beinhaltet, die Links der Objekte
@@ -83,23 +84,3 @@ Ebenfalls wird \ac{DOORS} dazu benötigt, um in der grafischen Oberfläche eines
 ein weiteres Skript in der Programmiersprache Python startet. In dem Python-Skript wird das KI-Modell erstellt und angelernt. Mithilfe des Modells und mit den Daten über die Anwendungsregeln aus 
 dem Modul soll das Modell dann Vorschläge zur Bewertung der Anwendungsregeln liefern.
 
-
-
-
-
-
-
-
-
-
-\ac{DXL} ist eine Skript-Sprache, die ein Teil des Anforderungsmanagement-Tools \ac{DOORS} ist. Durch diese Skript-Sprache
-besteht die Möglichkeit, die grafische Benutzeroberfläche von \ac{DOORS} um neue, entwickelte Anwendungen zu
-erweitern. Von der Syntax ähnelt die Sprache den Programmiersprachen C und C++ \cite[vgl. S.1]{DXL}. Zudem können Skripte geschrieben werden,
-die als Batch-Skript ausgeführt werden können. Diese Skripte bieten neben der grafischen Benutzeroberfläche eine weitere Möglichkeit, 
-um mit \ac{DOORS} zu arbeiten. \ac{DXL} wurde im Praxisprojekt zum Sammeln von bewerteten Anwendungsregeln aus Projekten der Siemens Mobility GmbH 
-genutzt, indem Batch-Skripte geschrieben wurden, welche im zentralen Projekt, das die Anwendungsregeln von Komponenten beinhaltet, die die Links der Objekte
-verfolgt haben und dort in den Modulen nach korrekt bewerteten Anwendungsregeln gesucht haben. Diese wurden dann nach Projekt und Komponente gruppiert und 
-jeweils in neue Module geschrieben. Der Inhalt dieser Module dient als Datensatz für diese Bachelorarbeit. Ebenfalls wird \ac{DOORS} dazu benötigt,
-um in der grafischen Oberfläche eines Moduls mit neu importierten Anwendungsregeln ein Programm zu starten, was mit den Informationen aus dem Modul
-ein weiteres Skript in der Programmiersprache Python startet, in der das KI-Modell erstellt und angelernt wird und mit den Daten über die Anwendungsregeln aus 
-dem Modul Vorschläge zur Bewertung der Anwendungsregeln liefern soll.

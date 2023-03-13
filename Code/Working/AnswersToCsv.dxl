@@ -1,0 +1,359 @@
+pragma encoding, "UTF-8"
+pragma runLim, 0;
+
+Folder fStart = folder("/Sandbox/g/garan_z0044ber/Copy of Praxisprojekt")
+Skip slToCsv = createString();
+int iStart = getTickCount_();
+int iObjects = 0;
+int iErrors = 0;
+string szData = "";
+string szPath;
+
+string cleanText(string szText){
+    string szResult = szText
+    int i = 0;
+    for i in 0 : (length(szResult)-1) do{
+        if (szResult[i] == ',' || szResult[i] == '\n' || szResult[i] == '\t' || szResult[i] == ':' || szResult[i] == ';' ){
+            szResult = szResult[0:i-1] " " szResult[i+1:]
+        }
+    }
+    return szResult;
+}
+
+bool checkLink (Object o){
+    Link l;
+    bool bResult = false
+    ModName_ mnTargetMod;
+    for l in all o -> "*" do{
+        mnTargetMod = target(l)
+        if(fullName (getParentProject(mnTargetMod)) == fullName (project("RA Application Conditions"))){
+            bResult = true;
+        }
+    }
+    return bResult;
+}
+
+bool inRA (Object o){
+    bool bResult = false
+    if(fullName (getParentProject(module(o))) == fullName (project("RA Application Conditions"))){
+        bResult = true;
+    }
+    return bResult;
+}
+
+Object getTargetObject(Link l){
+    Object oResult = target(l);
+    Module mTarget;
+    if(oResult == null){
+        ModName_ mnTarget = target l;
+        mTarget = read(fullName (mnTarget), false)
+        oResult = target (l); 
+    }
+    return oResult;
+}
+
+Object findObject (Object oSource, Link l){
+    Object o;
+    Object oResult = null;
+    string szARText = oSource."ARText";
+    ModName_ mnTarget = target l;
+    Module mTarget = read(fullName (mnTarget), false)
+    for o in entire mTarget do{
+        if(o."Object Text""" == szARText){
+            oResult = o;
+            break;
+        }
+    }
+    if(oResult == null){
+        for o in entire mTarget do{
+            int iOffset = null;
+            int iLength = null;
+            string szTemp = o."Object Text"
+            while(findPlainText(szTemp, "(dieses Dokument) ", iOffset, iLength, false)){
+                szTemp = szTemp[0: iOffset - 1] szTemp[iOffset+iLength: length(szTemp)]
+            }
+            if(szTemp == szARText){
+                oResult = o;
+                break;
+            }
+        }
+    }
+    if(oResult == null){
+        print "Immernoch nicht gefunden! :/ \n"
+        halt;
+    }
+    return oResult;
+}
+
+string getProduct(ModName_ mnTarget){
+    int i;
+    int iSlash = 0;
+    int iEndSlash = 4;
+    int iStartProduct = 0;
+    int iEndProduct = 0;
+    string szTarget = fullName mnTarget;
+    for i in 0: (length(szTarget) -1) do{
+        if (intOf(szTarget[i]) == 47){
+            iSlash ++;
+        }
+        if(iSlash == iEndSlash){
+            iStartProduct = i + 1;
+            iSlash ++;
+        }
+        if(iSlash > iEndSlash + 1){
+            iEndProduct = i - 1;
+            break;
+        }
+    }
+    string szResult = szTarget[iStartProduct:iEndProduct]
+    return szResult;
+}
+
+void writeCSV(){
+    print "Writing...\n"
+    string szLogfile         = "SAR_Data_unique.csv";
+    Stream strLog = append (szLogfile, CP_UTF8);
+    strLog << "Text,Product,Version,Path,Status,Statement\n"
+    string szRow;
+    for szRow in slToCsv do{
+        if (!null szRow){
+            strLog << szRow
+        }
+    }
+    flush(strLog);
+    close strLog;
+}
+
+void getDataFromObject(Object o, bool bLink){
+    string szText;
+    string szStatus;
+    string szStatment;
+    string szProduct;
+    string szVersion;
+    Link l;
+    ModName_ mnTarget;
+
+    szText = cleanText(o."ARText""")
+    szStatus = o."Status"
+    szStatment = cleanText(o."Statement""")
+
+    if(bLink){
+        for l in all o -> "*" do{
+            mnTarget = target(l)
+            if(fullName (getParentProject(mnTarget)) == fullName (project("RA Application Conditions"))){
+                szProduct = getProduct(target(l)) 
+                szVersion = target(l)
+                break;
+            } 
+        }
+    } else{
+        szProduct = "/"
+        szVersion = "SAR"
+    }
+
+    szData = szData "\"" szText "\",\"" szProduct "\",\"" szVersion "\",\"" szPath "\",\"" szStatus "\",\"" szStatment "\"\n"
+    if (iObjects % 500 == 0){
+        put(slToCsv, szData, szData)
+        szData = ""
+    }
+}
+
+//void getData(Folder f){
+//    Module m;
+//    Item it;
+//    Object o;
+//    Folder fParent;
+//    Link l;
+//    string szPath;
+//    string szText;
+//    string szStatus;
+//    string szStatment;
+//    string szProduct;
+//    string szVersion;
+//
+//    for it in f do{
+//        if (type(it) == "Folder"){
+//            getData(folder(it));
+//        }
+//        if (type(it) == "Formal"){
+//            int iOffset = null;
+//            int iLength = null
+//            if(findPlainText(name it, "_Solution", iOffset, iLength, false)){
+//                print "Current Module: " fullName it "\n"
+//                m = read(fullName(it), false)
+//                fParent = getParentFolder(it)
+//                szPath = "/" name fParent
+//                for o in entire m do{
+//                    print "Current Object: " (++iObjects)"" "\n"
+//                    szText = cleanText(o."ARText""")
+//                    szStatus = o."Status"
+//                    szStatment = cleanText(o."Statement""")
+//                    for l in all o -> "*" do{
+//                        szProduct = getProduct(target(l)) 
+//                        szVersion = target(l)
+//                    }
+//                    szData = szData "\"" szText "\",\"" szProduct "\",\"" szVersion "\",\"" szPath "\",\"" szStatus "\",\"" szStatment "\"\n"
+//                    if (iObjects % 500 == 0){
+//                        put(slToCsv, szData, szData)
+//                        szData = ""
+//                    }
+//                }
+//            }
+//        }    
+//    }
+//}
+
+void getData(Folder f){
+    Module m;
+    Item it;
+    Object o;
+    Module mClose;
+
+    for it in f do{
+        if (type(it) == "Folder"){
+            getData(folder(it));
+        }
+        if (type(it) == "Formal"){
+            int iOffset = null;
+            int iLength = null
+            if(findPlainText(name it, "Solution", iOffset, iLength, false)){
+                print "Current Module: " fullName it "\n"
+                m = read(fullName(it), false)
+                fParent = getParentFolder(it)
+                szPath = "/" name fParent
+                for o in entire m do{
+                    print "Current Object: " (++iObjects)"" "\n"
+                    if(checkLink(o)){
+                        getDataFromObject(o, true)
+                    }else{
+                        getDataFromObject(o, false)
+                    }      
+                }
+            }    
+        }
+    }
+    for mClose in database do{
+        close mClose;
+    }
+}
+
+void updateLinks(Folder f){
+    Module m;
+    Item it;
+    Object o;
+    Link l;
+    Link ll;
+    ModName_ mnTarget;
+    Module mTarget;
+    Module mClose;
+    Object oTarget;
+    Object oRA;
+
+    for it in f do{
+        if (type(it) == "Folder"){
+            updateLinks(folder(it));
+        }
+        if (type(it) == "Formal"){
+            int iOffset = null;
+            int iLength = null
+            if(findPlainText(name it, "bolcs_Solution", iOffset, iLength, false) || findPlainText(name it, "KLBA_Solution", iOffset, iLength, false)){
+                print "Current Module: " fullName it "\n"
+                m = edit(fullName(it), false)
+                for o in entire m do{
+                    print "Current Object: " (++iObjects)"" "\n"
+                    if(!checkLink(o)){
+                        for l in all o -> "*" do{
+                            oTarget = getTargetObject(l)
+                            if(checkLink(oTarget)){
+                                for ll in all oTarget -> "*"do{
+                                    if (name module ll == "42_reference_of" || name module ll == "reference_of"){
+                                        oRA = getTargetObject(ll)
+                                        if(oRA == null){
+                                            oRA = findObject(o, ll);
+                                        }
+                                        if(inRA(oRA)){
+                                            o -> "/Sandbox/g/garan_z0044ber/70_Link Modules/43_solved_by" -> oRA
+                                        }
+                                    }
+                                }
+                            }else{
+                                iErrors++;
+                            }
+                        }
+                    }       
+                }
+            }    
+        }
+    }
+    for mClose in database do{
+        close mClose;
+    }
+}
+
+void eraseDuplicates(Folder f){
+    Item it;
+    Module m;
+    Object o;
+    string szData;
+    Skip slUnique = createString()
+    Module mClose;
+    int iDeleted = 0;
+
+    for it in f do{
+        if (type(it) == "Folder"){
+            eraseDuplicates(folder(it));
+        }
+        if (type(it) == "Formal"){
+            int iOffset = null;
+            int iLength = null;
+            if(findPlainText(name it, "_Solution", iOffset, iLength, false)){
+                print "Current Module: " fullName it "\n"
+                m = edit(fullName(it), false)
+                for o in entire m do{
+                    print "Current Object: " (++iObjects)"" "\n"
+                    szData = o."ARText""" o."Status""" o."Statement""";
+                    if(find(slUnique, szData)){
+                        softDelete(o);
+                        iDeleted++;
+                    }else{
+                        put(slUnique, szData, szData)
+                    }
+                    szData = "" 
+                }
+                purgeObjects_(m)
+                delete(slUnique)
+            } 
+        }
+    }
+    for mClose in database do{
+        close mClose;
+    }
+    delete(slUnique)
+
+}
+
+void analyze(){
+    //noError();
+    //eraseDuplicates(fStart)
+    getData(fStart)
+    writeCSV()
+    int iEnd = getTickCount_();
+    int iTime = iEnd - iStart;
+    int iSeconds = iTime/1000%60
+    int iMinutes = (iTime/1000)/60%60
+    int iHours = (iTime/1000)/60/60%24
+    string szRuntime = "Runtime: " iHours""":"iMinutes""":"iSeconds"" "\n"
+    print szRuntime;
+
+    string sErrorMsg = lastError();
+    if (!null sErrorMsg){
+        print (sErrorMsg) "\n";
+    }
+    delete(slToCsv);
+}
+
+print "Start\n"
+analyze();
+
+
+

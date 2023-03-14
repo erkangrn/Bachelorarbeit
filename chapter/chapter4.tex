@@ -6,6 +6,7 @@ dessen in Eingabe- und Ausgabewerte. Dieses Kapitel wird sich mit diesem Schritt
 kann. Zudem werden in diesem Kapitel wichtige Eigenschaften des Datensatzes visualisiert.
 
 \section{Datensatz aus dem Praxisprojekt}
+\label{chap:DataPraxisprojekt}
 Das Ergebnis aus dem Praxisprojekt war ein Datensatz mit 195.518 Anwendungsregeln und ihren Bewertungen. Beim Erstellen des Datensatzes wurde jedoch ein entscheidender Fehler begangen.
 Als die Daten aus den Projekten gesammelt wurden, wurde dabei auch jede Baseline eines Moduls berücksichtigt ohne zu überprüfen, ob sich an der Anwendungsregeln und ihrer Bewertung
 etwas geändert hat. Die Folge dessen war, dass der Datensatz eine Vielzahl von Duplikaten enthalten hat, was dazu geführt hätte, dass Projekte mit mehreren Baselines 
@@ -168,8 +169,8 @@ sondern sie werden der neuen Liste hinzugefügt.
 
 Mit den Listen \glqq status\grqq{} und \glqq hauefigkeit\grqq{} kann nun ein Tortendiagramm mithilfe von Matplotlib erstellt werden.
 Dafür muss ein Plot erstellt werden und an die beiden Listen müssen als Parameter an die pie()-Methode übergeben werden.
-Der letzte Parameter bietet die Möglichkeit das Format der Prozentangaben der einzelnen Tortensegmente anzugeben. 
-Die Abbildung \ref*{fig:StatusPie} zeigt das erstelle Tortendiagramm an. Durch diese Abbildung wird zum Beispiel deutlich, dass fast die Hälfte der 
+Der letzte Parameter bietet die Möglichkeit das Format der Prozentangaben der einzelnen Tortensegmente anzugeben. In dem Fall hier werden die Prozentangaben auf eine Nachkommastelle
+gerundet. Die Abbildung \ref*{fig:StatusPie} zeigt das erstellte Tortendiagramm an. Durch diese Abbildung wird zum Beispiel deutlich, dass fast die Hälfte der 
 Anwendungsregeln in der Vergangenheit mit \glqq closed\grqq{} bewertet wurden.
 
 \begin{figure}[H]
@@ -179,4 +180,62 @@ Anwendungsregeln in der Vergangenheit mit \glqq closed\grqq{} bewertet wurden.
     \label{fig:StatusPie}
 \end{figure}
 
-\section{Codierung der Attribute}
+Als Nächstes werden mithilfe der unique()-Funktion alle Ausprägungen der weiteren Attribute überprüft. Beim Quellcode \ref*{lst:ProductUnique} fallen zwei Ausprägungen
+auf, diese wurden zur Verdeutlichung in der Ausgabe rot markiert. Die Produktbezeichnung ist bei manchen Fällen \glqq nan\grqq{} oder \glqq /\grqq{} und stellen somit
+keine wirklichen Produkte dar. Um die Ursache dafür herauszufinden, ist es sinnvoll, sich die Zeilen anzusehen, in der diese Probleme auftreten. Dafür wird die
+loc()-Methode aus der Pandas-Bibliothek genutzt. Diese Methode wird genutzt, um gezielt Datenbereiche eines Dataframes auszuwählen. Zudem können mithilfe dieser Methode
+Datenoperationen auf den ausgewählten Daten ausgeführt werden. In Zeile zwei des Quellcodes \ref*{lst:ProductUnique} werden alle Zeilen ausgewählt, die als Produkt
+den Wert \glqq nan\grqq{} besitzen. Dabei werden nur die Spalten \glqq Product\grqq{}, \glqq Version\grqq{} und \glqq Path\grqq ausgewählt und zum Schluss
+wird die head()-Methode genutzt, um nur die ersten 5 Zeilen zurückzugeben. Die Ausgabe dieser Zeile kann der unteren Tabelle entnommen werden.
+In dieser Tabelle wird deutlich, dass die Produktbezeichnung in der Version enthalten ist. 
+
+\begin{lstlisting}[language = python, caption={Ausprägungen des Attributs Product},captionpos=b, label = lst:ProductUnique, floatplacement=H, escapechar={|}]
+    print(df['Product'].unique())
+    df.loc[df['Product'].isna(), ['Product', 'Version', 'Path']].head()
+    ---------------------------------------
+    Output:
+    ['DCM' 'ACM300' 'Trainguard 200 RBC' 'SICAS ECC' 'SIMIS IS'
+    'ETCS Engineering Process' 'CG ETCS Workstation' 'AzS350U' 'TGMT'
+    'ACM200' 'Clearguard TCM 100' 'VICOS OC111' 'LED_70_at_Som6'
+    'LED_Anzeigemodul' 'LEU S21 MS MC MT 208-233_-433_-533'
+    'Eurobalise S21 und S22' 'SIMIS W' 'VICOS NCU' 'LED_70' 'LED_136'
+    'POM4 S700K BSG9' 'Key Switch' 'VICOS OC501' 'LZB700M' |\color{red}nan|
+    'LEU S21 MS MC MT 208-203_-403_-503' 'Eurobalise S21' |\color{red}'/'| 'DTS'
+    'SIMIS LC' 'AC100' 'LEU S21 M ME 208-201_-401']
+
+    Product          Version                                  Path
+        NaN  VICOS_S_D_02.14  /23147 ML_KSA_SRO_Line1_Enhancements
+        NaN  VICOS_S_D_02.14  /23147 ML_KSA_SRO_Line1_Enhancements
+        NaN  VICOS_S_D_02.14  /23147 ML_KSA_SRO_Line1_Enhancements
+        NaN  VICOS_S_D_03.00                     /55525_ML_HU_KLBA
+        NaN  VICOS_S_D_03.00                     /55525_ML_HU_KLBA
+\end{lstlisting}
+
+Die Anwendungsregeln zum Produkt \glqq VICOS\_S\_D\grqq{} liegen in der \ac{DOORS}-Datenbank in Modulen unter dem Pfad: /RA Application Conditions/03\_PG\_OCS/Service and diagnostic systems.
+Dieser Pfad weicht von der Ordnerstruktur, die in Kapitel \ref*{chap:DataPraxisprojekt} beschrieben wurde, ab. Es fehlt hier der Ordner mit dem Namen des Produkts.
+Stattdessen enthält hier das Modul sowohl den Namen des Produkts als auch seine Version. Deshalb müssen die Einträge, die als Produkt den Wert \glqq nan\grqq{}
+überarbeitet werden. 
+
+\begin{lstlisting}[language = python, caption={Eintragen der korrekten Produkt- und Versionsbezeichnung},captionpos=b, label = lst:UpdateProduct, floatplacement=H]
+    df.loc[df['Version'].str.contains('VICOS_S_D'), 'Product'] = 'VICOS_S_D'
+    df.loc[df['Version'].str.contains('VICOS_S_D'), 'Version'] = df['Version'].str[-5:]  
+\end{lstlisting}
+
+In den beiden Zeilen im Quellcode \ref*{lst:UpdateProduct} werden alle Zeilen überarbeitet, deren Versionsbezeichnung \glqq VICOS\_S\_D\grqq{} enthält.
+Alle gefundenen Zeilen bekommen als Produkt den korrekten Wert \glqq VICOS\_S\_D\grqq{} zugeordnet. Die Versionsbezeichnung besteht aus den letzten 5 Zeichen
+der Spalte \glqq Version\grqq{} aus der Tabelle im Quellcode \ref*{lst:ProductUnique}. Deshalb wird nur ein Teil der ursprünglichen Versionsbezeichnung
+beibehalten. str[-5:] sorgt nämlich dafür, dass nur die letzten 5 Zeichen der Zeichenkette genutzt werden.
+
+Dasselbe Verfahren wird auch für die Fälle durchgeführt, die als Produkt den Wert \glqq /\grqq{} besitzen. Dieser Sonderfall tritt bei 147 bewerteten Anwendungsregeln
+bei aus zwei ungarischen Projekten auf.
+Einige Anwendungsregeln stammen nicht aus dem Projekt RA Application Conditions, sondern vermutlich aus einem anderen Projekt oder sie sind speziell 
+für diese beiden Projekte. Die ausgehenden Links der Objekte können über die grafische Oberfläche von \ac{DOORS} verfolgt werden, bei diesen beiden Projekten
+wird das Zielobjekt aber aufgrund mangelnder Rechte nicht angezeigt, wie in Abbildung \ref{fig:LockedData} gesehen werden kann. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth/2]{abbildungen/LockedData.PNG}
+    \caption{Link auf gesperrte Daten}
+    \label{fig:LockedData}
+\end{figure}
+

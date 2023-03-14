@@ -12,3 +12,4 @@ Underfitting
 Approximationsproblem
 Series
 Perceptron
+Tortensegmente

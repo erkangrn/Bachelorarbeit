@@ -1,3 +1,78 @@
 \section{Sammeln zusätzlicher Daten}
+\label{chap:DatenSammeln}
+Wie in Kapitel \ref*{chap:DataPraxisprojekt} bereits erwähnt, besteht die Möglichkeit über eine Access-Datenbank noch weitere Daten über die Projekte zu sammeln.
+Aus den Inhalten dieser Access-Datenbank wird jeden Tag eine XML-Datei erstellt, welche ebenfalls in das Python-Skript mit der Pandas-Bibliothek importiert werden kann.
+In dieser XML-Datei kann dann nach den Projekten aus dem Datensatz gesucht werden und der Datensatz kann dann mit den Daten aus der XML-Datei erweitert werden.
+Zunächst wird eine Liste erstellt, die alle eindeutigen Projekte aus dem Datensatz enthält. Diese Liste wird dann verwendet, um eine Schleife durchzuführen, 
+in der jeder Projektname nacheinander durchlaufen wird. In der Schleife wird für jedes Projekt der Eintrag aus der Access-Datenbank gesucht.
+Dabei muss der Eintrag drei Bedingungen erfüllen:
+\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+    \item \glqq Type\grqq{} muss den Wert \glqq Real\grqq{} besitzen
+        \begin{itemize}[itemindent=0cm]
+            \item Projekte mit dem \glqq Type\grqq{} \glqq Real\grqq{} befinden sich nicht mehr in der Angebotsphase
+        \end{itemize}
+    \item \glqq Location\grqq{} muss den Wert \glqq BWG\grqq{} besitzen
+        \begin{itemize}[itemindent=0cm]
+            \item \glqq BWG\grqq{} steht hierbei für den Standort Braunschweig
+        \end{itemize}
+    \item \glqq Offset\grqq{} muss den Wert \glqq path\grqq{} besitzen
+        \begin{itemize}[itemindent=0cm]
+            \item stellt sicher, dass der Eintrag zum richtigen Projekt gehört
+            \item Es existieren mehrere Projekte mit dem Namen \glqq /ML Realization Projects Algeria\grqq{}, im Datensatz ist damit das Projekt \glqq /20006\_ML\_BM\_Boughezoul\_MSila\grqq{} gemeint
+        \end{itemize}
+\end{enumerate}
+Das Prüfen dieser Bedingungen ist eingebettet in einen try-except-Block. Der try-except-Block sorgt dafür, dass eine Fehlermeldung auftritt, falls in der Access-Datenbank ein Eintrag nicht gefunden wird.
+Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in der Variable \glqq result\grqq{} gespeichert. Quellcode \ref*{lst:ImportAccess} zeigt den Code, um diese Schritte durchzuführen.
+\begin{lstlisting}[language = python, caption={Importieren der Access-Datenbank},captionpos=b, label = lst:ImportAccess, floatplacement=H]
+    paths = df['Path'].unique()
+    accessDB = pd.read_xml(".../Input_BWG_Combined_Access.xml")
+    for path in paths:
+        try:
+            if(path == "/ML Realization Projects Algeria"):
+                result = accessDB.loc[(accessDB['Type'] == "Real") 
+                & (accessDB['Location'] == "BWG") 
+                & (accessDB['Offset'] == "/ML Realization Projects Algeria/20006_ML_BM_Boughezoul_MSila")].iloc[0]
+            else:
+                result = accessDB.loc[(accessDB['Type'] == "Real") 
+                & (accessDB['Location'] == "BWG") 
+                & ((accessDB['Offset'] == str(path)) | (accessDB['Offset'] == (str(path) + "/")))].iloc[0]           
+        except:
+            print(str(path) + " has no entry in the AccessDB!")
+\end{lstlisting}
+\glqq result\grqq{} enthält nun alle Attribute über das Projekt, welche in der Access-Datenbank vorhanden sind. Die relevanten Informationen müssen nun extrahiert und dem ursprünglichen 
+Datensatz hinzugefügt werden. Noch in derselben Schleife wie im Quellcode \ref*{lst:ImportAccess}, werden dem Datensatz neue Spalte hinzugefügt und mit den Werten aus der 
+Access-Datenbank gefüllt. Quellcode \ref*{lst:addData} zeigt in Zeile drei ein Beispiel dafür. Durch diese Zeile werden alle Zeilen aus dem Datensatz aktualisiert, 
+die in der \glqq Path\grqq{}-Spalte den aktuellen \glqq path\grqq{}-Wert haben. Der Wert der neuen Spalte wird dabei aus der entsprechenden Spalte von \glqq result\grqq{} übernommen.
+Dieser Schritt wird ebenfalls für die anderen Spalten aus der Access-Datenbank ausgeführt. Zum Schluss wird noch die Versionsbezeichnung angepasst. 
+Es kann der Fall auftreten, dass zwei verschiedene Produkte dieselbe Versionsbezeichnung besitzen, zum Beispiel \glqq 2\grqq{} oder \glqq 01.5\grqq{}. Um das zu verhindern,
+wird vor die Versionsbezeichnung noch der Name des Produkts gestellt, damit sich Versionsbezeichnungen von verschiedenen Produkten nicht mehr gleichen können.
+\begin{lstlisting}[language = python, caption={Erweiterung des Datensatzes},captionpos=b, label = lst:addData, floatplacement=H]
+    for path in paths:
+        #...
+        df.loc[df['Path'] == str(path), 'Project_category']
+        = result['Project_category']
+        #...
+        df['ProductVersion'] 
+        = df["Product"].str.cat(df["Version"], sep = "-")
+\end{lstlisting}
+Das Ergebnis dieser Schritte ist ein Datensatz in Form eines Dataframes mit 14.572 Zeilen und 11 verschiedenen Spalten. Die Spalten dieses Dataframe sind die folgenden und dienen, bis auf die 
+Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
+\begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
+    \item[Text] Text der Anwendungsregel
+    \item[Product] Name des Produkts
+    \item[ProductVersion] Version des Produkts
+    \item[Project_name] Name des Projekts
+    \item[section] Sektion, die das Projekt durchführt, zum Beispiel ML für MainLine oder MT für MassTransit
+    \item[Project_category] Kategorie des Projekts, gibt Aufschluss über die Größe
+    \item[BS] ???
+    \item[RU] ???
+    \item[ProjectYear] Jahr in dem das Projekt gestartet wurde
+    \item[Status] Status der Anwendungsregel
+    \item[Statement] Begründung zum Status
+\end{description} 
+Der Aufzählung kann entnommen werden, dass die Spalten \glqq Path\grqq{} und \glqq Version\grqq{} entfernt wurden. Diese wurden durch die Spalten \glqq Project_name\grqq{} und 
+\glqq ProductVersion\grqq{} ersetzt wurden.
 
 \section{Codierung der Attribute}
+Im nächsten Schritt muss der Datensatz in eine Form gebracht werden, die für das Anlernen eines \ac{KI}-Modells geeignet ist. Die ausgewählten Attribute stellen alle Kategorien in 
+Textform oder als Jahreszahl dar. Beide Darstellungsformen sind ungeeignet um als Trainingsdatensatz zu dienen, da ein \ac{NN} mit numerischen Werten arbeitet.

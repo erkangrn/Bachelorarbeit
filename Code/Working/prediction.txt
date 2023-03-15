@@ -1,30 +1,30 @@
 Anwendungsregel: Zur Anschaltung des Antriebes in der Außenanlage müssen Signalkabel nach VDE 0816/2 oder Kabel mit vergleichbaren Eigenschaften verwendet werden. Die Verlegevorschriften des Kabels sind einzuhalten.
 Projekt: /1203_BuenosAires_Line_H_Extension
 Prediction Status:
-closed 11.1%
-compliant 67.8%
-not applicable 21.1%
-Real Status: compliant
-Prediction Statement: DC_POM modules are not used in the SDO7 project.  See the document  Book of circuits SDO7  Circuit diagrams Point A6Z00044480743. 16.3%
-Real Statement: Im Projekt BALH sind die Signalkabel nach VDE0816/2 verwendet. Die Verlegevorschriften des Kabels sind beim Verlegen eingehalten.  Daher ist diese Auflage erfüllt.  Bitte sieh  Kabelspezifikation (Aussenkabel)  A6Z00038004325  -  Outdoor Cable Plan  A6Z00037954383  - 
+closed 9.2%
+compliant 58.4%
+not applicable 32.4%
+Actual Status: compliant
+Prediction Statement: Zur Anschaltung der Fahrsperren in der Außenanlage kommen Signalkabel  nach VDE 0816/2 oder Kabel mit vergleichbaren Eigenschaften zum Einsatz.  Siehe auch Dokument Requirement for Signalling cable G68167-S0100-U- 5009.   14.5%
+Actual Statement: Im Projekt BALH sind die Signalkabel nach VDE0816/2 verwendet. Die Verlegevorschriften des Kabels sind beim Verlegen eingehalten.  Daher ist diese Auflage erfüllt.  Bitte sieh  Kabelspezifikation (Aussenkabel)  A6Z00038004325  -  Outdoor Cable Plan  A6Z00037954383  - 
 ----------------------------------------------------
 Anwendungsregel: Auf einer Kundenanlage darf nur ein Betriebssystem (inklusive aller Dienste  Treiber  Konfigurationsdateien und Einstellungen) eingesetzt werden  das zuvor einer Typprüfung zur Verfahrenssicherheit unterzogen wurde. Der Bezug auf die durchgeführte Typprüfung zur Verfahrenssicherheit ist zu dokumentieren. [3.6.1 und 4.7.3]
 Projekt: /Dorset_and_Portsmouth
 Prediction Status:
-closed 85.6%
-forwarded 14.4%
-Real Status: closed
-Prediction Statement: Nachweis  Der Bezug auf die durchgeführte Typprüfung zur Verfahrenssicherheit für das Betriebssystem (siehe Regel 65) wurde geprüft und dokumentiert.  Referenz  [Na-Typ]  15.8%
-Real Statement: Proof  According to the executed type test for safety procedure of the operating system (see rule 65) was checked and documented.  Reference  [Na-Typ]
+closed 91.5%
+forwarded 8.5%
+Actual Status: closed
+Prediction Statement: The image was referenced during validation of Vicos OC100 [VAL REP]  [PVAL REP] .  The image is archived in SAP Argos [OS]. 19.0%
+Actual Statement: Proof  According to the executed type test for safety procedure of the operating system (see rule 65) was checked and documented.  Reference  [Na-Typ]
 ----------------------------------------------------
 Anwendungsregel: Bei der Erstinbetriebnahme und bei jeder Wiederinbetriebnahme nach Wartungs- oder Instandhaltungsarbeiten  bei denen an der Verdrahtung gearbeitet wurde  ist die Übereinstimmung beider Weichenlagen vor Ort mit den am Stellteil angezeigten Lagen zu überprüfen.
 Projekt: /26103 ML_HU_Ungarn
 Prediction Status:
-closed 27.7%
-compliant 17.9%
-forwarded 19.8%
-not applicable 34.6%
-Real Status: not applicable
-Prediction Statement: Die Baugruppe DC-POM wird im Projekt SRO nicht verwendet 12.5%
-Real Statement: Keine POM - Baugrppe
+closed 24.2%
+compliant 12.8%
+forwarded 19.9%
+not applicable 43.0%
+Actual Status: not applicable
+Prediction Statement: Dieses Requirement wird über das Dokument „Auflagen für die Abnahmeprüfung“ (A6Z00002580182  A6Z00036486814) an die Abnahmeprüfung weitergereicht. Dieses Requirement wird ebenfalls über das Dokument „Auflagen für den Betreiber“ (A6Z00002580183) an den Betreiber der Anlage weitergereicht. 10.3%
+Actual Statement: Keine POM - Baugrppe
 ----------------------------------------------------

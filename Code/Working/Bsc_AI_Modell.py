@@ -177,11 +177,11 @@ def main():
             f.write('\n')
             f.write("Prediction Status:\n")
             f.writelines(predictionStatus)
-            f.write('Real Status: ' + realStatus)
+            f.write('Actual Status: ' + realStatus)
             f.write('\n')
             f.write("Prediction Statement: " + predictionStatement)
             f.write('\n')
-            f.write('Real Statement: ' + realStatement)
+            f.write('Actual Statement: ' + realStatement)
             f.write('\n----------------------------------------------------\n')
 
 

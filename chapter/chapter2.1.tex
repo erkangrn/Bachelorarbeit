@@ -72,20 +72,20 @@ wie in der Abbildung \ref*{fig:BewerteteAR} gezeigt wird.
     \label{fig:BewerteteAR}
 \end{figure}
 
-Dafür werden die Attribute REQ Statement und REQ Progress genutzt. Im Attribut REQ Progress kann der System-Manager eine von fünf verschiedenen
-Ausprägungen wählen. Eine Auflistung und Erklärung dieser Ausprägungen kann der Tabelle \ref*{tab:REQProgress} entnommen werden. Der 
-System-Manager muss daraufhin ein Statement darüber abgeben, warum er welchen REQ Progress gewählt hat. Dieses Statement wird in Textform im
+Dafür werden die Attribute REQ Statement und REQ Status genutzt. Im Attribut REQ Status kann der System-Manager eine von fünf verschiedenen
+Ausprägungen wählen. Eine Auflistung und Erklärung dieser Ausprägungen kann der Tabelle \ref*{tab:REQStatus} entnommen werden. Der 
+System-Manager muss daraufhin ein Statement darüber abgeben, warum er welchen REQ Status gewählt hat. Dieses Statement wird in Textform im
 Attribut REQ Statement gespeichert. Die Anwendungsregel in der Abbildung \ref*{fig:BewerteteAR} wurde beispielsweise mit closed bewertet,
 da die Anwendungsregel für das Projekt anwendbar ist und zudem auch gelöst ist, da die Streckenlänge, wie in der Anwendungsregel gefordert,
 weniger als 6,5 km beträgt.
 
 \begin{table}[H]
     \begin{center}
-        \caption{Ausprägungen des Attributs REQ Progress \cite[vgl. S.28f.]{SMO-AR}}
-        \label{tab:REQProgress}
+        \caption{Ausprägungen des Attributs REQ Status \cite[vgl. S.28f.]{SMO-AR}}
+        \label{tab:REQStatus}
         \begin{tabularx}{\textwidth}{|l|>{\raggedright\arraybackslash}X |}
             \hline
-            \textbf{REQ Progress} & \textbf{Erklärung}\\ \hline
+            \textbf{REQ Status} & \textbf{Erklärung}\\ \hline
             not applicable & Anwendungsregel ist nicht anwendbar \\ \hline
             forwarded & Anwendungsregel soll an Subsystem weitergeleitet werden \\ \hline
             closed & Anwendungsregel auf System Design Ebene mit einem Statement abgeschlossen \\ \hline

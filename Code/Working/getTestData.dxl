@@ -38,7 +38,7 @@ string getProduct(ModName_ mnTarget){
 }
 
 void writeCSV(string szLog){
-    string szLogfile         = "SAR_testing.csv";
+    string szLogfile = "SAR_testing.csv";
     Stream strLog = write (szLogfile, CP_UTF8);
     strLog << szLog
     flush(strLog);
@@ -57,6 +57,7 @@ for o in entire m do{
     }
     szData = szData szText "," szProduct "," szVersion "," szPath "," szStatus "," szStatement "\n"
 }
+
 szData = "Text,Product,Version,Path,Status,Statement\n" szData
 writeCSV(szData[0:length(szData) - 2])
 close m;

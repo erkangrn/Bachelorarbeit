@@ -125,19 +125,21 @@ def createModel(df_training, text):
     return modelStatus, modelStatement, trainYStatus, trainYStatement
 
 def predictStatus(modelStatus, row, trainYStatus):
+    prediction = []
     predictionStatus = modelStatus.predict(row)
     col = 0
     for i in predictionStatus:
         for j in i:
-            print (trainYStatus.columns[col] + " " + '{:.1%}'.format(j))
+            prediction.append(trainYStatus.columns[col] + " " + '{:.1%}'.format(j) + "\n")
             col += 1
 
-    print ("-----------------------------------------------------")
+    return prediction
 
 def predictStatement(modelStatement, row, trainYStatement):
     predictionStatement = modelStatement.predict(row)
     index_max = np.argmax(predictionStatement)
-    print (trainYStatement.columns[index_max] + " " + '{:.1%}'.format(predictionStatement[0][index_max]))
+    prediction = (trainYStatement.columns[index_max] + " " + '{:.1%}'.format(predictionStatement[0][index_max]))
+    return prediction
 
 def main():
     print("Starting\n")
@@ -156,15 +158,31 @@ def main():
 
     df_testing = adjustShape(df_training, df_testing)
 
-    print("Training: " + str(df_training.shape))
-    print("Testing: " + str(df_testing.shape))
-
+    t = open("c:/Users/z0044ber/Desktop/Ostfalia/Bachelorarbeit/Bachelorarbeit/Code/Working/prediction.txt", 'w')
+    t.write('')
     for i in range(df_testing.shape[0]):
         current = df_testing.iloc[[i]]
-        modelStatus, modelStatement, yStatus, yStatement = createModel(df_training, current.iloc[0]['Text'])
-        predictStatus(modelStatus, current.drop(columns=['Text', 'Status', 'Statement']), yStatus)
-        predictStatement(modelStatement, current.drop(columns=['Text', 'Status', 'Statement']), yStatement)
-        sys.exit()
+        result = df_result.iloc[[i]]
+        text = current.iloc[0]['Text']
+        path = result.iloc[0]['Path']
+        realStatus = current.iloc[0]['Status']
+        realStatement = current.iloc[0]['Statement']
+        modelStatus, modelStatement, yStatus, yStatement = createModel(df_training, text)
+        predictionStatus = predictStatus(modelStatus, current.drop(columns=['Text', 'Status', 'Statement']), yStatus)
+        predictionStatement = predictStatement(modelStatement, current.drop(columns=['Text', 'Status', 'Statement']), yStatement)
+        with open("c:/Users/z0044ber/Desktop/Ostfalia/Bachelorarbeit/Bachelorarbeit/Code/Working/prediction.txt", 'a', encoding='utf8') as f:
+            f.write("Anwendungsregel: " + text)
+            f.write('\n')
+            f.write("Projekt: " + path)
+            f.write('\n')
+            f.write("Prediction Status:\n")
+            f.writelines(predictionStatus)
+            f.write('Real Status: ' + realStatus)
+            f.write('\n')
+            f.write("Prediction Statement: " + predictionStatement)
+            f.write('\n')
+            f.write('Real Statement: ' + realStatement)
+            f.write('\n----------------------------------------------------\n')
 
 
     print("Done\n")

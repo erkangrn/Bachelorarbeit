@@ -1,0 +1,30 @@
+Anwendungsregel: Zur Anschaltung des Antriebes in der Außenanlage müssen Signalkabel nach VDE 0816/2 oder Kabel mit vergleichbaren Eigenschaften verwendet werden. Die Verlegevorschriften des Kabels sind einzuhalten.
+Projekt: /1203_BuenosAires_Line_H_Extension
+Prediction Status:
+closed 9.1%
+compliant 64.9%
+not applicable 26.0%
+Real Status: compliant
+Prediction Statement: Zur Anschaltung der Fahrsperren in der Außenanlage kommen Signalkabel  nach VDE 0816/2 oder Kabel mit vergleichbaren Eigenschaften zum Einsatz.  Siehe auch Dokument Requirement for Signalling cable G68167-S0100-U- 5009.   17.9%
+Real Statement:  Im Projekt BALH sind die Signalkabel nach VDE0816/2 verwendet. Die Verlegevorschriften des Kabels sind beim Verlegen eingehalten.  Daher ist diese Auflage erfüllt.  Bitte sieh  Kabelspezifikation (Aussenkabel)  A6Z00038004325  -  Outdoor Cable Plan  A6Z00037954383  - 
+----------------------------------------------------
+Anwendungsregel: Auf einer Kundenanlage darf nur ein Betriebssystem (inklusive aller Dienste  Treiber  Konfigurationsdateien und Einstellungen) eingesetzt werden  das zuvor einer Typprüfung zur Verfahrenssicherheit unterzogen wurde. Der Bezug auf die durchgeführte Typprüfung zur Verfahrenssicherheit ist zu dokumentieren. [3.6.1 und 4.7.3]
+Projekt: /Dorset_and_Portsmouth
+Prediction Status:
+closed 89.2%
+forwarded 10.8%
+Real Status: closed
+Prediction Statement: The image was referenced during validation of Vicos OC100 [VAL REP]  [PVAL REP].  The image is stored in SAP Argos [OS]. 15.1%
+Real Statement: Proof  According to the executed type test for safety procedure of the operating system (see rule 65) was checked and documented.  Reference  [Na-Typ]
+----------------------------------------------------
+Anwendungsregel: Bei der Erstinbetriebnahme und bei jeder Wiederinbetriebnahme nach Wartungs- oder Instandhaltungsarbeiten  bei denen an der Verdrahtung gearbeitet wurde  ist die Übereinstimmung beider Weichenlagen vor Ort mit den am Stellteil angezeigten Lagen zu überprüfen.
+Projekt: /26103 ML_HU_Ungarn
+Prediction Status:
+closed 23.6%
+compliant 21.0%
+forwarded 23.3%
+not applicable 32.1%
+Real Status: not applicable
+Prediction Statement: Dieses Requirement wird über das Dokument „Auflagen für die Abnahmeprüfung“ (A6Z00002580182  A6Z00036486814) an die Abnahmeprüfung weitergereicht. Dieses Requirement wird ebenfalls über das Dokument „Auflagen für den Betreiber“ (A6Z00002580183) an den Betreiber der Anlage weitergereicht. 11.6%
+Real Statement: Keine POM - Baugrppe
+----------------------------------------------------

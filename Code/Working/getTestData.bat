@@ -1,0 +1,3 @@
+\\ad001.siemens.net\dfs001\Apps\DOORS\bin\client\rundoors.cmd -alias prod-ra-bwg -debuglevel 10 -addins "\\ad001.siemens.net\dfs001\Apps\DOORS\dxl\addins\include" -user "Jung, Stefan" -password "$tr110VERS" -b "C:\Users\z0044ber\Desktop\Ostfalia\Bachelorarbeit\Bachelorarbeit\Code\Working\getTestData.dxl" -extraParameters \"-T\"
+
+rem "\\sn1dor03.ad001.siemens.net\doors\bin\Client\doors97\bin\doors.exe" -H "\\sn1dor03.ad001.siemens.net\doors\bin\Client\doors97" -d 36693@ra-doors-bwg.siemens.net -addins "\\ad001.siemens.net\dfs001\Apps\DOORS\dxl\addins\include" -u "Jung, Stefan" -P "$tr110VERS" -b "C:\Users\z0044ber\Desktop\Ostfalia\Bachelorarbeit\Bachelorarbeit\Code\Working\getTestData.dxl" -defopenmode r -defopenlinkmode r -f %TEMP% "-T" "-W"

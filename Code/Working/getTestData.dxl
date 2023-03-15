@@ -1,0 +1,61 @@
+pragma encoding, "UTF-8"
+pragma runLim, 0;
+
+Module m = edit("/Sandbox/g/garan_z0044ber/Bachelorarbeit", false)
+Object o;
+Link l;
+string szText;
+string szStatus;
+string szStatement;
+string szProduct;
+string szVersion;
+string szData = "";
+ModName_ mnTarget;
+
+string getProduct(ModName_ mnTarget){
+    int i;
+    int iSlash = 0;
+    int iEndSlash = 4;
+    int iStartProduct = 0;
+    int iEndProduct = 0;
+    string szTarget = fullName mnTarget;
+    for i in 0: (length(szTarget) -1) do{
+        if (intOf(szTarget[i]) == 47){
+            iSlash ++;
+        }
+        if(iSlash == iEndSlash){
+            iStartProduct = i + 1;
+            iSlash ++;
+        }
+        if(iSlash > iEndSlash + 1){
+            iEndProduct = i - 1;
+            break;
+        }
+    }
+    string szResult = szTarget[iStartProduct:iEndProduct]
+    return szResult;
+}
+
+void writeCSV(string szLog){
+    string szLogfile         = "SAR_testingDXL2.csv";
+    Stream strLog = append (szLogfile, CP_UTF8);
+    strLog << szLog
+    flush(strLog);
+    close strLog;
+}
+
+for o in entire m do{
+    szText = o."Object Heading"
+    szStatus = o."REQ Status"
+    szStatement = o."REQ Statement"
+    for l in all o -> "*" do{
+        mnTarget = target(l)
+        szProduct = getProduct(target(l)) 
+        szVersion = target(l)
+    }
+    szData = szText "," szProduct "," szVersion "," szStatus "," szStatement "\n"
+}
+
+writeCSV("Text,Product,Version,Path,Status,Statement\n")
+writeCSV(szData)
+close m;

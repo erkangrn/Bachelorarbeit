@@ -9,6 +9,7 @@ string szStatus;
 string szStatement;
 string szProduct;
 string szVersion;
+string szPath;
 string szData = "";
 ModName_ mnTarget;
 
@@ -37,8 +38,8 @@ string getProduct(ModName_ mnTarget){
 }
 
 void writeCSV(string szLog){
-    string szLogfile         = "SAR_testingDXL2.csv";
-    Stream strLog = append (szLogfile, CP_UTF8);
+    string szLogfile         = "SAR_testing.csv";
+    Stream strLog = write (szLogfile, CP_UTF8);
     strLog << szLog
     flush(strLog);
     close strLog;
@@ -48,14 +49,14 @@ for o in entire m do{
     szText = o."Object Heading"
     szStatus = o."REQ Status"
     szStatement = o."REQ Statement"
+    szPath = o."Path"
     for l in all o -> "*" do{
         mnTarget = target(l)
         szProduct = getProduct(target(l)) 
         szVersion = target(l)
     }
-    szData = szText "," szProduct "," szVersion "," szStatus "," szStatement "\n"
+    szData = szData szText "," szProduct "," szVersion "," szPath "," szStatus "," szStatement "\n"
 }
-
-writeCSV("Text,Product,Version,Path,Status,Statement\n")
-writeCSV(szData)
+szData = "Text,Product,Version,Path,Status,Statement\n" szData
+writeCSV(szData[0:length(szData) - 2])
 close m;

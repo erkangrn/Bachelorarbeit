@@ -75,8 +75,8 @@ Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
 Eine weitere Möglichkeit zur Erzeugung weiterer Daten aus dem bestehenden Datensatz wäre die Data Augmentation. Bei diesem Verfahren werden die bestehenden Daten 
 leicht abgeändert, damit weitere Daten synthetisch erstellt werden können, was zu einem größeren Datensatz führt. Diese Praxis wird häufig im Bereich der Computer Vision,
 also dem \glqq maschinellen Sehen\grqq{}, genutzt. Computer Vision beschäftigt sich mit der Verarbeitung von Bildern und Videos, weshalb dabei die Datensätze 
-aus Bildern und Videos bestehen. Auf den Daten können dann verschiedene Operationen ausgeführt werden, zum Beispiel kann ein Bild gespiegelt oder gedreht werden, um aus 
-einem Bild mehrere zu erzeugen. In der in dieser Arbeit beschriebenem Anwendungsfall bietet sich Data Augmentation jedoch nicht an. Da der Datensatz überwiegend
+aus Bildern und Videos bestehen. Auf den Daten können dann verschiedene Transformationen ausgeführt werden, zum Beispiel kann ein Bild gespiegelt oder gedreht werden, um aus 
+einem Bild mehrere zu erzeugen \cite[vgl. S.184f.]{DL_PY}. In der in dieser Arbeit beschriebenem Anwendungsfall bietet sich Data Augmentation jedoch nicht an. Da der Datensatz überwiegend
 aus kategorischen Attributen besteht, müssten einige Kategorien andere Werte bekommen, um aus den vorhandenen Daten weitere zu erzeugen. Dies könnte zum Beispiel dazu führen,
 dass eine Zeile im Datensatz, die beispielsweise zu einem Projekt, das eigentlich der Kategorie \glqq A\grqq{} zugehört, unterschiedlichen Kategorien zugeordnet wird, 
 was dann aber zu einem Widerspruch im Datensatz führen könnte. Zudem könnten durch das Manipulieren des Datensatzes zufällige Strukturen und Zusammenhänge erzeugt werden,
@@ -85,4 +85,109 @@ da Anwendungsregeln sicherheitskritisch sein können. Deshalb wurde in dieser Ar
 
 \section{Codierung der Attribute}
 Im nächsten Schritt muss der Datensatz in eine Form gebracht werden, die für das Anlernen eines \ac{KI}-Modells geeignet ist. Die ausgewählten Attribute stellen alle Kategorien in 
-Textform oder als Jahreszahl dar. Beide Darstellungsformen sind ungeeignet um als Trainingsdatensatz zu dienen, da ein \ac{NN} mit numerischen Werten arbeitet.
+Textform oder als Jahreszahl dar. Beide Darstellungsformen sind ungeeignet um als Trainingsdatensatz zu dienen, da ein \ac{NN} mit numerischen Werten arbeitet. 
+Eine Möglichkeit zur Codierung von kategoriellen Attributen ist die One-Hot-Codierung. Dabei wird jeder Ausprägung eines Attributs eine eigene neue Spalte zugeordnet 
+und für jede Zeile hat nur eine Spalte den Wert 1, alle anderen Spalten nehmen den Wert 0 an. Die beiden nachfolgenden Tabellen zeigen anhand eines Beispiels die 
+One-Hot-Codierung des Attributs \glqq ProjectYear\grqq{}.  
+\\
+\begin{minipage}[c]{0.5\textwidth}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Text} & \textbf{ProjectYear}\\ \hline
+        Text1&2019\\
+        Text2&2021\\
+        Text3&2022\\
+        \hline
+    \end{tabular}
+    \captionof{table}{Ursprügliche Tabelle}
+\end{minipage}
+\begin{minipage}[c]{0.5\textwidth}
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Text} & \textbf{2019} & \textbf{2021} & \textbf{2022}\\ \hline
+        Text1 & 1 & 0 & 0\\
+        Text2 & 0 & 1 & 0\\
+        Text3 & 0 & 0 & 1\\
+        \hline
+    \end{tabular}
+    \captionof{table}{Tabelle nach One-Hot-Codierung}
+\end{minipage}
+\\
+Um auf den Spalten des Dataframes in Python die One-Hot-Codierung auszuführen, wurde eine neue Funktion geschrieben, die dem Quellcode \ref{lst:OneHot} entnommen werden kann.
+Diese Funktion erhält als Parameter einen Dataframe sowie eine Liste an Spalten, auf denen die One-Hot-Codierung durchgeführt werden soll. In einer Schleife iteriert die Funktion 
+über jede Spalte, die in der Liste übergeben wurde und prüft anschließend, ob diese Spalte im Dataframe vorhanden ist. Wenn dies der Fall ist, dann wird mithilfe der 
+get\_dummies()-Funktion aus der Pandas-Bibliothek die One-Hot-Codierung durchgeführt. Anschließend wird die ursprüngliche Spalte aus dem Dataframe entfernt und dafür werden
+die neuen codierten Spalten dem Dataframe hinzugefügt. Dafür werden die drop()- und concat()-Funktion der Pandas-Bibliothek genutzt, die es ermöglichen Spalten und Zeilen
+hinzuzufügen oder zu entfernen \cite{PandasDoc}.
+
+\begin{lstlisting}[language = python, caption={Funktion zur One-Hot-Codierung},captionpos=b, label = lst:OneHot, floatplacement=H]
+    def column_one_hot (dataframe, columns): 
+        for column in columns:
+            if column in dataframe:
+                one_hot = pd.get_dummies(dataframe[column])
+                dataframe = dataframe.drop(column,axis = 1)
+                dataframe = pd.concat([dataframe, one_hot], axis=1)
+        return dataframe
+\end{lstlisting}
+
+Die Attribute \glqq Product\grqq{} und \glqq ProductVersion\grqq{} stellen hier jedoch einen Sonderfall dar. Aufgrund der One-Hot-Codierung kann in jeder Zeile nur eine Ausprägung
+eines Attributs den Wert 1 annehmen, jedoch benutzen Projekte mehrere Produkte und verschiedene Produktversionen. Deshalb muss der Datensatz für diese beiden Attribute nochmal 
+überarbeitet werden. Zunächst wird über alle Projekte und Produkte iteriert. Für jedes Produkt wird nun geprüft, ob es in einem Projekt vorhanden ist. Wenn dies der Fall ist,
+dann wird der Wert für dieses Produkt in jeder Zeile des Projekts auf eins gesetzt. Äquivalent wird mit dem Attribut \glqq ProductVersion\grqq{} verfahren. 
+
+\begin{lstlisting}[language = python, caption={Anpassung der Spalte \glqq Product\grqq},captionpos=b, label = lst:ProductOneHot, floatplacement=H]
+    df = column_one_hot(df, ['Product'])
+    for project in projects:
+        for product in products:
+            df.loc[df['Project_name'] == project, product] = 1 if 
+            (df.loc[df['Project_name'] == project][product].sum()) >= 1 else 0
+    df = column_one_hot(df, ['ProductVersion', 'Project_name', 'section',
+    'Project_category', 'BS', 'RU', 'ProjectYear'])
+    ---------------------------------------
+    Output:
+    (14572, 180)
+\end{lstlisting}
+
+Nachdem die beiden Attribute korrekt codiert wurden, können die restlichen Attribute ebenfalls codiert werden, wie im Quellcode \ref*{lst:ProductOneHot} gezeigt wird.
+Aus den ursprünglichen 11 Spalten wurden nach der Codierung der Attribute 180 verschiedene Spalten.
+
+Eine Variante der One-Hot-Codierung ist der One-Hot-Hashing-Trick, der sich anbietet, wenn die Anzahl an Attributen in einem Datensatz zu hoch ist. Anstatt jeder Ausprägung
+eines Attributs als neue Spalte zu definieren, kann auch eine Hashfunktion genutzt werden, um die Ausprägungen abzubilden. François Chollet nutzt diese Variante
+der One-Hot-Codierung bei der Codierung von Wörtern und Zeichen. In seinem Beispiel codiert er die 1000 am häufigsten vorkommenden Wörter \cite[vgl. S.236]{DL_PY}. Da der Datensatz in dieser Arbeit aber 
+nicht über so viele verschiedene Spalten verfügt, wurde diese Variante der One-Hot-Codierung hier nicht genutzt.
+
+Neben den beiden Varianten existieren noch weitere Möglichkeiten zur Codierung von kategorischen Attributen. Ein weiteres Beispiel wäre das Label-Encoding. Dabei wird jeder Ausprägung eines Attributs
+ein eindeutiger Integer-Wert zugeordnet. Die nachfolgenden Tabellen zeigen ein Beispiel für das Label-Encoding eines Attributs. Dem Produkt \glqq SICAS ECC\grqq{} wird dabei der Wert 0 zugeordnet,
+dem Produkt \glqq LZB700m\grqq{} 1 und so weiter. 
+\\
+\begin{minipage}[c]{0.5\textwidth}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Text} & \textbf{Product}\\ \hline
+        Text1 & SICAS ECC\\
+        Text2 & LZB700M\\
+        Text3 & SIMIS IS\\
+        \hline
+    \end{tabular}
+    \captionof{table}{Ursprügliche Tabelle}
+\end{minipage}
+\begin{minipage}[c]{0.5\textwidth}
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Text} & \textbf{Product} \\ \hline
+        Text1 & 0\\
+        Text2 & 1\\
+        Text3 & 2\\
+        \hline
+    \end{tabular}
+    \captionof{table}{Tabelle nach Label-Encoding}
+\end{minipage}
+\\
+Im Vergleich zur One-Hot-Codierung besteht hier der Vorteil, dass nicht für jede Ausprägung eine neue Spalte hinzugefügt wird und 
+die Dimension des Datensatzes somit nicht größer wird. Der entscheidende Nachteil des Label-Encodings tritt jedoch auf, wenn die Ausprägungen nicht in einer Beziehung zueinander stehen.
+Durch das Zuweisen von aufsteigenden Integer-Werten erweckt diese Art der Codierung den Eindruck, dass die Beziehung \glqq SICAS ECC\grqq{} < \glqq LZB700m\grqq{} < \glqq SIMIS IS\grqq{} besteht,
+obwohl das gar nicht der Fall ist. Deshalb wurde in dieser Arbeit die One-Hot-Codierung genutzt.

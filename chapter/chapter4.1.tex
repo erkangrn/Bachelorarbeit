@@ -22,7 +22,7 @@ Dabei muss der Eintrag drei Bedingungen erfüllen:
         \end{itemize}
 \end{enumerate}
 Das Prüfen dieser Bedingungen ist eingebettet in einen try-except-Block. Der try-except-Block sorgt dafür, dass eine Fehlermeldung auftritt, falls in der Access-Datenbank ein Eintrag nicht gefunden wird.
-Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in der Variable \glqq result\grqq{} gespeichert. Quellcode \ref*{lst:ImportAccess} zeigt den Code, um diese Schritte durchzuführen.
+Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in einer Variable \glqq result\grqq{} gespeichert. Quellcode \ref*{lst:ImportAccess} zeigt den Code, um diese Schritte durchzuführen.
 \begin{lstlisting}[language = python, caption={Importieren der Access-Datenbank},captionpos=b, label = lst:ImportAccess, floatplacement=H]
     paths = df['Path'].unique()
     accessDB = pd.read_xml(".../Input_BWG_Combined_Access.xml")
@@ -39,7 +39,7 @@ Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in 
         except:
             print(str(path) + " has no entry in the AccessDB!")
 \end{lstlisting}
-\glqq result\grqq{} enthält nun alle Attribute über das Projekt, welche in der Access-Datenbank vorhanden sind. Die relevanten Informationen müssen nun extrahiert und dem ursprünglichen 
+\glqq result\grqq{} enthält nun alle Attribute über das Projekt, welche in der Access-Datenbank vorhanden sind. Die relevanten Informationen müssen nun dem ursprünglichen 
 Datensatz hinzugefügt werden. Noch in derselben Schleife wie im Quellcode \ref*{lst:ImportAccess}, werden dem Datensatz neue Spalte hinzugefügt und mit den Werten aus der 
 Access-Datenbank gefüllt. Quellcode \ref*{lst:addData} zeigt in Zeile drei ein Beispiel dafür. Durch diese Zeile werden alle Zeilen aus dem Datensatz aktualisiert, 
 die in der \glqq Path\grqq{}-Spalte den aktuellen \glqq path\grqq{}-Wert haben. Der Wert der neuen Spalte wird dabei aus der entsprechenden Spalte von \glqq result\grqq{} übernommen.
@@ -55,7 +55,8 @@ wird vor die Versionsbezeichnung noch der Name des Produkts gestellt, damit sich
         df['ProductVersion'] 
         = df["Product"].str.cat(df["Version"], sep = "-")
 \end{lstlisting}
-Das Ergebnis dieser Schritte ist ein Datensatz in Form eines Dataframes mit 14.572 Zeilen und 11 verschiedenen Spalten. Die Spalten dieses Dataframe sind die folgenden und dienen, bis auf die 
+Das Ergebnis dieser Schritte ist ein Datensatz in Form eines Dataframes mit 14.572 Zeilen und 11 verschiedenen Spalten. Diese zusätzlichen Daten wurden gesammelt, um die Ähnlichkeit von Projekten 
+bestimmen zu können. Je stärker sich Projekte ähneln, desto eher werden die Anwendungsregeln der Projekte ähnlich bewertet. Die Spalten dieses Dataframe sind die folgenden und dienen, bis auf die 
 Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
 \begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
     \item[Text] Text der Anwendungsregel
@@ -70,6 +71,17 @@ Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
     \item[Status] Status der Anwendungsregel
     \item[Statement] Begründung zum Status
 \end{description} 
+
+Eine weitere Möglichkeit zur Erzeugung weiterer Daten aus dem bestehenden Datensatz wäre die Data Augmentation. Bei diesem Verfahren werden die bestehenden Daten 
+leicht abgeändert, damit weitere Daten synthetisch erstellt werden können, was zu einem größeren Datensatz führt. Diese Praxis wird häufig im Bereich der Computer Vision,
+also dem \glqq maschinellen Sehen\grqq{}, genutzt. Computer Vision beschäftigt sich mit der Verarbeitung von Bildern und Videos, weshalb dabei die Datensätze 
+aus Bildern und Videos bestehen. Auf den Daten können dann verschiedene Operationen ausgeführt werden, zum Beispiel kann ein Bild gespiegelt oder gedreht werden, um aus 
+einem Bild mehrere zu erzeugen. In der in dieser Arbeit beschriebenem Anwendungsfall bietet sich Data Augmentation jedoch nicht an. Da der Datensatz überwiegend
+aus kategorischen Attributen besteht, müssten einige Kategorien andere Werte bekommen, um aus den vorhandenen Daten weitere zu erzeugen. Dies könnte zum Beispiel dazu führen,
+dass eine Zeile im Datensatz, die beispielsweise zu einem Projekt, das eigentlich der Kategorie \glqq A\grqq{} zugehört, unterschiedlichen Kategorien zugeordnet wird, 
+was dann aber zu einem Widerspruch im Datensatz führen könnte. Zudem könnten durch das Manipulieren des Datensatzes zufällige Strukturen und Zusammenhänge erzeugt werden,
+die in der Realität nicht existieren. Da der Datensatz relativ klein ist, könnte ein \ac{NN} dann diese falschen Strukturen erkennen und diese lernen. Dies wäre kritisch zu betrachten,
+da Anwendungsregeln sicherheitskritisch sein können. Deshalb wurde in dieser Arbeit davon abgesehen dieses Verfahren zu verwenden.
 
 \section{Codierung der Attribute}
 Im nächsten Schritt muss der Datensatz in eine Form gebracht werden, die für das Anlernen eines \ac{KI}-Modells geeignet ist. Die ausgewählten Attribute stellen alle Kategorien in 

@@ -5,6 +5,7 @@
 \usepackage[utf8x]{inputenc}         % Unterstützung von UTF-8 in Eingabe-Dateien
 \usepackage[T1]{fontenc}             % Zeichensatzkodierung von LaTeX (Cork-Kodierung)
 \usepackage{helvet,courier,mathptmx} % Verwendete Schriftarten
+\usepackage{textcomp}
 
 \usepackage[headsepline, plainheadsepline, plainfootsepline] {scrlayer-scrpage}
 
@@ -25,6 +26,8 @@
 \usepackage{algpseudocode}           % Algorithmen als Pseudocode (basiert auf algorithmicx)
 \usepackage{listings}                % Quellcode-Satz (z.B. mit Syntax-Hervorhebung)
 \lstset { %
+    literate={ß}{{\ss}}1,
+    upquote=true,
     language=Python,
     backgroundcolor=\color{black!5}, % set backgroundcolor
     basicstyle=\footnotesize,        % basic font setting

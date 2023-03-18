@@ -88,7 +88,8 @@ Im nächsten Schritt muss der Datensatz in eine Form gebracht werden, die für d
 Textform oder als Jahreszahl dar. Beide Darstellungsformen sind ungeeignet um als Trainingsdatensatz zu dienen, da ein \ac{NN} mit numerischen Werten arbeitet. 
 Eine Möglichkeit zur Codierung von kategoriellen Attributen ist die One-Hot-Codierung. Dabei wird jeder Ausprägung eines Attributs eine eigene neue Spalte zugeordnet 
 und für jede Zeile hat nur eine Spalte den Wert 1, alle anderen Spalten nehmen den Wert 0 an. Die beiden nachfolgenden Tabellen zeigen anhand eines Beispiels die 
-One-Hot-Codierung des Attributs \glqq ProjectYear\grqq{}.  
+One-Hot-Codierung des Attributs \glqq ProjectYear\grqq{}.
+\\  
 \\
 \begin{minipage}[c]{0.5\textwidth}
     \centering
@@ -112,8 +113,9 @@ One-Hot-Codierung des Attributs \glqq ProjectYear\grqq{}.
         Text3 & 0 & 0 & 1\\
         \hline
     \end{tabular}
-    \captionof{table}{Tabelle nach One-Hot-Codierung}
+    \captionof{table}{Nach One-Hot-Codierung}
 \end{minipage}
+\\
 \\
 Um auf den Spalten des Dataframes in Python die One-Hot-Codierung auszuführen, wurde eine neue Funktion geschrieben, die dem Quellcode \ref{lst:OneHot} entnommen werden kann.
 Diese Funktion erhält als Parameter einen Dataframe sowie eine Liste an Spalten, auf denen die One-Hot-Codierung durchgeführt werden soll. In einer Schleife iteriert die Funktion 
@@ -162,6 +164,7 @@ Neben den beiden Varianten existieren noch weitere Möglichkeiten zur Codierung 
 ein eindeutiger Integer-Wert zugeordnet. Die nachfolgenden Tabellen zeigen ein Beispiel für das Label-Encoding eines Attributs. Dem Produkt \glqq SICAS ECC\grqq{} wird dabei der Wert 0 zugeordnet,
 dem Produkt \glqq LZB700m\grqq{} 1 und so weiter. 
 \\
+\\
 \begin{minipage}[c]{0.5\textwidth}
     \centering
     \begin{tabular}{|c|c|}
@@ -184,8 +187,9 @@ dem Produkt \glqq LZB700m\grqq{} 1 und so weiter.
         Text3 & 2\\
         \hline
     \end{tabular}
-    \captionof{table}{Tabelle nach Label-Encoding}
+    \captionof{table}{Nach Label-Encoding}
 \end{minipage}
+\\
 \\
 Im Vergleich zur One-Hot-Codierung besteht hier der Vorteil, dass nicht für jede Ausprägung eine neue Spalte hinzugefügt wird und 
 die Dimension des Datensatzes somit nicht größer wird. Der entscheidende Nachteil des Label-Encodings tritt jedoch auf, wenn die Ausprägungen nicht in einer Beziehung zueinander stehen.

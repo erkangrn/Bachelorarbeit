@@ -155,7 +155,7 @@ dann wird der Wert für dieses Produkt in jeder Zeile des Projekts auf eins gese
 Nachdem die beiden Attribute korrekt codiert wurden, können die restlichen Attribute ebenfalls codiert werden, wie im Quellcode \ref*{lst:ProductOneHot} gezeigt wird.
 Aus den ursprünglichen 11 Spalten wurden nach der Codierung der Attribute 180 verschiedene Spalten.
 
-Eine Variante der One-Hot-Codierung ist der One-Hot-Hashing-Trick, der sich anbietet, wenn die Anzahl an Attributen in einem Datensatz zu hoch ist. Anstatt jeder Ausprägung
+Eine Variante der One-Hot-Codierung ist der One-Hot-Hashing-Trick, der sich anbietet, wenn die Anzahl an Attributen in einem Datensatz zu hoch ist. Anstatt jede Ausprägung
 eines Attributs als neue Spalte zu definieren, kann auch eine Hashfunktion genutzt werden, um die Ausprägungen abzubilden. François Chollet nutzt diese Variante
 der One-Hot-Codierung bei der Codierung von Wörtern und Zeichen. In seinem Beispiel codiert er die 1000 am häufigsten vorkommenden Wörter \cite[vgl. S.236]{DL_PY}. Da der Datensatz in dieser Arbeit aber 
 nicht über so viele verschiedene Spalten verfügt, wurde diese Variante der One-Hot-Codierung hier nicht genutzt.

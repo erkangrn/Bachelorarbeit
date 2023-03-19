@@ -5,3 +5,4 @@ del thesis.lof
 del thesis.log
 del thesis.out
 del thesis.toc
+del chapter/chapter1.aux

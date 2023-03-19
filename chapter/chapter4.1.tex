@@ -23,7 +23,7 @@ Dabei muss der Eintrag drei Bedingungen erfüllen:
 \end{enumerate}
 Das Prüfen dieser Bedingungen ist eingebettet in einen try-except-Block. Der try-except-Block sorgt dafür, dass eine Fehlermeldung auftritt, falls in der Access-Datenbank ein Eintrag nicht gefunden wird.
 Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in einer Variable \glqq result\grqq{} gespeichert. Quellcode \ref*{lst:ImportAccess} zeigt den Code, um diese Schritte durchzuführen.
-\begin{lstlisting}[language = python, caption={Importieren der Access-Datenbank},captionpos=b, label = lst:ImportAccess, floatplacement=H]
+\begin{lstlisting}[language = python, caption={Importieren der Access-Datenbank},captionpos=b, label = lst:ImportAccess, float, floatplacement=H]
     paths = df['Path'].unique()
     accessDB = pd.read_xml(".../Input_BWG_Combined_Access.xml")
     for path in paths:
@@ -58,13 +58,13 @@ wird vor die Versionsbezeichnung noch der Name des Produkts gestellt, damit sich
 Das Ergebnis dieser Schritte ist ein Datensatz in Form eines Dataframes mit 14.572 Zeilen und 11 verschiedenen Spalten. Diese zusätzlichen Daten wurden gesammelt, um die Ähnlichkeit von Projekten 
 bestimmen zu können. Je stärker sich Projekte ähneln, desto eher werden die Anwendungsregeln der Projekte ähnlich bewertet. Die Spalten dieses Dataframe sind die folgenden und dienen, bis auf die 
 Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
-\begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
+\begin{description}[style=multiline,leftmargin=4cm,font=\bfseries, nolistsep]
     \item[Text] Text der Anwendungsregel
     \item[Product] Name des Produkts
     \item[ProductVersion] Version des Produkts
     \item[Project\_name] Name des Projekts
     \item[section] Sektion, die das Projekt durchführt, zum Beispiel ML für MainLine oder MT für MassTransit
-    \item[Project\_category] Kategorie des Projekts, gibt Aufschluss über die Größe
+    \item[Project\_category] Kategorie des Projekts, gibt Aufschluss über die Größe eines Projekts
     \item[BS] ???
     \item[RU] ???
     \item[ProjectYear] Jahr in dem das Projekt gestartet wurde
@@ -120,8 +120,8 @@ One-Hot-Codierung des Attributs \glqq ProjectYear\grqq{}.
 Um auf den Spalten des Dataframes in Python die One-Hot-Codierung auszuführen, wurde eine neue Funktion geschrieben, die dem Quellcode \ref{lst:OneHot} entnommen werden kann.
 Diese Funktion erhält als Parameter einen Dataframe sowie eine Liste an Spalten, auf denen die One-Hot-Codierung durchgeführt werden soll. In einer Schleife iteriert die Funktion 
 über jede Spalte, die in der Liste übergeben wurde und prüft anschließend, ob diese Spalte im Dataframe vorhanden ist. Wenn dies der Fall ist, dann wird mithilfe der 
-get\_dummies()-Funktion aus der Pandas-Bibliothek die One-Hot-Codierung durchgeführt. Anschließend wird die ursprüngliche Spalte aus dem Dataframe entfernt und dafür werden
-die neuen codierten Spalten dem Dataframe hinzugefügt. Dafür werden die drop()- und concat()-Funktion der Pandas-Bibliothek genutzt, die es ermöglichen Spalten und Zeilen
+get\_dummies()-Methode aus der Pandas-Bibliothek die One-Hot-Codierung durchgeführt. Anschließend wird die ursprüngliche Spalte aus dem Dataframe entfernt und dafür werden
+die neuen codierten Spalten dem Dataframe hinzugefügt. Dafür werden die drop()- und concat()-Methode der Pandas-Bibliothek genutzt, die es ermöglichen Spalten und Zeilen
 hinzuzufügen oder zu entfernen \cite{PandasDoc}.
 
 \begin{lstlisting}[language = python, caption={Funktion zur One-Hot-Codierung},captionpos=b, label = lst:OneHot, floatplacement=H]

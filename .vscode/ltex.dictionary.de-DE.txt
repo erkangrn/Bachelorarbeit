@@ -13,3 +13,5 @@ Approximationsproblem
 Series
 Perceptron
 Tortensegmente
+Testsplit
+Skiplist

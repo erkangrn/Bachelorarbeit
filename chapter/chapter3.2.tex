@@ -51,7 +51,7 @@ Der Entwickler kann dadurch einem Modell beliebig Schichten hinzufügen oder ent
 Die Anzahl an Neuronen innerhalb einer Schicht und die Aktivierungsfunktion der Neuronen in der Schicht werden der Schicht einfach als Parameter übergeben 
 und die Aktivierungsfunktion muss ebenfalls nicht selbst definiert werden, denn da reicht es aus, den Namen der Funktion als Parameter anzugeben.
 Das Auswählen der Verlustfunktion, des Optimierers und der Metrik verlaufen ebenfalls genauso einfach. Diese werden, nachdem das Modell mit seinen Schichten 
-definiert wurden, ganz simpel, wie bei der Auswahl der Aktivierungsfunktion, einer Funktion als Parameter übergeben.
+definiert wurde, ganz simpel, wie bei der Auswahl der Aktivierungsfunktion, einer Funktion als Parameter übergeben.
 Genau diese Schritte werden in dieser Arbeit durchlaufen, um das \ac{KI}-System zur Bewertung von Anwendungsregeln zu erstellen und anzulernen.
 
 \subsection{Pandas}
@@ -59,12 +59,12 @@ Genau diese Schritte werden in dieser Arbeit durchlaufen, um das \ac{KI}-System 
 Um unter anderem das Importieren der Daten, welche im Praxisprojekt gesammelt wurden, zu ermöglichen, wird die Datenverarbeitungsbibliothek Pandas genutzt.
 Pandas ist ein Akronym, welches für panel data steht. Diese Bibliothek basiert dabei auf Tabellen, ähnlich wie bei Excel, und bietet die Möglichkeit
 Excel-Dateien, CSV-Dateien und weitere Dateitypen direkt zu importieren oder zu exportieren. Die beiden wichtigsten Datenstrukturen sind dabei die
-Series und die Dataframe \cite[vgl. S.253]{NumerischesPython}. 
+Series und die Dataframes \cite[vgl. S.253]{NumerischesPython}. 
 
 Series können dabei wie eine zweispaltige Tabelle verstanden werden. Die erste Spalte beinhaltet einen Index, dieser kann
 dabei beliebig sein, muss also nicht wie bei einem Array aus Integer-Werten bestehen. Diese Eigenschaft unterscheidet Series von Arrays
 und bietet dadurch die Möglichkeit beliebige Indizes zu nutzen und Daten somit als Key-Value-Paare zu speichern. Wird jedoch kein spezieller Index definiert,
-so besteht der Index, genau wie bei einem Array, aus aufsteigenden Integer-Werten von 0 bis zur Länge des Arrays. In der anderen Spalte
+so besteht der Index, genau wie bei einem Array, aus aufsteigenden Integer-Werten von 0 bis zur Länge der Series. In der anderen Spalte
 werden die eigentlichen Werte gespeichert, diese müssen dabei alle vom selben Datentyp sein \cite[vgl. S.254f.]{NumerischesPython}. 
 Weitere Eigenschaften der Datenstruktur Series sind:
 \begin{itemize}
@@ -83,7 +83,7 @@ Spaltenindex. Die Indizes sind wieder beliebig wählbar. Zudem können mindesten
 konkateniert werden \cite[vgl. S.263f.]{NumerischesPython}. Also kann über Dataframes gesagt werden, dass sie eine Datenstruktur sind, die aus mehreren einzelnen Series-Objekten bestehen.
 
 Neben den beiden Datenstrukturen liefert die Pandas Bibliothek zahlreiche Funktionen zur Analyse, Bearbeitung und Verwaltung der gespeicherten Daten. Die in dieser Arbeit 
-verwendeten Funktionen werden in Kapitel XXX an den gesammelten Daten aus dem Praxisprojekt vorgestellt und erläutert.
+verwendeten Funktionen werden in Kapitel \ref*{chap:Datensatz} an den gesammelten Daten aus dem Praxisprojekt vorgestellt und erläutert.
 
 \subsection{Matplotlib}
 Zur Visualisierung von Daten wird in dieser Arbeit die Bibliothek Matplotlib für Python genutzt. Matplotlib bietet die Möglichkeit verschiedenste Diagramme und Darstellungen,

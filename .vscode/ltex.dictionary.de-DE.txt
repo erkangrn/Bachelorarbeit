@@ -15,3 +15,5 @@ Perceptron
 Tortensegmente
 Testsplit
 Skiplist
+LSTM-Layer
+Dense-Layer

@@ -1,1 +1,3 @@
 {"rule":"GERMAN_SPELLER_RULE","sentence":"^\\Q\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q ist ein Akronym, das für Dynamic Object-Oriented Requirements System steht.\\E$"}
+{"rule":"GERMAN_SPELLER_RULE","sentence":"^\\QEin CNN besteht dabei nicht aus Dense-Layern, wie in diesem Anwendungsfall, sondern aus Convolutional-Layern.\\E$"}
+{"rule":"SIMPLE_AGREEMENT_MAS","sentence":"^\\QAls letzte Schicht und somit als Ausgabeschicht wird ebenfalls eine Dense-Layer verwendet.\\E$"}

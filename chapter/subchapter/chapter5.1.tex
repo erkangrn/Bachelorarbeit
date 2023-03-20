@@ -1,18 +1,23 @@
-\section{Definieren des neuronalen Netzes}
+\section{Definieren des ersten neuronalen Netzes}
+\label{chap:DefineNN}
 Nachdem der Trainingsdatensatz definiert und in Ein- und Ausgabewerte aufgeteilt wurde, muss als Nächstes das \ac{NN} definiert werden, wie in Kapitel \ref{chap:Keras} beschrieben wurde.
 Dafür bietet die Keras-Bibliothek die Klasse \glqq Sequential\grqq{}, die genutzt werden kann, wenn Schichten sequentiell angeordnet werden sollen. Laut Chollet ist diese Art der 
 Netzarchitektur die am häufigsten genutzte \cite[vgl. S.92]{DL_PY}. 
 
 \begin{lstlisting}[language = python, caption={Erstellung eines sequentiellen Modells},captionpos=b, label = lst:ModellSeq, floatplacement=H]
+    from keras.models import Sequential
+    from keras.layers import Dense
+    from keras.losses import CategoricalCrossentropy 
+
     model = Sequential()
     model.add(Dense(8, input_shape=(trainX.shape[1],), activation='relu'))
     model.add(Dense(16, activation='relu'))
     model.add(Dense(trainYStatus.shape[1], activation='softmax'))
 \end{lstlisting}
 
-Der Quellcode \ref{lst:ModellSeq} zeigt, wie ein Modell zur Vorhersage des Statuswerts definiert werden kann. Zuerst wird ein Objekt vom Typ Sequential erstellt. Diesem Objekt 
+Der Quellcode \ref{lst:ModellSeq} zeigt die benötigten Imports und wie ein Modell zur Vorhersage des Statuswerts definiert werden kann. Zuerst wird ein Objekt vom Typ Sequential erstellt. Diesem Objekt 
 können dann die verschiedenen Schichten hinzugefügt werden. Dabei muss bestimmt werden, wie viele Schichten das Modell haben soll und wie viele Neuronen jede Schicht besitzen soll.
-Als Erste Schicht wird eine Dense-Layer als Eingabeschicht mit acht Neuronen definiert. Eine Dense-Layer ist eine fully-connected Schicht,
+Als erste Schicht wird eine Dense-Layer als Eingabeschicht mit acht Neuronen definiert. Eine Dense-Layer ist eine fully-connected Schicht,
 wie beispielsweise die Schichten in der Abbildung \ref{fig:NN_Modell}, und erwartet als Parameter mindestens die Anzahl an Neuronen, optional können noch weitere Parameter angegeben werden.
 Die Eingabeschicht benötigt als Besonderheit noch zusätzlich die Anzahl an Attributen, diese können dem Dataframe mit den Eingabewerten entnommen werden. Als Aktivierungsfunktion wird
 die \ac{ReLU}-Funktion genutzt, die bereits in Kapitel \ref{chap:DL} vorgestellt wurde und auch die verbreitetste Aktivierungsfunktion beim \ac{DL} ist \cite[vgl. S.102]{DL_PY}. 
@@ -23,10 +28,13 @@ werden sollten. Als letzte Schicht und somit als Ausgabeschicht wird ebenfalls e
 möglichen Ausprägungen des zu bestimmenden Wertes. Die ausgewählte Anwendungsregel wurde in der Vergangenheit mit \glqq closed\grqq{}, \glqq compliant\grqq{} und \glqq not applicable\grqq{} bewertet,
 weshalb in diesem Fall die Ausgabeschicht drei Neuronen besitzen muss. Jedes Neuron stellt dabei eine mögliche Ausprägung dar. Anders als bei den vorherigen Schichten wurde bei dieser Schicht 
 als Aktivierungsfunktion \glqq softmax\grqq{} gewählt. Diese Aktivierungsfunktion weist jedem Neuron eine Wahrscheinlichkeit zwischen null und eins zu, wobei die Summe aller Wahrscheinlichkeiten 
-eins ergibt \cite{KerasDoc}. Die Auswahl der Aktivierungsfunktion der Ausgabeschicht ist abhängig von der Aufgabe des Modells. \glqq Softmax\grqq{} bietet sich zum Beispiel ideal als Möglichkeit zur Klassifikation an,
-wenn mehrere verschiedene Klassifizierungen vorhanden sind. Wenn nur zwei verschiedene Zustände möglich sind, also ein binäres Klassifikationsproblem vorliegt, würde sich als Aktivierungsfunktion
+eins ergibt \cite{KerasDoc}. Diese Eigenschaft der Funktion ist auch der Grund, weshalb für Status und Statement eigene Modelle erstellt werden müssen, da das Sequential-Modell nur eine Ausgabeschicht
+erlaubt und es somit nicht möglich ist mit dieser Funktion zwei Kategorien vorherzusagen. 
+
+Die Auswahl der Aktivierungsfunktion der Ausgabeschicht ist abhängig von der Aufgabe des Modells. 
+\glqq Softmax\grqq{} bietet sich zum Beispiel ideal als Möglichkeit zur Klassifikation an, wenn mehrere verschiedene Klassifizierungen vorhanden sind. Wenn nur zwei verschiedene Zustände möglich sind, also ein binäres Klassifikationsproblem vorliegt, würde sich als Aktivierungsfunktion
 eine Sigmoidfunktion anbieten, da diese beliebige Werte einen Ausgabebereich zwischen null und eins zuordnet \cite[vgl. S.100]{DL_PY}.
-Eine Zusammenfassung wurde mit der summary()-Methode im Quellcode \ref{lst:ModellSummary} ausgegeben.
+
 \begin{lstlisting}[language = python, caption={Zusammenfassung des Modells},captionpos=b, label = lst:ModellSummary, float, floatplacement=H]
     model.summary()
     ---------------------------------------
@@ -47,7 +55,8 @@ Eine Zusammenfassung wurde mit der summary()-Methode im Quellcode \ref{lst:Model
     Non-trainable params: 0
     _______________________________________________________________
 \end{lstlisting}
-Diese Zusammenfassung zeigt nochmal die verschiedenen Schichten, die Dimension der Ausgabe der Schichten sowie die Anzahl an Parametern in jeder Schicht. 
+Eine Zusammenfassung wurde mit der summary()-Methode im Quellcode \ref{lst:ModellSummary} ausgegeben. 
+Diese Zusammenfassung zeigt nochmal die verschiedenen Schichten, die Dimension der Ausgabe der Schichten sowie die Anzahl an Parametern in jeder Schicht an. 
 Zu erkennen sind dort die drei hinzugefügten Dense-Layer. Die erste Dimension der Ausgabe ist \glqq None\grqq{}, da die Anzahl an Einträgen vorher nicht festgelegt wurde. 
 Die zweite Dimension wird bestimmt durch die Anzahl an Neuronen in einer Schicht.\\
 
@@ -58,9 +67,66 @@ Anwendungsfall, sondern aus Convolutional-Layern. Diese Schichten können zum Be
 sind \cite[vgl. S.164]{DL_PY}. Diese Schichten werden also in anderen Anwendungsfällen genutzt, für diesen Anwendungsfall eignen sich jedoch die Dense-Layer am besten.    \\
 
 Bevor das Modell mit den Daten angelernt werden kann, müssen zunächst noch die Verlustfunktion und ein Optimierer ausgewählt werden. Da der Aufgabentyp eine Single-Lable-Mehrfachklassifizierung 
-ist, also eine Klassifizierung wo eine Klasse aus mehreren Klassen gewählt werden muss, wird als Verlustfunktion die kategorische Kreuzentropie genutzt.
+ist, also eine Klassifizierung wo eine Klasse aus mehreren Klassen gewählt werden muss, wird als Verlustfunktion die kategorische Kreuzentropie genutzt. 
+Eine Kreuzentropie misst die Differenz zwischen den vorhergesagten Wahrscheinlichkeiten und dem tatsächlichen Wert \cite[vgl. S.102]{DL_PY}.
 Bei der kategorischen Kreuzentropie wird erwartet, dass die Ausgabewerte in der One-Hot-Codierung vorliegen. Sind die Ausgabewerte mit dem Label-Encoding codiert,
 müsste als Verlustfunktion die \glqq Sparse Categorical Crossentropy\grqq{} genutzt werden \cite{KerasDoc}. Für andere Aufgabentypen werden andere 
 Verlustfunktionen genutzt. Zum Beispiel bei einer Regression bietet sich der mittlere quadratische Fehler an oder bei der Binärklassifizierung die binäre Kreuzentropie \cite[vgl. S.155]{DL_PY}.
 Während des Trainings wird das Modell versuchen das Ergebnis der kategorischen Kreuzentropie zu minimieren. 
 
+Als Optimierer soll, laut Chollet, in den meisten Fällen der \glqq rmsprop\grqq{}-Optimierer mit der voreingestellten Lernrate verwendet werden können \cite[vgl. S.155]{DL_PY}. Ähnlich wie bei 
+der Komplexität des Modells ist es schwierig vorher genau zu bestimmen, welcher Optimierer für die spezifische Anwendung die besten Ergebnisse liefert. Deshalb muss auch hier ausprobiert werden.
+Zunächst wird sich an die Empfehlung von Chollet gehalten, es existieren jedoch auch weitere Optimierer, wie zum Beispiel \glqq Adam\grqq{} oder \glqq SGD\grqq{}, die berücksichtigt 
+werden sollten \cite{KerasDoc}. 
+
+Die Verlustfunktion sowie der Optimierer können nun, wie im Quellcode \ref*{lst:ModelCompile} gezeigt, ausgewählt werden. Diese werden der compile()-Methode als Parameter übergeben.
+Zudem muss noch eine Kenngröße ausgewählt werden, die während des Anlernens überwacht wird. In diesem Fall wird dafür die \glqq categorical\_accuracy\grqq{} verwendet.
+Diese Kenngröße gibt an, wie oft Vorhersagen den One-Hot codierten Ausgabewerten entsprechen.
+
+\begin{lstlisting}[language = python, caption={Auswahl des Optimierers sowie der Verlustfunktion},captionpos=b, label = lst:ModelCompile, float, floatplacement=H]
+    model.compile(optimizer='rmsprop',
+        loss=CategoricalCrossentropy(),
+        metrics=['categorical_accuracy'])
+\end{lstlisting}
+
+Nun ist das Modell fertig konfiguriert und kann auf den Trainingsdaten trainiert werden.
+
+\subsection{Trainieren des ersten Modells}
+\label{chap:TrainNN}
+Zum Trainieren des Modells mit den vorher definierten und codierten Daten wird die fit()-Methode genutzt. Dieser Methode werden die Ein- und Ausgabewerte übergeben, mit dem das Modell trainiert werden soll.
+Weitere Parameter sind:
+\begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
+    \item[batch\_size] Anzahl an Trainingsbeispielen, bevor die Gewichte des \ac{NN} geupdatet werden \cite{KerasDoc}
+    \item[epochs] Anzahl an Iterationen über den gesamten Trainingsdatensatz \cite{KerasDoc}
+    \item[verbose] Bestimmt die Menge an Terminalausgaben \cite{KerasDoc}
+    \item[validation\_split] Anteil des Trainingsdatensatzes, der zum Testen benutzt werden soll \cite{KerasDoc}
+\end{description} 
+Quellcode \ref*{lst:TrainModel} zeigt, wie hier die Parameter definiert wurden. In diesem ersten Trainingsansatz wurde als \glqq batch\_size\grqq{} zwei gewählt, was bedeutet, dass das Modell
+nach jedem zweiten Trainingsbeispiel die Gewichte des Modells ändert. Da die ausgewählte Anwendungsregel lediglich 17-Mal bewertet wurde, muss die \glqq batch\_size\grqq{} dementsprechend niedrig gewählt
+werden. Je niedriger die \glqq batch\_size\grqq{} ist, desto genauer kann das Modell die Trainingsdaten erlernen, was jedoch auch zu Overfitting führen kann. Zudem kann ein niedrigerer Wert 
+die Laufzeit des Trainingsprozesses negativ beeinflussen, da das Modell häufiger geupdatet werden muss.
+
+Die Anzahl an zu durchlaufenden Epochen wurde zunächst mit 50 gewählt. Hier muss ebenfalls im Nachhinein geprüft werden, wie viele Epochen benötigt werden. Eine höhere Anzahl an Epochen kann zu 
+Overfitting führen, eine zu niedrige Anzahl zu Underfitting. Hier muss also mithilfe der Kenngröße geprüft werden, wie sich das Modell mit zunehmender/abnehmender Anzahl an Epochen verhält.
+
+Für den Parameter \glqq verbose\grqq{} wurde der Wert zwei gewählt. Dieser sorgt dafür, dass die maximale Menge an Terminalausgaben ausgegeben wird. Ein Wert von eins würde nur einen 
+Fortschrittsbalken ausgeben, ein Wert von null würde gar keine Ausgabe produzieren \cite{KerasDoc}.
+
+Da ein Datensatz niemals mit den Trainingsdaten getestet werden sollte, muss eine Aufteilung in Testdaten erfolgen. Wie in Kapitel \ref*{chap:Trainingssplit} erwähnt, kann der Testsplit
+während des Anlernens erfolgen. Dafür bietet Keras die Möglichkeit automatisch einen Teil der Trainingsdaten zum Testen zu benutzen. Diese werden dabei zufällig aus dem Datensatz ausgewählt.
+
+\begin{lstlisting}[language = python, caption={Trainieren des Modells},captionpos=b, label = lst:TrainModel, float, floatplacement=H]
+    history = model.fit(trainX, trainYStatus,
+                    batch_size=2,
+                    epochs=50,
+                    verbose=2,
+                    validation_split=0.4)
+\end{lstlisting}
+
+Die Ausgabe des Trainingsprozesses kann dabei der Abbildung \ref*{fig:TrainModel} entnommen werden.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{abbildungen/TrainAusgabe.png}
+    \caption{Ausgabe des Trainingsprozesses}
+    \label{fig:TrainModel}
+\end{figure}

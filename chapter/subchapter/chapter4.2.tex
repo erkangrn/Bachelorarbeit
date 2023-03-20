@@ -23,7 +23,7 @@ Dabei muss der Eintrag drei Bedingungen erfüllen:
 \end{enumerate}
 Das Prüfen dieser Bedingungen ist eingebettet in einen try-except-Block. Der try-except-Block sorgt dafür, dass eine Fehlermeldung auftritt, falls in der Access-Datenbank ein Eintrag nicht gefunden wird.
 Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in einer Variable \glqq result\grqq{} gespeichert. Quellcode \ref*{lst:ImportAccess} zeigt den Code, um diese Schritte durchzuführen.
-\begin{lstlisting}[language = python, caption={Importieren der Access-Datenbank},captionpos=b, label = lst:ImportAccess, float, floatplacement=H]
+\begin{lstlisting}[language = python, caption={Importieren der Access-Datenbank},captionpos=b, label = lst:ImportAccess, floatplacement=H]
     paths = df['Path'].unique()
     accessDB = pd.read_xml(".../Input_BWG_Combined_Access.xml")
     for path in paths:
@@ -56,7 +56,7 @@ wird vor die Versionsbezeichnung noch der Name des Produkts gestellt, damit sich
         = df["Product"].str.cat(df["Version"], sep = "-")
 \end{lstlisting}
 Das Ergebnis dieser Schritte ist ein Datensatz in Form eines Dataframes mit 14.572 Zeilen und 11 verschiedenen Spalten. Diese zusätzlichen Daten wurden gesammelt, um die Ähnlichkeit von Projekten 
-bestimmen zu können. Je stärker sich Projekte ähneln, desto eher werden die Anwendungsregeln der Projekte ähnlich bewertet. Die Spalten dieses Dataframe sind die folgenden und dienen, bis auf die 
+bestimmen zu können. Je stärker sich Projekte ähneln, desto eher werden die Anwendungsregeln der Projekte ähnlich bewertet. Die Spalten dieses Dataframes sind die folgenden und dienen, bis auf die 
 Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
 \begin{description}[style=multiline,leftmargin=4cm,font=\bfseries, nolistsep]
     \item[Text] Text der Anwendungsregel
@@ -66,7 +66,7 @@ Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
     \item[section] Sektion, die das Projekt durchführt, zum Beispiel ML für MainLine oder MT für MassTransit
     \item[Project\_category] Kategorie des Projekts, gibt Aufschluss über die Größe eines Projekts
     \item[BS] ???
-    \item[RU] ???
+    \item[RU] Region in der das Projekt durchgeführt wird
     \item[ProjectYear] Jahr in dem das Projekt gestartet wurde
     \item[Status] Status der Anwendungsregel
     \item[Statement] Begründung zum Status
@@ -76,7 +76,7 @@ Eine weitere Möglichkeit zur Erzeugung weiterer Daten aus dem bestehenden Daten
 leicht abgeändert, damit weitere Daten synthetisch erstellt werden können, was zu einem größeren Datensatz führt. Diese Praxis wird häufig im Bereich der Computer Vision,
 also dem \glqq maschinellen Sehen\grqq{}, genutzt. Computer Vision beschäftigt sich mit der Verarbeitung von Bildern und Videos, weshalb dabei die Datensätze 
 aus Bildern und Videos bestehen. Auf den Daten können dann verschiedene Transformationen ausgeführt werden, zum Beispiel kann ein Bild gespiegelt oder gedreht werden, um aus 
-einem Bild mehrere zu erzeugen \cite[vgl. S.184f.]{DL_PY}. In der in dieser Arbeit beschriebenem Anwendungsfall bietet sich Data Augmentation jedoch nicht an. Da der Datensatz überwiegend
+einem Bild mehrere zu erzeugen \cite[vgl. S.184f.]{DL_PY}. In dem in dieser Arbeit beschriebenem Anwendungsfall bietet sich Data Augmentation jedoch nicht an. Da der Datensatz überwiegend
 aus kategorischen Attributen besteht, müssten einige Kategorien andere Werte bekommen, um aus den vorhandenen Daten weitere zu erzeugen. Dies könnte zum Beispiel dazu führen,
 dass eine Zeile im Datensatz, die beispielsweise zu einem Projekt, das eigentlich der Kategorie \glqq A\grqq{} zugehört, unterschiedlichen Kategorien zugeordnet wird, 
 was dann aber zu einem Widerspruch im Datensatz führen könnte. Zudem könnten durch das Manipulieren des Datensatzes zufällige Strukturen und Zusammenhänge erzeugt werden,

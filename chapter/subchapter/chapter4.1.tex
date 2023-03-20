@@ -1,6 +1,6 @@
 \section{Datensatz aus dem Praxisprojekt}
 \label{chap:DataPraxisprojekt}
-Das Ergebnis aus dem Praxisprojekt war ein Datensatz mit 195.518 Bewertungen von Anwendungsregeln. Beim Erstellen des Datensatzes wurde jedoch ein entscheidender Fehler begangen.
+Das Ergebnis aus dem Praxisprojekt war ein Datensatz mit 195.518 Bewertungen zu Anwendungsregeln. Beim Erstellen des Datensatzes wurde jedoch ein entscheidender Fehler begangen.
 Als die Daten aus den Projekten gesammelt wurden, wurde dabei auch jede Baseline eines Moduls berücksichtigt ohne zu überprüfen, ob sich an der Anwendungsregeln und ihrer Bewertung
 etwas geändert hat. Die Folge dessen war, dass der Datensatz eine Vielzahl von Duplikaten enthalten hat, was dazu geführt hätte, dass Projekte mit mehreren Baselines 
 stärker ins Gewicht gefallen wären, obwohl die Anzahl an Baselines nichts über die Signifikanz der Bewertung aussagt. Deshalb mussten die erstellten Module mit den bewerteten Anwendungsregeln
@@ -10,7 +10,7 @@ Dafür wurde ein Skript in \ac{DXL} geschrieben, was in den Modulen nach Duplika
 Elemente in dem Ordner, in welchem sich die Module mit den bewerteten Anwendungsregeln befinden. Wenn ein Element ein Formal Module ist, 
 dann wird dieses Modul geöffnet und in einer inneren Schleife werden alle Objekte des Moduls durchlaufen. Für jedes Objekt wird eine 
 Zeichenfolge erstellt, die aus den Attributen ObjectText, Status und Statement besteht. Anschließend wird überprüft, ob diese Zeichenfolge
-in einer Skiplist bereits vorhanden ist. Wenn dies der Fall ist, dann wurde das Objekt als Duplikat erkannt und mittels der softDelete()-Funktion
+in einer Skiplist bereits vorhanden ist. Wenn dies der Fall ist, dann wird das Objekt als Duplikat erkannt und mittels der softDelete()-Funktion
 als gelöscht gekennzeichnet. Wenn diese Zeichenfolge noch nicht in der Skiplist vorhanden ist, dann ist dieses Objekt noch einzigartig und wird der Skiplist
 hinzugefügt, um sicherzustellen, dass zukünftige Duplikate erkannt werden. Anschließend wird die Zeichenfolge geleert. Nachdem die innere Schleife durchlaufen wurde,
 werden alle Objekte, welche als gelöscht gekennzeichnet wurden, endgültig aus dem Modul entfernt. Zudem wird der Inhalt der Skiplist entfernt, bevor das nächste Modul durchlaufen wird, um 
@@ -41,7 +41,7 @@ wo sich aber die meisten Anwendungsregeln nicht verändert hatten. Dieser Schrit
 als andere. \\
 
 Nun besteht der Datensatz aus 14.572 Einträgen, die jeweils aus drei Attributen, nämlich dem eigentlichen Text der Anwendungsregel sowie dem Status und dem Statement bestehen.
-Wie in der Abbildung \ref{fig:Programmierparadigma} dargestellt, benötigt so ein Modell Eingabedaten und die dazugehörigen Antworten. Die Eingabedaten stellen in diesem Fall
+Wie in der Abbildung \ref{fig:Programmierparadigma} dargestellt, benötigt ein Modell Eingabedaten und die dazugehörigen Antworten. Die Eingabedaten stellen in diesem Fall
 die Texte dar, während die Antworten hier in Form des Status und des Statements dargestellt werden. Angenommen der Status einer Anwendungsregel X wird 15-mal mit closed
 und zehnmal mit open bewertet und ein Modell wird mit diesen Daten angelernt. Würde ein neues Projekt nun diese Anwendungsregel X importieren und einen Vorschlag vom Modell
 generieren lassen, dann würde das Modell eine Mehrheitsentscheidung durchführen und prüfen, wie oft die Anwendungsregel in der Vergangenheit mit welchem Status bewertet wurde.
@@ -206,7 +206,7 @@ In dieser Tabelle wird deutlich, dass die Produktbezeichnung in der Version enth
 
 Die Anwendungsregeln zum Produkt \glqq VICOS\_S\_D\grqq{} liegen in der \ac{DOORS}-Datenbank in Modulen unter dem Pfad: /RA Application Conditions/03\_PG\_OCS/Service and diagnostic systems.
 Dieser Pfad weicht von der Ordnerstruktur, die in Kapitel \ref*{chap:DataPraxisprojekt} beschrieben wurde, ab. Es fehlt hier der Ordner mit dem Namen des Produkts.
-Stattdessen enthält hier das Modul sowohl den Namen des Produkts als auch seine Version. Deshalb müssen die Einträge, die als Produkt den Wert \glqq nan\grqq{}
+Stattdessen enthält hier das Modul sowohl den Namen des Produkts als auch seine Version. Deshalb müssen die Einträge, die als Produkt den Wert \glqq nan\grqq{} besitzen,
 überarbeitet werden. 
 
 \begin{lstlisting}[language = python, caption={Eintragen der korrekten Produkt- und Versionsbezeichnung},captionpos=b, label = lst:UpdateProduct, floatplacement=H]

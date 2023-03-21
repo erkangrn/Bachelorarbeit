@@ -1,6 +1,6 @@
 \section{Datensatz aus dem Praxisprojekt}
 \label{chap:DataPraxisprojekt}
-Das Ergebnis aus dem Praxisprojekt war ein Datensatz mit 195.518 Bewertungen zu Anwendungsregeln. Beim Erstellen des Datensatzes wurde jedoch ein entscheidender Fehler begangen.
+Das Ergebnis aus dem Praxisprojekt war ein Datensatz mit 195.518 Bewertungen zu Anwendungsregeln. Beim Erstellen des Datensatzes wurde jedoch ein entscheidender Punkt nicht beachtet.
 Als die Daten aus den Projekten gesammelt wurden, wurde dabei auch jede Baseline eines Moduls berücksichtigt ohne zu überprüfen, ob sich an der Anwendungsregeln und ihrer Bewertung
 etwas geändert hat. Die Folge dessen war, dass der Datensatz eine Vielzahl von Duplikaten enthalten hat, was dazu geführt hätte, dass Projekte mit mehreren Baselines 
 stärker ins Gewicht gefallen wären, obwohl die Anzahl an Baselines nichts über die Signifikanz der Bewertung aussagt. Deshalb mussten die erstellten Module mit den bewerteten Anwendungsregeln
@@ -46,12 +46,12 @@ die Texte dar, während die Antworten hier in Form des Status und des Statements
 und zehnmal mit open bewertet und ein Modell wird mit diesen Daten angelernt. Würde ein neues Projekt nun diese Anwendungsregel X importieren und einen Vorschlag vom Modell
 generieren lassen, dann würde das Modell eine Mehrheitsentscheidung durchführen und prüfen, wie oft die Anwendungsregel in der Vergangenheit mit welchem Status bewertet wurde.
 Das Modell würde aufgrund der Mehrheitsentscheidung diese Anwendungsregeln immer mit closed bewerten. Das wäre ein legitimer Ansatz um Vorschläge zu generieren. 
-Dahinter steckt jedoch lediglich keine Struktur, die das Modell erkennen könnte, und somit auch keine Intelligenz. Dieses Problem könnte auch mit einer einfachen Tabelle 
-gelöst werden, das Nutzen eines \ac{NN} wäre hier unnötig. Daher benötigt der Datensatz noch weitere Attribute, da die Bewertung von Anwendungsregeln nicht alleine durch die 
+Dahinter steckt jedoch keine Struktur, die das Modell erkennen könnte, und somit auch keine Intelligenz. Dieses Problem könnte auch mit einer einfachen Tabelle 
+gelöst werden, das Nutzen eines \ac{NN} wäre hier unnötig. Daher benötigt der Datensatz noch weitere Eigenschaften, da die Bewertung von Anwendungsregeln nicht alleine durch die 
 reine Anzahl an Bewertungen in der Vergangenheit prognostiziert werden kann. Beispielsweise spielen regionale Gegebenheiten eine große Rolle, 
-da wenn Projekte im selben Land durchgeführt werden, es wahrscheinlicher ist, dass sie Anwendungsregeln ähnlich bewerten. 
+da, wenn Projekte im selben Land durchgeführt werden, es wahrscheinlicher ist, dass sie Anwendungsregeln ähnlich bewerten. 
 
-Um an mehr Daten über die vorherigen Projekte zu gelangen, muss das Skript aus dem Praxisprojekt erweitert werden. Neben dem Text der Anwendungsregel, dem Status und dem Statement
+Um an mehr Informationen über die vorherigen Projekte zu gelangen, muss das Skript aus dem Praxisprojekt erweitert werden. Neben dem Text der Anwendungsregel, dem Status und dem Statement
 muss auch das Produkt und die Version der Komponente berücksichtigt werden, von der die Anwendungsregel stammt. Ebenso spielt der Name des Projekts eine Rolle,
 da durch ihn in Kapitel \ref*{chap:DatenSammeln} in einer Access-Datenbank nach Informationen zu dem Projekt gesucht werden kann. 
 Das Produkt und die Version der Komponente lässt sich durch den Link bestimmen, den jedes Objekt auf das zentrale Projekt hat, in der die Anwendungsregeln gespeichert werden.
@@ -64,7 +64,7 @@ Dieses Projekt heißt RA Application Conditions und ist dabei wie folgt aufgebau
 Aus dem Zielobjekt des Links lässt sich das Modul bestimmen, in dem die jeweilige Anwendungsregel gespeichert ist. Das Modul trägt dabei als Namen die Versionsbezeichnung eines Produkts.
 Über den Speicherpfad lässt sich außerdem das Produkt, als das dritte Element des Pfades, bestimmen. Im \ac{DXL}-Skript muss also eine weitere Schleife hinzugefügt werden.
 Diese Schleife soll alle ausgehenden Links eines Objekts durchlaufen, bis ein Link gefunden wurde, dessen Zielobjekt sich im Projekt RA Application Conditions befindet.
-Wenn so ein Link gefunden wurde, dann wird der vollständige Pfad an eine selbstgeschriebene Funktion übergeben, die als Rückgabewert den Namen des Produkts hat.
+Wenn so ein Link gefunden wurde, dann wird der vollständige Pfad an eine spezielle Funktion übergeben, die als Rückgabewert den Namen des Produkts hat.
 Außerdem wird die Versionsbezeichnung ebenfalls dem Link entnommen und in einer Variable gespeichert. Dabei ist zu beachten, dass die Funktion target(Link) überladen ist.
 Im ersten Fall wird eine Referenz auf das Modul zurückgegeben, auf das der Link zeigt. Diese Referenz beinhaltet den kompletten Pfad. Im zweiten Fall wird lediglich der Name des Zielmoduls 
 zurückgegeben \cite[vgl. S.391]{DXL}. Da der Name des Moduls bereits die Produktbezeichnung beinhaltet, ist hier der volle Pfad nicht relevant.
@@ -147,7 +147,7 @@ Die Ausprägung \glqq partly closed\grqq{} wird zu \glqq closed\grqq{} geändert
 um die Vorgaben des Process Manuals zu erfüllen. 
 
 Um die Häufigkeit der einzelnen Ausprägungen zu visualisieren wird der Quellcode \ref*{lst:StatusPie} ausgeführt.
-Dort wird eine neue Liste erstellt, in der die Häufigkeiten der verschiedenen Statuswerte gespeichert werden.
+Damit wird eine neue Liste erstellt, in der die Häufigkeiten der verschiedenen Statuswerte gespeichert werden.
 Im Anschluss wird wieder die Schleife aus dem Quellcode \ref*{lst:StatusUnique} durchlaufen. Dieses Mal werden die Häufigkeiten aber nicht auf der Konsole ausgegeben,
 sondern sie werden der neuen Liste hinzugefügt.
 
@@ -180,7 +180,8 @@ loc()-Methode aus der Pandas-Bibliothek genutzt. Diese Methode wird genutzt, um 
 Datenoperationen auf den ausgewählten Daten ausgeführt werden. In Zeile zwei des Quellcodes \ref*{lst:ProductUnique} werden alle Zeilen ausgewählt, die als Produkt
 den Wert \glqq nan\grqq{} besitzen. Dabei werden nur die Spalten \glqq Product\grqq{}, \glqq Version\grqq{} und \glqq Path\grqq ausgewählt und zum Schluss
 wird die head()-Methode genutzt, um nur die ersten 5 Zeilen zurückzugeben. Die Ausgabe dieser Zeile kann der unteren Tabelle entnommen werden.
-In dieser Tabelle wird deutlich, dass die Produktbezeichnung in der Version enthalten ist. 
+In dieser Tabelle wird deutlich, dass die Produktbezeichnung in der Version enthalten ist. Da die Werte der Spalte \glqq Path\grqq{} sensible
+Unternehmensdaten sind, wurden diese hier entfernt.
 
 \begin{lstlisting}[language = python, caption={Ausprägungen des Attributs Product},captionpos=b, label = lst:ProductUnique, floatplacement=H, escapechar={|}]
     print(df['Product'].unique())
@@ -196,12 +197,12 @@ In dieser Tabelle wird deutlich, dass die Produktbezeichnung in der Version enth
     'LEU S21 MS MC MT 208-203_-403_-503' 'Eurobalise S21' |\color{red}'/'| 'DTS'
     'SIMIS LC' 'AC100' 'LEU S21 M ME 208-201_-401']
 
-    Product          Version                                  Path
-        NaN  VICOS_S_D_02.14  /23147 ML_KSA_SRO_Line1_Enhancements
-        NaN  VICOS_S_D_02.14  /23147 ML_KSA_SRO_Line1_Enhancements
-        NaN  VICOS_S_D_02.14  /23147 ML_KSA_SRO_Line1_Enhancements
-        NaN  VICOS_S_D_03.00                     /55525_ML_HU_KLBA
-        NaN  VICOS_S_D_03.00                     /55525_ML_HU_KLBA
+    Product          Version     Path
+        NaN  VICOS_S_D_02.14      ...
+        NaN  VICOS_S_D_02.14      ...
+        NaN  VICOS_S_D_02.14      ...
+        NaN  VICOS_S_D_03.00      ...
+        NaN  VICOS_S_D_03.00      ...
 \end{lstlisting}
 
 Die Anwendungsregeln zum Produkt \glqq VICOS\_S\_D\grqq{} liegen in der \ac{DOORS}-Datenbank in Modulen unter dem Pfad: /RA Application Conditions/03\_PG\_OCS/Service and diagnostic systems.
@@ -222,7 +223,7 @@ beibehalten. str[-5:] sorgt nämlich dafür, dass nur die letzten 5 Zeichen der 
 Dasselbe Verfahren wird auch für die Fälle durchgeführt, die als Produkt den Wert \glqq /\grqq{} besitzen. Dieser Sonderfall tritt bei 147 bewerteten Anwendungsregeln
 aus zwei ungarischen Projekten auf.
 Einige Anwendungsregeln stammen nicht aus dem Projekt RA Application Conditions, sondern vermutlich aus einem anderen Projekt oder sie sind speziell 
-für diese beiden Projekte. Die ausgehenden Links der Objekte können über die grafische Oberfläche von \ac{DOORS} verfolgt werden, bei diesen beiden Projekten
+für diese beiden Projekte erstellt worden. Die ausgehenden Links der Objekte können über die grafische Oberfläche von \ac{DOORS} verfolgt werden, bei diesen beiden Projekten
 wird das Zielobjekt aber aufgrund mangelnder Rechte nicht angezeigt, wie in Abbildung \ref{fig:LockedData} gesehen werden kann. 
 
 \begin{figure}[H]

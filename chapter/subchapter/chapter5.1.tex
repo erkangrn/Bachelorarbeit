@@ -1,6 +1,6 @@
 \section{Definieren des ersten neuronalen Netzes}
 \label{chap:DefineNN}
-Nachdem der Trainingsdatensatz definiert und in Ein- und Ausgabewerte aufgeteilt wurde, muss als Nächstes das \ac{NN} definiert werden, wie in Kapitel \ref{chap:Keras} beschrieben wurde.
+Nachdem der Trainingsdatensatz definiert und in Ein- und Ausgabewerte aufgeteilt wurde, muss als Nächstes das \ac{NN} definiert werden, wie es Kapitel \ref{chap:Keras} beschriebt.
 Dafür bietet die Keras-Bibliothek die Klasse \glqq Sequential\grqq{}, die genutzt werden kann, wenn Schichten sequentiell angeordnet werden sollen. Laut Chollet ist diese Art der 
 Netzarchitektur die am häufigsten genutzte \cite[vgl. S.92]{DL_PY}. 
 
@@ -18,22 +18,23 @@ Netzarchitektur die am häufigsten genutzte \cite[vgl. S.92]{DL_PY}.
 Der Quellcode \ref{lst:ModellSeq} zeigt die benötigten Imports und wie ein Modell zur Vorhersage des Statuswerts definiert werden kann. Zuerst wird ein Objekt vom Typ Sequential erstellt. Diesem Objekt 
 können dann die verschiedenen Schichten hinzugefügt werden. Dabei muss bestimmt werden, wie viele Schichten das Modell haben soll und wie viele Neuronen jede Schicht besitzen soll.
 Als erste Schicht wird eine Dense-Layer als Eingabeschicht mit acht Neuronen definiert. Eine Dense-Layer ist eine fully-connected Schicht,
-wie beispielsweise die Schichten in der Abbildung \ref{fig:NN_Modell}, und erwartet als Parameter mindestens die Anzahl an Neuronen, optional können noch weitere Parameter angegeben werden.
+wie beispielsweise die Schichten in der Abbildung \ref{fig:NN_Modell}, und erwartet als Parameter mindestens die Anzahl an Neuronen. Optional können noch weitere Parameter angegeben werden.
 Die Eingabeschicht benötigt als Besonderheit noch zusätzlich die Anzahl an Attributen, diese können dem Dataframe mit den Eingabewerten entnommen werden. Als Aktivierungsfunktion wird
 die \ac{ReLU}-Funktion genutzt, die bereits in Kapitel \ref{chap:DL} vorgestellt wurde und auch die verbreitetste Aktivierungsfunktion beim \ac{DL} ist \cite[vgl. S.102]{DL_PY}. 
 Als erste versteckte Schicht wird eine weitere Dense-Layer genutzt, hier mit 16 Neuronen. 
 Die Anzahl an Neuronen und die Tiefe des Modells bestimmt die Komplexität des Modells. Ein zu komplexes Modell kann zu Überanpassung und ein zu simples Modell zu Unteranpassung führen.
-Im Vorhinein ist es schwierig die benötigte Komplexität zu bestimmen, weshalb die Anzahl an Schichten und Neuronen, in Abhängigkeit mit dem Ergebnis des Modells, im Laufe der Erstellung noch geändert 
+Im Vorhinein ist es schwierig die benötigte Komplexität zu bestimmen, weshalb die Anzahl an Schichten und Neuronen, in Abhängigkeit zu dem Ergebnis des Modells, im Laufe der Erstellung noch geändert 
 werden sollten. Als letzte Schicht und somit als Ausgabeschicht wird ebenfalls eine Dense-Layer verwendet. Die Anzahl an Neuronen in der Ausgabeschicht ist abhängig von der Anzahl an 
 möglichen Ausprägungen des zu bestimmenden Wertes. Die ausgewählte Anwendungsregel wurde in der Vergangenheit mit \glqq closed\grqq{}, \glqq compliant\grqq{} und \glqq not applicable\grqq{} bewertet,
 weshalb in diesem Fall die Ausgabeschicht drei Neuronen besitzen muss. Jedes Neuron stellt dabei eine mögliche Ausprägung dar. Anders als bei den vorherigen Schichten wurde bei dieser Schicht 
-als Aktivierungsfunktion \glqq softmax\grqq{} gewählt. Diese Aktivierungsfunktion weist jedem Neuron eine Wahrscheinlichkeit zwischen null und eins zu, wobei die Summe aller Wahrscheinlichkeiten 
+als Aktivierungsfunktion \glqq Softmax\grqq{} gewählt. Diese Aktivierungsfunktion weist jedem Neuron eine Wahrscheinlichkeit zwischen null und eins zu, wobei die Summe aller Wahrscheinlichkeiten 
 eins ergibt \cite{KerasDoc}. Diese Eigenschaft der Funktion ist auch der Grund, weshalb für Status und Statement eigene Modelle erstellt werden müssen, da das Sequential-Modell nur eine Ausgabeschicht
-erlaubt und es somit nicht möglich ist mit dieser Funktion zwei Kategorien vorherzusagen. 
+erlaubt und es somit nicht möglich ist, mit dieser Funktion zwei Kategorien vorherzusagen. 
 
 Die Auswahl der Aktivierungsfunktion der Ausgabeschicht ist abhängig von der Aufgabe des Modells. 
-\glqq Softmax\grqq{} bietet sich zum Beispiel ideal als Möglichkeit zur Klassifikation an, wenn mehrere verschiedene Klassifizierungen vorhanden sind. Wenn nur zwei verschiedene Zustände möglich sind, also ein binäres Klassifikationsproblem vorliegt, würde sich als Aktivierungsfunktion
-eine Sigmoidfunktion anbieten, da diese beliebige Werte einen Ausgabebereich zwischen null und eins zuordnet \cite[vgl. S.100]{DL_PY}.
+\glqq Softmax\grqq{} bietet sich zum Beispiel ideal als Möglichkeit zur Klassifikation an, wenn mehrere verschiedene Klassifizierungen vorhanden sind. Wenn nur zwei verschiedene Zustände möglich sind, 
+also ein binäres Klassifikationsproblem vorliegt, würde sich als Aktivierungsfunktion eine Sigmoidfunktion anbieten, da diese beliebige Werte einen Ausgabebereich zwischen null und eins 
+zuordnet \cite[vgl. S.100]{DL_PY}.
 
 \begin{lstlisting}[language = python, caption={Zusammenfassung des Modells},captionpos=b, label = lst:ModellSummary, float, floatplacement=H]
     model.summary()
@@ -62,11 +63,11 @@ Die zweite Dimension wird bestimmt durch die Anzahl an Neuronen in einer Schicht
 
 Je nach Anwendungsfall würden andere Schichten als die Dense-Layer infrage kommen. Stehen die Daten in einem sequentiellen Zusammenhang, beispielsweise eine Zeitreihe von Wetterdaten, dann würden
 die sogenannten LSTM-Layer infrage kommen. LSTM steht für Long Short-Term-Memory(auf Deutsch: langes Kurzzeitgedächtnis) und diese Art von Schicht ist in der Lage Informationen mehrere Zeitschritte
-lang zu erhalten \cite[vgl. S.260]{DL_PY}. Bei der Computer Vision werden häufig CNNs, also Convolutional Neuronal Networks, genutzt. Ein CNN besteht dabei nicht aus Dense-Layern, wie in diesem 
+lang zu erhalten \cite[vgl. S.260]{DL_PY}. Bei der Computer Vision werden häufig CNNs (Convolutional Neuronal Networks) genutzt. Ein CNN besteht dabei nicht aus Dense-Layern, wie in diesem 
 Anwendungsfall, sondern aus Convolutional-Layern. Diese Schichten können zum Beispiel lokale Muster in Bildern erlernen und diese in neuen Bildern wiedererkennen, auch wenn sie nicht an derselben Stelle
 sind \cite[vgl. S.164]{DL_PY}. Diese Schichten werden also in anderen Anwendungsfällen genutzt, für diesen Anwendungsfall eignen sich jedoch die Dense-Layer am besten.    \\
 
-Bevor das Modell mit den Daten angelernt werden kann, müssen zunächst noch die Verlustfunktion und ein Optimierer ausgewählt werden. Da der Aufgabentyp eine Single-Lable-Mehrfachklassifizierung 
+Bevor das Modell mit den Daten angelernt werden kann, müssen zunächst noch die Verlustfunktion und ein Optimierer ausgewählt werden. Da der Aufgabentyp eine Single-Label-Mehrfachklassifizierung 
 ist, also eine Klassifizierung wo eine Klasse aus mehreren Klassen gewählt werden muss, wird als Verlustfunktion die kategorische Kreuzentropie genutzt. 
 Eine Kreuzentropie misst die Differenz zwischen den vorhergesagten Wahrscheinlichkeiten und dem tatsächlichen Wert \cite[vgl. S.102]{DL_PY}.
 Bei der kategorischen Kreuzentropie wird erwartet, dass die Ausgabewerte in der One-Hot-Codierung vorliegen. Sind die Ausgabewerte mit dem Label-Encoding codiert,
@@ -97,7 +98,7 @@ Nun ist das Modell fertig konfiguriert und kann auf den Trainingsdaten trainiert
 Zum Trainieren des Modells mit den vorher definierten und codierten Daten wird die fit()-Methode genutzt. Dieser Methode werden die Ein- und Ausgabewerte übergeben, mit dem das Modell trainiert werden soll.
 Weitere Parameter sind:
 \begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
-    \item[batch\_size] Anzahl an Trainingsbeispielen, bevor die Gewichte des \ac{NN} geupdatet werden \cite{KerasDoc}
+    \item[batch\_size] Anzahl an Trainingsbeispielen, bevor die Gewichte des \ac{NN}~geupdatet werden \cite{KerasDoc}
     \item[epochs] Anzahl an Iterationen über den gesamten Trainingsdatensatz \cite{KerasDoc}
     \item[verbose] Bestimmt die Menge an Terminalausgaben \cite{KerasDoc}
     \item[validation\_split] Anteil des Trainingsdatensatzes, der zum Testen benutzt werden soll \cite{KerasDoc}

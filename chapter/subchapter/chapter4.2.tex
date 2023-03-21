@@ -9,16 +9,16 @@ Dabei muss der Eintrag drei Bedingungen erfüllen:
 \begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
     \item \glqq Type\grqq{} muss den Wert \glqq Real\grqq{} besitzen
         \begin{itemize}[itemindent=0cm]
-            \item Projekte mit dem \glqq Type\grqq{} \glqq Real\grqq{} befinden sich nicht mehr in der Angebotsphase
+            \item Projekte mit dem \glqq Type\grqq{} \glqq Real\grqq{} befinden sich in der Projektabwicklungsphase
         \end{itemize}
     \item \glqq Location\grqq{} muss den Wert \glqq BWG\grqq{} besitzen
         \begin{itemize}[itemindent=0cm]
-            \item \glqq BWG\grqq{} steht hierbei für den Standort Braunschweig
+            \item \glqq BWG\grqq{} steht hierbei für die \ac{RM} Datenbank Braunschweig
         \end{itemize}
     \item \glqq Offset\grqq{} muss den Wert \glqq path\grqq{} besitzen
         \begin{itemize}[itemindent=0cm]
             \item stellt sicher, dass der Eintrag zum richtigen Projekt gehört
-            \item Es existieren mehrere Projekte mit dem Namen \glqq /ML Realization Projects Algeria\grqq{}, im Datensatz ist damit das Projekt \glqq /20006\_ML\_BM\_Boughezoul\_MSila\grqq{} gemeint
+            \item In einem Land existieren mehrere Projekte mit demselben Namen, im Datensatz ist damit jedoch ein bestimmtes Projekt gemeint, die Namen mussten hier anonymisiert werden
         \end{itemize}
 \end{enumerate}
 Das Prüfen dieser Bedingungen ist eingebettet in einen try-except-Block. Der try-except-Block sorgt dafür, dass eine Fehlermeldung auftritt, falls in der Access-Datenbank ein Eintrag nicht gefunden wird.
@@ -28,10 +28,10 @@ Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in 
     accessDB = pd.read_xml(".../Input_BWG_Combined_Access.xml")
     for path in paths:
         try:
-            if(path == "/ML Realization Projects Algeria"):
+            if(path == "..."):
                 result = accessDB.loc[(accessDB['Type'] == "Real") 
                 & (accessDB['Location'] == "BWG") 
-                & (accessDB['Offset'] == "/ML Realization Projects Algeria/20006_ML_BM_Boughezoul_MSila")].iloc[0]
+                & (accessDB['Offset'] == "...")].iloc[0]
             else:
                 result = accessDB.loc[(accessDB['Type'] == "Real") 
                 & (accessDB['Location'] == "BWG") 
@@ -39,7 +39,7 @@ Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in 
         except:
             print(str(path) + " has no entry in the AccessDB!")
 \end{lstlisting}
-\glqq result\grqq{} enthält nun alle Attribute über das Projekt, welche in der Access-Datenbank vorhanden sind. Die relevanten Informationen müssen nun dem ursprünglichen 
+\glqq result\grqq{} enthält nun alle Attribute über das Projekt, welche in der Access-Datenbank vorhanden sind. Diese relevanten Informationen müssen nun dem ursprünglichen 
 Datensatz hinzugefügt werden. Noch in derselben Schleife wie im Quellcode \ref*{lst:ImportAccess}, werden dem Datensatz neue Spalte hinzugefügt und mit den Werten aus der 
 Access-Datenbank gefüllt. Quellcode \ref*{lst:addData} zeigt in Zeile drei ein Beispiel dafür. Durch diese Zeile werden alle Zeilen aus dem Datensatz aktualisiert, 
 die in der \glqq Path\grqq{}-Spalte den aktuellen \glqq path\grqq{}-Wert haben. Der Wert der neuen Spalte wird dabei aus der entsprechenden Spalte von \glqq result\grqq{} übernommen.
@@ -55,19 +55,19 @@ wird vor die Versionsbezeichnung noch der Name des Produkts gestellt, damit sich
         df['ProductVersion'] 
         = df["Product"].str.cat(df["Version"], sep = "-")
 \end{lstlisting}
-Das Ergebnis dieser Schritte ist ein Datensatz in Form eines Dataframes mit 14.572 Zeilen und 11 verschiedenen Spalten. Diese zusätzlichen Daten wurden gesammelt, um die Ähnlichkeit von Projekten 
-bestimmen zu können. Je stärker sich Projekte ähneln, desto eher werden die Anwendungsregeln der Projekte ähnlich bewertet. Die Spalten dieses Dataframes sind die folgenden und dienen, bis auf die 
-Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells.
+Das Ergebnis dieser Schritte ist ein Datensatz in Form eines Dataframes mit 14.572 Zeilen und 11 verschiedenen Spalten. Diese zusätzlichen Daten wurden gesammelt, um Ähnlichkeiten von Projekten 
+nutzen zu können. Je stärker sich Projekte ähneln, desto eher werden die Anwendungsregeln der Projekte ähnlich bewertet. Die Spalten dieses Dataframes sind die folgenden und dienen, bis auf die 
+Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells:
 \begin{description}[style=multiline,leftmargin=4cm,font=\bfseries, nolistsep]
     \item[Text] Text der Anwendungsregel
     \item[Product] Name des Produkts
     \item[ProductVersion] Version des Produkts
-    \item[Project\_name] Name des Projekts
+    \item[Project\_name] Name des Projekts, das die Anwendungsregel bearbeiten musste
     \item[section] Sektion, die das Projekt durchführt, zum Beispiel ML für MainLine oder MT für MassTransit
     \item[Project\_category] Kategorie des Projekts, gibt Aufschluss über die Größe eines Projekts
-    \item[BS] ???
-    \item[RU] Region in der das Projekt durchgeführt wird
-    \item[ProjectYear] Jahr in dem das Projekt gestartet wurde
+    \item[BS] Business Segment, in dem das Projekt angesiedelt ist
+    \item[RU] Region, in der das Projekt durchgeführt wird
+    \item[ProjectYear] Jahr, in dem das Projekt gestartet wurde
     \item[Status] Status der Anwendungsregel
     \item[Statement] Begründung zum Status
 \end{description} 
@@ -81,11 +81,11 @@ aus kategorischen Attributen besteht, müssten einige Kategorien andere Werte be
 dass eine Zeile im Datensatz, die beispielsweise zu einem Projekt, das eigentlich der Kategorie \glqq A\grqq{} zugehört, unterschiedlichen Kategorien zugeordnet wird, 
 was dann aber zu einem Widerspruch im Datensatz führen könnte. Zudem könnten durch das Manipulieren des Datensatzes zufällige Strukturen und Zusammenhänge erzeugt werden,
 die in der Realität nicht existieren. Da der Datensatz relativ klein ist, könnte ein \ac{NN} dann diese falschen Strukturen erkennen und diese lernen. Dies wäre kritisch zu betrachten,
-da Anwendungsregeln sicherheitskritisch sein können. Deshalb wurde in dieser Arbeit davon abgesehen dieses Verfahren zu verwenden.
+da Anwendungsregeln sicherheitsrelevant sein können. Deshalb wurde in dieser Arbeit davon abgesehen, dieses Verfahren zu verwenden.
 
 \section{Codierung der Attribute}
 Im nächsten Schritt muss der Datensatz in eine Form gebracht werden, die für das Anlernen eines \ac{KI}-Modells geeignet ist. Die ausgewählten Attribute stellen alle Kategorien in 
-Textform oder als Jahreszahl dar. Beide Darstellungsformen sind ungeeignet um als Trainingsdatensatz zu dienen, da ein \ac{NN} mit numerischen Werten arbeitet. 
+Textform oder als Jahreszahl dar. Beide Darstellungsformen sind ungeeignet, um als Trainingsdatensatz zu dienen, da ein \ac{NN} mit numerischen Werten arbeitet. 
 Eine Möglichkeit zur Codierung von kategoriellen Attributen ist die One-Hot-Codierung. Dabei wird jeder Ausprägung eines Attributs eine eigene neue Spalte zugeordnet 
 und für jede Zeile hat nur eine Spalte den Wert 1, alle anderen Spalten nehmen den Wert 0 an. Die beiden nachfolgenden Tabellen zeigen anhand eines Beispiels die 
 One-Hot-Codierung des Attributs \glqq ProjectYear\grqq{}.
@@ -194,4 +194,4 @@ dem Produkt \glqq LZB700m\grqq{} 1 und so weiter.
 Im Vergleich zur One-Hot-Codierung besteht hier der Vorteil, dass nicht für jede Ausprägung eine neue Spalte hinzugefügt wird und 
 die Dimension des Datensatzes somit nicht größer wird. Der entscheidende Nachteil des Label-Encodings tritt jedoch auf, wenn die Ausprägungen nicht in einer Beziehung zueinander stehen.
 Durch das Zuweisen von aufsteigenden Integer-Werten erweckt diese Art der Codierung den Eindruck, dass die Beziehung \glqq SICAS ECC\grqq{} < \glqq LZB700m\grqq{} < \glqq SIMIS IS\grqq{} besteht,
-obwohl das gar nicht der Fall ist. Deshalb wurde in dieser Arbeit die One-Hot-Codierung genutzt.
+obwohl das gar nicht der Fall ist. Deshalb wurde in dieser Arbeit das Label-Encoding verworfen und stattdessen die One-Hot-Codierung genutzt.

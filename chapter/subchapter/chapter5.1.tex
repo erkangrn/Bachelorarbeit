@@ -91,8 +91,9 @@ Diese Kenngröße gibt an, wie oft Vorhersagen den One-Hot codierten Ausgabewert
 
 Nun ist das Modell fertig konfiguriert und kann auf den Trainingsdaten trainiert werden.
 
-\subsection{Trainieren des ersten Modells}
+\subsection{Training des Modells}
 \label{chap:TrainNN}
+
 Zum Trainieren des Modells mit den vorher definierten und codierten Daten wird die fit()-Methode genutzt. Dieser Methode werden die Ein- und Ausgabewerte übergeben, mit dem das Modell trainiert werden soll.
 Weitere Parameter sind:
 \begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
@@ -113,20 +114,136 @@ Für den Parameter \glqq verbose\grqq{} wurde der Wert zwei gewählt. Dieser sor
 Fortschrittsbalken ausgeben, ein Wert von null würde gar keine Ausgabe produzieren \cite{KerasDoc}.
 
 Da ein Datensatz niemals mit den Trainingsdaten getestet werden sollte, muss eine Aufteilung in Testdaten erfolgen. Wie in Kapitel \ref*{chap:Trainingssplit} erwähnt, kann der Testsplit
-während des Anlernens erfolgen. Dafür bietet Keras die Möglichkeit automatisch einen Teil der Trainingsdaten zum Testen zu benutzen. Diese werden dabei zufällig aus dem Datensatz ausgewählt.
+während des Anlernens erfolgen. Dafür bietet Keras die Möglichkeit automatisch einen Teil der Trainingsdaten zum Testen zu benutzen.
+In diesem Fall werden 25~\% des Datensatzes als Testdaten verwendet. Bei 17 Einträgen wären das 4,25 Einträge, die aber aufgerundet werden, also werden fünf Einträge 
+nicht zum Trainieren benutzt, sondern werden fürs Testen zurückgehalten.
 
 \begin{lstlisting}[language = python, caption={Trainieren des Modells},captionpos=b, label = lst:TrainModel, float, floatplacement=H]
     history = model.fit(trainX, trainYStatus,
                     batch_size=2,
                     epochs=50,
                     verbose=2,
-                    validation_split=0.4)
+                    validation_split=0.25)
 \end{lstlisting}
 
-Die Ausgabe des Trainingsprozesses kann dabei der Abbildung \ref*{fig:TrainModel} entnommen werden.
+\subsection{Testen des Modells}
+\label{chap:TestNN}
+
+Die Ausgabe des Trainingsprozesses kann dabei der Abbildung \ref*{fig:TrainModel} entnommen werden. Da der \glqq verbose\grqq{}-Wert auf zwei gesetzt wurde, wird für jede Epoche eine Ausgabe
+generiert. Diese Ausgabe beinhaltet die benötigte Zeit für jede Epoche sowie den Wert der Verlustfunktion und der gewählten Kenngröße für die Trainings- und Testdaten.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{abbildungen/TrainAusgabe.png}
     \caption{Ausgabe des Trainingsprozesses}
     \label{fig:TrainModel}
+\end{figure}
+Der Wert der Verlustfunktion sowie die Genauigkeit können auch zusätzlich visualisiert werden, um den Verlauf darzustellen. Dazu wird das Objekt genutzt, welches bei Aufruf der 
+fit()-Methode im Quellcode \ref*{lst:TrainModel} zurückgegeben und in der Variable \glqq history\grqq{} gespeichert wurde. Dieses Objekt beinhaltet 
+den Wert der Verlustfunktion und der Genauigkeit für die Trainings- und Testdaten. Mithilfe der Matplotlib-Bibliothek können diese Werte dann in einem Liniendiagramm visualisiert werden,
+der Quellcode \ref*{lst:PlotLoss} zeigt die benötigten Schritte für das Erstellen eines Liniendiagramms für die Verlustfunktion, die Genauigkeit kann jedoch äquivalent dazu 
+dargestellt werden. Neben der Übergabe der Daten und der dazugehörigen Label können auch ein Titel und eine Achsenbeschriftung hinzugefügt werden, wie Zeile drei und vier des Quellcodes zeigen.
+\begin{lstlisting}[language = python, caption={Trainieren des Modells},captionpos=b, label = lst:PlotLoss, float, floatplacement=H]
+    plt.plot(history.history['loss'], label = 'Training loss')
+    plt.plot(history.history['val_loss'], label = 'Validation loss')
+    plt.title('Wert der Verlustfunktion')
+    plt.xlabel('Epochen')
+    plt.legend()
+\end{lstlisting}
+Abbildungen \ref*{fig:plotLoss} und \ref*{fig:plotAcc} zeigen die beiden erstellten Diagramme. Dort ist zu erkennen, dass mit zunehmender Anzahl an Epochen der Wert der Verlustfunktion abnimmt,
+während die Genauigkeit zunimmt, was ein idealer Fall wäre. Die Werte sind jedoch mit Vorsicht zu betrachten, da sie nur ein Beispiel für ein Modell darstellen.
+Da der Datensatz sehr klein ist, kann es sein, dass zufällig Testdaten ausgewählt wurden, die das Modell leichter erkennen konnte, bei erneuter Ausführung könnten die 
+Werte deshalb stark schwanken.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{abbildungen/PlotLoss.png}
+    \caption{Plot der Verlustfunktion}
+    \label{fig:plotLoss}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{abbildungen/PlotAcc.png}
+    \caption{Plot der Genauigkeit}
+    \label{fig:plotAcc}
+\end{figure}
+
+\subsection{K-Cross-Validierung}
+\label{chap:kCross}
+
+Eine Möglichkeit zur besseren Beurteilung eines Modells wäre die k-cross-Validierung. Bei diesem Verfahren werden die Daten in k Teilmengen aufgeteilt
+und k Modelle erstellt. Jedes Modell wird mit k-1 Teilmengen trainiert, die letzte Teilmenge wird zum Testen verwendet \cite[vgl. S.121f.]{DL_PY}. Abbildung \ref*{fig:kCross} zeigt
+schematisch das Verfahren für k=3. Das endgültige Ergebnis ist definiert als der Durchschnitt der einzelnen Teilergebnisse der Modelle. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{abbildungen/k_cross.pdf}
+    \caption{k-cross-Validierung}
+    \label{fig:kCross}
+\end{figure}
+
+Um eine k-cross-Validierung durchzuführen, müssen nacheinander Modelle erstellt werden, die mit verschiedenen Teilmengen des Datensatzes trainiert und getestet werden.
+Die dafür benötigten Schritte werden im Quellcode \ref*{lst:kCross} gezeigt.
+Dafür wird als Erstes definiert, wie viele Modelle und Teilmengen genutzt werden sollen, hier wird sich für vier entschieden. 
+Danach wird eine Schleife viermal durchlaufen und bei jeder Iteration wird der Trainings- und Testdatensatz neu definiert. Der Testdatensatz besteht dabei 
+je aus 25~\% des Datensatzes, in der ersten Iteration aus den ersten 25~\%, bei der zweiten die nächsten 25~\% und so weiter. Der Trainingsdatensatz beinhaltet die restlichen
+Daten. Innerhalb der Schleife werden danach die Daten wieder in Ein- und Ausgabewerte aufgeteilt, dieses Mal müssen auch die Testdaten entsprechend aufgeteilt werden.
+Danach kann wieder das Modell definiert und angelernt werden. Da der Testdatensatz nun selber definiert wurde, kann nicht mehr auf die automatische Aufteilung zurückgegriffen werden.
+Jetzt müssen die Testdaten, aufgeteilt in Ein- und Ausgabewert der Methode übergeben. Zudem wurde hier die Anzahl an Epochen auf 250 erhöht, damit beobachtet werden kann,
+wie das Modell sich bei steigender Anzahl an Epochen verhält. Das zurückgegebene Objekt der fit()-Methode wird genutzt, um die vier verschiedene Werte jeweils in Listen speichern 
+zu können, damit der Verlauf wieder visualisiert werden kann.
+\begin{lstlisting}[language = python, caption={Aufteilung des Datensatzes in Teilmengen},captionpos=b, label = lst:kCross, float, floatplacement=H]
+    num_epochs = 250
+    k = 4
+    for i in range(k):
+        start = int(i/k * len(df_training))
+        end = int((i/k + 0.25) * len(df_training))
+        val_data = df_training.iloc[start:end] 
+        train_data = df_training.drop(range(start,end))
+        #...
+        history = model.fit(trainX, trainYStatus,
+                            batch_size=2,
+                            epochs=num_epochs,
+                            verbose=2,
+                            validation_data=(valX, valYStatus))
+        all_val_loss.append(history.history['val_loss'])
+        all_loss.append(history.history['loss'])
+        all_acc.append(history.history['categorical_accuracy'])
+        all_val_acc.append(history.history['val_categorical_accuracy'])
+\end{lstlisting}
+
+Der Wert der Verlustfunktion sowie die Genauigkeit müssen noch gemittelt werden. Dafür wird, wie der Quellcode \ref*{lst:Durchschnitt} zeigt, der Durchschnitt 
+der vier Kenngrößen über pro Epoche gebildet. Mit den Werten können im nächsten Schritt wieder Diagramme zur Visualisierung erstellt werden.
+\begin{lstlisting}[language = python, caption={Mitteln der Ergebnisse \cite{DL_PY}},captionpos=b, label = lst:Durchschnitt, floatplacement=H]
+    avg_val_loss = [np.mean([x[i] for x in all_val_loss])
+                    for i in range(num_epochs-1)]
+    avg_loss     = [np.mean([x[i] for x in all_loss])
+                        for i in range(num_epochs-1)]
+    avg_acc      = [np.mean([x[i] for x in all_acc])
+                        for i in range(num_epochs-1)]
+    avg_val_acc  = [np.mean([x[i] for x in all_val_acc])
+                        for i in range(num_epochs-1)]
+\end{lstlisting}
+Die Abbildungen \ref*{fig:kCrossLoss} und \ref*{fig:kCrossAcc} zeigen das Ergebnis der k-cross-Validierung. Bei der Verlustfunktion wird deutlich, dass
+der Wert der Verlustfunktion auf den Testdaten bis ca. 80 Epochen leicht abnimmt, danach aber ansteigend, während der Wert der Verlustfunktion 
+auf den Trainingsdaten abnimmt und gegen ca. 0,2 konvergiert. Das Ansteigen auf den Testdaten und Abnehmen auf den Trainingsdaten ist ein Zeichen dafür,
+dass das Modell die Trainingsdaten auswendig lernt und die Generalisierungsfähigkeit des Modells darunter leidet und somit Overfitting auftritt.
+
+Das Diagramm zur Genauigkeit zeigt, dass mehr Epochen nicht automatisch ein besseres Ergebnis liefert. Auf den Testdaten ändert sich die Genauigkeit 
+ab der fünfzigsten Epoche nicht mehr wesentlich und stagniert ab Epoche 150. Im Vergleich zur Genauigkeit in der Abbildung \ref*{fig:plotAcc} 
+ist der Durchschnitt der Genauigkeit von vier Modellen geringer. Daran kann erkannt werden, dass die Testdaten bei \ref*{fig:plotAcc} für das Modell günstig 
+waren und das Modell auf diesen Daten gute Leistungen bringen konnte, was jedoch nicht so viel über die Leistung auf anderen Daten aussagt, da der Datensatz zu klein ist. 
+Gerade in diesem Fall bietet sich die k-cross-Validierung sehr an und bietet wesentlich verlässlichere Kenngrößen als das Testen mit einem Modell auf einem 
+Testdatensatz \cite[vgl. S.123]{DL_PY}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{abbildungen/kCrossLoss.png}
+    \caption{Verlustfunktion nach k-cross-Validierung}
+    \label{fig:kCrossLoss}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{abbildungen/kCrossAcc.png}
+    \caption{Genauigkeit nach k-cross-Validierung}
+    \label{fig:kCrossAcc}
 \end{figure}

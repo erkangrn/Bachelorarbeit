@@ -17,3 +17,4 @@ Testsplit
 Skiplist
 LSTM-Layer
 Dense-Layer
+k-cross-Validierung

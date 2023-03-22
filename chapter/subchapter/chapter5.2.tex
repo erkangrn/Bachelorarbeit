@@ -102,7 +102,8 @@ Die Lernrate des Optimierers kann bei Aufruf der compile()-Methode festgelegt we
 
 \begin{lstlisting}[language = python, caption={Wahl der Lernrate},captionpos=b, label = lst:Learnrate, floatplacement=H]
     model.compile(optimizer=optimizers.Adam(learning_rate=0.0001),
-        loss={'status': CategoricalCrossentropy(), 'statement': CategoricalCrossentropy()},
+        loss   ={'status': CategoricalCrossentropy(), 
+                 'statement': CategoricalCrossentropy()},
         metrics=['categorical_accuracy'])
 \end{lstlisting}
 
@@ -122,3 +123,31 @@ Nachdem mehrere Optimierer ausprobiert und sich für einen entschieden wurde, so
 gegebenenfalls ein besseres Ergebnis erzielt werden kann. Ähnlich wie bei der Wahl des Optimierers im vorherigen Schritt, wird dies wieder durch Ausprobieren und 
 anschließendes Visualisieren entschieden. Dabei kann die Anzahl an Schichten sowie die Anzahl an Neuronen in einer Schicht angepasst werden.
 Zudem kann geprüft werden ob mittels einer Dropout-Regularisierung ein besseres Ergebnis erzielt werden kann. 
+Folgende Modellarchitekturen werden dargestellt:
+\begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
+    \item[M1] Modell mit zwei versteckten Schichten (32, 16 Neuronen)
+    \item[M2] besonders breites und tiefes Modell mit vier Schichten (256, 128, 64, 32 Neuronen) mit Dropout-Regularisierung
+    \item[M3] besonders breites und tiefes Modell mit vier Schichten (256, 128, 64, 32 Neuronen) ohne Dropout-Regularisierung
+    \item[M4] Modell mit einer versteckten Schicht mit 16 Neuronen
+    \item[M5] Modell mit einer versteckten Schicht mit 512 Neuronen
+\end{description}
+Ein Beispiel für eine Dropout-Regularisierung zeigt der Quellcode \ref*{lst:Dropout}. Die Dropout-Klasse erwartet als Parameter einen Wert zwischen null und eins. 
+Dieser Wert stellt den Anteil an Neuronen dar, dessen Ausgabe während des Trainings auf null gesetzt wird.
+\begin{lstlisting}[language = python, caption={Wahl der Lernrate},captionpos=b, label = lst:Learnrate, floatplacement=H]
+    x = Dense(256, activation='relu')(inputs)
+    x = Dropout(0.2)(x)
+    x = Dense(128, activation='relu')(x)
+\end{lstlisting}
+Der Verlauf des mittleren Wertes der Verlustfunktion wird in Abbildung \ref*{fig:LossModelle} für alle fünf Modelle dargestellt. Zu erkennen ist, dass die beiden Modelle mit 
+der geringsten Anzahl an Neuronen (M1 und M4) die besten Ergebnisse erzielen, während die beiden Modelle mit der höchsten Komplexität (M2 und M3) die schlechtesten Ergebnisse
+erzielen. Der Grund dafür ist vermutlich, dass die komplexeren Modelle zu komplex sind um das Problem zu lösen. Zudem wird der kleine Datensatz ebenfalls dafür sorgen,
+dass simplerer Modelle in diesem Anwendungsfall bessere Leistungen erzielen. Auch die Dropout-Regularisierung bringt in diesem Anwendungsfall kein besseres Ergebnis. Das Minimum
+des Modells M1 lässt sich mit der argmin()-Methode der Numpy-Bibliothek bestimmen. Bei Epoche 23 hat M1 sein globales Minimum. Deshalb sollte dieses Modell weiterhin genutzt werden
+und beim Trainieren des Modells sollte als Anzahl an Epochen ein Wert um 23 gewählt werden, um ein bestmögliches Ergebnis in diesem Anwendungsfall zu erreichen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{abbildungen/LossModelle.png}
+    \caption{Vergleich verschiedener Modellarchitekturen}
+    \label{fig:LossModelle}
+\end{figure}

@@ -4,7 +4,8 @@
 In Kapitel \ref*{chap:DefineNN} wurde gezeigt, wie ein Modell für die Vorhersage für den Statuswert aussehen kann. Diese Schritte müssten ebenfalls für das dazugehörige Statement
 durchlaufen werden. Das Ergebnis wären zwei unabhängige Modelle, die beide jeweils einzeln und nacheinander trainiert werden müssen. Diese Aufteilung ist nötig gewesen,
 da die \glqq Sequential\grqq{}-Klasse es nicht erlaubt mehrere Ausgabeschichten zu definieren und da die \glqq softmax\grqq{}-Funktion allen Ausgabeneuronen 
-einen Wert zuordnet, die addiert eins ergeben. Um dieses Problem zu umgehen, kann statt der \glqq Sequential\grqq{}-Klasse von Keras, die funktionale Keras-\ac{API} genutzt werden. 
+einen Wert zuordnet, die addiert eins ergeben. Um dieses Problem zu umgehen, kann statt der \glqq Sequential\grqq{}-Klasse von Keras, 
+ein \ac{API}, nämlich die funktionale Keras-\ac{API} verwendet werden. 
 Dadurch wird es ermöglicht Modelle zu definieren, die mehr als eine Eingabe- oder Ausgabeschicht haben oder Verzweigungen zwischen den Layern besitzen \cite[vgl. S.299f.]{DL_PY}. 
 Abbildung \ref*{fig:FunktionaleAPI} zeigt den Aufbau eines \ac{NN} mit zwei Ausgabeschichten. Genau so ein Modell wird im nächsten Schritt mit der funktionalen Keras-\ac{API} erstellt.
 
@@ -53,7 +54,7 @@ verglichen werden.
 \end{lstlisting}
 
 Anders als bei der Erstellung des Modells mit der \glqq Sequential\grqq{}-Klasse, wird hier die Dimension der Eingabedaten nicht in der ersten Schicht als Parameter übergeben,
-sondern wird noch vorher festgelegt. Wie in der Zusammenfassung des Modells jedoch zu sehen ist, stellt \glqq Input\grqq{} jedoch keine wirkliche erste Schicht dar,
+sondern wird noch vorher festgelegt. Wie in der Zusammenfassung des Modells zu sehen ist, stellt \glqq Input\grqq{} jedoch keine wirkliche erste Schicht dar,
 da sie keine Parameter besitzt. Bis auf diesen Unterschied ist die Zusammenfassung beider Modelle gleich. Der Prozess des Trainierens und die Auswahl der Verlustfunktion
 sowie des Optimierers sind ebenfalls identisch. Deshalb sind beide Modelle in der Anwendung äquivalent. Nun muss noch eine weitere zusätzliche Ausgabeschicht hinzugefügt werden,
 welche das Statement zur Bewertung der Anwendungsregel prognostizieren soll. Dafür werden Zeile vier und fünf des Quellcodes \ref*{lst:SeqToFunc} überarbeitet, was 

@@ -140,7 +140,7 @@ generiert. Diese Ausgabe beinhaltet die benötigte Zeit für jede Epoche sowie d
 \end{figure}
 Der Wert der Verlustfunktion sowie die Genauigkeit können auch zusätzlich visualisiert werden, um den Verlauf darzustellen. Dazu wird das Objekt genutzt, welches bei Aufruf der 
 fit()-Methode im Quellcode \ref*{lst:TrainModel} zurückgegeben und in der Variable \glqq history\grqq{} gespeichert wurde. Dieses Objekt beinhaltet 
-den Wert der Verlustfunktion und der Genauigkeit für die Trainings- und Testdaten. Mithilfe der Matplotlib-Bibliothek können diese Werte dann in einem Liniendiagramm visualisiert werden,
+den Wert der Verlustfunktion und die Genauigkeit für die Trainings- und Testdaten. Mithilfe der Matplotlib-Bibliothek können diese Werte dann in einem Liniendiagramm visualisiert werden,
 der Quellcode \ref*{lst:PlotLoss} zeigt die benötigten Schritte für das Erstellen eines Liniendiagramms für die Verlustfunktion, die Genauigkeit kann jedoch äquivalent dazu 
 dargestellt werden. Neben der Übergabe der Daten und der dazugehörigen Label können auch ein Titel und eine Achsenbeschriftung hinzugefügt werden, wie Zeile drei und vier des Quellcodes zeigen.
 \begin{lstlisting}[language = python, caption={Trainieren des Modells},captionpos=b, label = lst:PlotLoss, float, floatplacement=H]
@@ -186,10 +186,10 @@ Um eine k-cross-Validierung durchzuführen, müssen nacheinander Modelle erstell
 Die dafür benötigten Schritte werden im Quellcode \ref*{lst:kCross} gezeigt.
 Dafür wird als Erstes definiert, wie viele Modelle und Teilmengen genutzt werden sollen, hier wird sich für vier entschieden. 
 Danach wird eine Schleife viermal durchlaufen und bei jeder Iteration wird der Trainings- und Testdatensatz neu definiert. Der Testdatensatz besteht dabei 
-je aus 25~\% des Datensatzes, in der ersten Iteration aus den ersten 25~\%, bei der zweiten die nächsten 25~\% und so weiter. Der Trainingsdatensatz beinhaltet die restlichen
+aus 25~\% des Datensatzes, in der ersten Iteration aus den ersten 25~\%, bei der zweiten die nächsten 25~\% und so weiter. Der Trainingsdatensatz beinhaltet die restlichen
 Daten. Innerhalb der Schleife werden danach die Daten wieder in Ein- und Ausgabewerte aufgeteilt, dieses Mal müssen auch die Testdaten entsprechend aufgeteilt werden.
 Danach kann wieder das Modell definiert und angelernt werden. Da der Testdatensatz nun selber definiert wurde, kann nicht mehr auf die automatische Aufteilung zurückgegriffen werden.
-Jetzt müssen die Testdaten, aufgeteilt in Ein- und Ausgabewert der Methode übergeben. Zudem wurde hier die Anzahl an Epochen auf 250 erhöht, damit beobachtet werden kann,
+Jetzt müssen die Testdaten, aufgeteilt in Ein- und Ausgabewerte, der Methode übergeben werden. Zudem wurde hier die Anzahl an Epochen auf 250 erhöht, damit beobachtet werden kann,
 wie das Modell sich bei steigender Anzahl an Epochen verhält. Das zurückgegebene Objekt der fit()-Methode wird genutzt, um die vier verschiedene Werte jeweils in Listen speichern 
 zu können, damit der Verlauf wieder visualisiert werden kann.
 \begin{lstlisting}[language = python, caption={Aufteilung des Datensatzes in Teilmengen},captionpos=b, label = lst:kCross, float, floatplacement=H]
@@ -213,7 +213,7 @@ zu können, damit der Verlauf wieder visualisiert werden kann.
 \end{lstlisting}
 
 Der Wert der Verlustfunktion sowie die Genauigkeit müssen noch gemittelt werden. Dafür wird, wie der Quellcode \ref*{lst:Durchschnitt} zeigt, der Durchschnitt 
-der vier Kenngrößen über pro Epoche gebildet. Mit den Werten können im nächsten Schritt wieder Diagramme zur Visualisierung erstellt werden.
+der vier Kenngrößen pro Epoche gebildet. Mit den Werten können im nächsten Schritt wieder Diagramme zur Visualisierung erstellt werden.
 \begin{lstlisting}[language = python, caption={Mitteln der Ergebnisse \cite{DL_PY}},captionpos=b, label = lst:Durchschnitt, floatplacement=H]
     avg_val_loss = [np.mean([x[i] for x in all_val_loss])
                     for i in range(num_epochs-1)]
@@ -229,7 +229,7 @@ der Wert der Verlustfunktion auf den Testdaten bis ca. 80 Epochen leicht abnimmt
 auf den Trainingsdaten abnimmt und gegen ca. 0,2 konvergiert. Das Ansteigen auf den Testdaten und Abnehmen auf den Trainingsdaten ist ein Zeichen dafür,
 dass das Modell die Trainingsdaten auswendig lernt und die Generalisierungsfähigkeit des Modells darunter leidet und somit Overfitting auftritt.
 
-Das Diagramm zur Genauigkeit zeigt, dass mehr Epochen nicht automatisch ein besseres Ergebnis liefert. Auf den Testdaten ändert sich die Genauigkeit 
+Das Diagramm zur Genauigkeit zeigt, dass mehr Epochen nicht automatisch ein besseres Ergebnis liefern. Auf den Testdaten ändert sich die Genauigkeit 
 ab der fünfzigsten Epoche nicht mehr wesentlich und stagniert ab Epoche 150. Im Vergleich zur Genauigkeit in der Abbildung \ref*{fig:plotAcc} 
 ist der Durchschnitt der Genauigkeit von vier Modellen geringer. Daran kann erkannt werden, dass die Testdaten bei \ref*{fig:plotAcc} für das Modell günstig 
 waren und das Modell auf diesen Daten gute Leistungen bringen konnte, was jedoch nicht so viel über die Leistung auf anderen Daten aussagt, da der Datensatz zu klein ist. 

@@ -39,7 +39,7 @@ Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in 
         except:
             print(str(path) + " has no entry in the AccessDB!")
 \end{lstlisting}
-\glqq result\grqq{} enthält nun alle Attribute über das Projekt, welche in der Access-Datenbank vorhanden sind. Diese relevanten Informationen müssen nun dem ursprünglichen 
+\glqq result\grqq{} enthält nun alle Attribute über das Projekt, die in der Access-Datenbank vorhanden sind. Diese relevanten Informationen müssen nun dem ursprünglichen 
 Datensatz hinzugefügt werden. Noch in derselben Schleife wie im Quellcode \ref*{lst:ImportAccess}, werden dem Datensatz neue Spalte hinzugefügt und mit den Werten aus der 
 Access-Datenbank gefüllt. Quellcode \ref*{lst:addData} zeigt in Zeile drei ein Beispiel dafür. Durch diese Zeile werden alle Zeilen aus dem Datensatz aktualisiert, 
 die in der \glqq Path\grqq{}-Spalte den aktuellen \glqq path\grqq{}-Wert haben. Der Wert der neuen Spalte wird dabei aus der entsprechenden Spalte von \glqq result\grqq{} übernommen.

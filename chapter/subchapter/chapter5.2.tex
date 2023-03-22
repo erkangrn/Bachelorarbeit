@@ -72,4 +72,53 @@ den beiden Schichten unterschiedliche Verlustfunktionen zuzuweisen \cite[vgl. S.
 wird das nicht benötigt. 
 
 Das Übersetzen der beiden Modelle mit der \glqq Sequential\grqq{}-Klasse in ein Modell mit der funktionalen \ac{API} hat den Vorteil, dass nun nur noch ein Modell 
-erstellt und trainiert werden muss, was die Laufzeit des Modells halbiert und zudem Zeilen an Code spart. 
+erstellt und trainiert werden muss, was die Laufzeit des Modells halbiert und zudem Zeilen an Code spart.
+
+\subsection{Wahl des Optimierers}
+
+Wie in Kapitel \ref*{chap:DefineNN} beschrieben, ist es schwierig vorher zu bestimmen, welcher Optimierer die beste Performance liefert. Die Herangehensweise
+um den idealen Optimierer zu finden ist daher Trial-and-Error. Dafür wird mit einer k-cross-Validierung der mittlere Wert der Verlustfunktion für den Statuswert
+über mehrere Epochen und mit verschiedenen Optimierern visualisiert und anschließend geprüft, welcher Optimierer den niedrigsten Wert liefert. Es werden die Optimierer 
+\glqq Adam\grqq{}, \glqq RMSprop\grqq{} und \glqq SGD\grqq{} ausprobiert.
+Hier wird nur der Statuswert betrachtet, da das Statement bei den meisten Anwendungsregeln einzigartig ist und somit selten eine genaue Übereinstimmung vorhanden ist.
+Deshalb ist beim Statement die Genauigkeit in der Regel null und darum ist der Wert der Verlustfunktion für das Statement nicht aussagekräftig.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{abbildungen/Optimierer/LossOptimierer.png}
+    \caption{Vergleich verschiedener Optimierer}
+    \label{fig:LossOptimierer}
+\end{figure}
+
+Das Diagramm in der Abbildung \ref*{fig:LossOptimierer} zeigt den Verlauf des mittleren Werts der Verlustfunktion über mehrere Epochen. Dort ist zu erkennen, dass 
+der Adam-Optimierer insgesamt den niedrigsten Wert erreicht, weshalb dieser im Folgenden genutzt wird. Jedoch
+unterscheiden sich die Werte mit den verschiedenen Optimierern bis zur ca. Epoche 50 nicht stark, weshalb davon auszugehen ist, dass die Wahl des Optimierers in diesem spezifischen
+Anwendungsfall keine allzu große Rolle spielt.
+
+Neben der Auswahl des Optimierers kann ebenfalls die Lernrate eine Rolle spielen und deshalb sollten verschiedene Lernraten ausprobiert werden. Die 
+standardmäßige Lernrate des Adam-Optimierers beträgt 0,001 \cite{KerasDoc}. Als weitere Lernraten werden 0,01 und 0,0001 gewählt, um zu prüfen, wie 
+sich der Wert der Verlustfunktion ändert, wenn eine größere bzw. kleinere Lernrate gewählt wird.
+Die Lernrate des Optimierers kann bei Aufruf der compile()-Methode festgelegt werden, wie der Quellcode \ref*{lst:Learnrate} zeigt.
+
+\begin{lstlisting}[language = python, caption={Wahl der Lernrate},captionpos=b, label = lst:Learnrate, floatplacement=H]
+    model.compile(optimizer=optimizers.Adam(learning_rate=0.0001),
+        loss={'status': CategoricalCrossentropy(), 'statement': CategoricalCrossentropy()},
+        metrics=['categorical_accuracy'])
+\end{lstlisting}
+
+Abbildung \ref*{fig:LossLR} zeigt den Verlauf der Verlustfunktion mit den drei verschiedenen Lernraten. Deutlich zu erkennen ist, dass ein Vergrößern der Lernrate zu 
+einem wesentlich schlechteren Ergebnis führt. Die standardmäßige sowie die kleinere Lernrate ähneln sich in ihrem Verlauf, wobei die standardmäßige Lernrate
+ein tieferes Minimum erreicht, weshalb der Wert der Lernrate in diesem Fall nicht verändert werden sollte.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{abbildungen/Optimierer/LossLR.png}
+    \caption{Vergleich verschiedener Lernraten}
+    \label{fig:LossLR}
+\end{figure}
+
+\subsection{Anpassen der Modellarchitektur}
+Nachdem mehrere Optimierer ausprobiert und sich für einen entschieden wurde, sollte im nächsten Schritt noch geprüft werden, ob durch eine Anpassung der Modellarchitektur
+gegebenenfalls ein besseres Ergebnis erzielt werden kann. Ähnlich wie bei der Wahl des Optimierers im vorherigen Schritt, wird dies wieder durch Ausprobieren und 
+anschließendes Visualisieren entschieden. Dabei kann die Anzahl an Schichten sowie die Anzahl an Neuronen in einer Schicht angepasst werden.
+Zudem kann geprüft werden ob mittels einer Dropout-Regularisierung ein besseres Ergebnis erzielt werden kann. 

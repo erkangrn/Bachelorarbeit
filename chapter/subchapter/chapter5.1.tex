@@ -152,7 +152,7 @@ dargestellt werden. Neben der Übergabe der Daten und der dazugehörigen Label k
 \end{lstlisting}
 Abbildungen \ref*{fig:plotLoss} und \ref*{fig:plotAcc} zeigen die beiden erstellten Diagramme. Dort ist zu erkennen, dass mit zunehmender Anzahl an Epochen der Wert der Verlustfunktion abnimmt,
 während die Genauigkeit zunimmt, was ein idealer Fall wäre. Die Werte sind jedoch mit Vorsicht zu betrachten, da sie nur ein Beispiel für ein Modell darstellen.
-Da der Datensatz sehr klein ist, kann es sein, dass zufällig Testdaten ausgewählt wurden, die das Modell leichter erkennen konnte, bei erneuter Ausführung könnten die 
+Da der Datensatz sehr klein ist, kann es sein, dass zufällig Testdaten ausgewählt wurden, die das Modell leichter erkennen konnte. Bei erneuter Ausführung könnten die 
 Werte deshalb stark schwanken.
 
 \begin{figure}[H]
@@ -178,7 +178,7 @@ schematisch das Verfahren für k=3. Das endgültige Ergebnis ist definiert als d
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{abbildungen/k_cross.pdf}
-    \caption{k-cross-Validierung}
+    \caption{k-cross-Validierung \cite[vgl. S.122]{DL_PY}}
     \label{fig:kCross}
 \end{figure}
 
@@ -190,7 +190,7 @@ aus 25~\% des Datensatzes, in der ersten Iteration aus den ersten 25~\%, bei der
 Daten. Innerhalb der Schleife werden danach die Daten wieder in Ein- und Ausgabewerte aufgeteilt, dieses Mal müssen auch die Testdaten entsprechend aufgeteilt werden.
 Danach kann wieder das Modell definiert und angelernt werden. Da der Testdatensatz nun selber definiert wurde, kann nicht mehr auf die automatische Aufteilung zurückgegriffen werden.
 Jetzt müssen die Testdaten, aufgeteilt in Ein- und Ausgabewerte, der Methode übergeben werden. Zudem wurde hier die Anzahl an Epochen auf 250 erhöht, damit beobachtet werden kann,
-wie das Modell sich bei steigender Anzahl an Epochen verhält. Das zurückgegebene Objekt der fit()-Methode wird genutzt, um die vier verschiedene Werte jeweils in Listen speichern 
+wie das Modell sich bei steigender Anzahl an Epochen verhält. Das zurückgegebene Objekt der fit()-Methode wird genutzt, um die vier verschiedenen Werte jeweils in Listen speichern 
 zu können, damit der Verlauf wieder visualisiert werden kann.
 \begin{lstlisting}[language = python, caption={Aufteilung des Datensatzes in Teilmengen},captionpos=b, label = lst:kCross, float, floatplacement=H]
     num_epochs = 250

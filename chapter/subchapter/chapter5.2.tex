@@ -19,9 +19,11 @@ Abbildung \ref*{fig:FunktionaleAPI} zeigt den Aufbau eines \ac{NN} mit zwei Ausg
 Grundsätzlich ist es möglich jedes Modell, welches mit der \glqq Sequential\grqq{}-Klasse erstellt wurde, in ein Modell mit der funktionalen Keras-\ac{API} zu übersetzen. 
 Deshalb wird als Erstes das bestehende und in Kapitel \ref*{chap:DefineNN} beschriebene Modell übersetzt und im Anschluss daran wird dem Modell eine zweite Ausgabeschicht
 hinzugefügt.
-Mit der funktionalen \ac{API} werden Tensoren direkt bearbeitet und können den Schichten, wie bei einer Funktion, übergeben und entgegengenommen werden. Ziel dabei ist es 
-aus einem Eingabetensor einen Ausgabetensor zu erzeugen. Dafür ruft die Bibliothek alle Schichten ab, die an dieser Transformation beteiligt sind und fasst diese Struktur
-dann als Modell zusammen. Der Ausgabetensor entsteht also durch mehrere Transformationen des Eingabetensors \cite[vgl. S.305]{DL_PY}. 
+Mit der funktionalen \ac{API} werden Tensoren direkt bearbeitet und können den Schichten, wie bei einer Funktion, übergeben und entgegengenommen werden. Ein Tensor ist eine
+Datenstruktur, welche als n-dimensionales-Array beschrieben werden kann. Skalare sind Tensoren der Stufe 0, Vektoren sind Tensoren der Stufe 1, Matrizen sind Tensoren
+der Stufe 2 und so weiter \cite[vgl. S.128]{AI_Huawei}. Ziel dabei ist es 
+aus einem Eingabetensor einen Ausgabetensor zu erzeugen. Dafür ruft die Bibliothek alle Schichten ab, die an dieser Transformation beteiligt sind, und fasst diese Struktur
+dann als Modell zusammen. Der Ausgabetensor entsteht also durch aufeinanderfolgende Transformationen des Eingabetensors \cite[vgl. S.305]{DL_PY}. 
 Quellcode \ref*{lst:SeqToFunc} zeigt die Definition des Modells aus Kapitel \ref*{chap:DefineNN} mit der funktionalen \ac{API} und kann mit Quellcode \ref*{lst:ModellSeq}
 verglichen werden. 
 
@@ -96,8 +98,8 @@ der Adam-Optimierer insgesamt den niedrigsten Wert erreicht, weshalb dieser im F
 unterscheiden sich die Werte mit den verschiedenen Optimierern bis zur ca. Epoche 50 nicht stark, weshalb davon auszugehen ist, dass die Wahl des Optimierers in diesem spezifischen
 Anwendungsfall keine allzu große Rolle spielt.
 
-Neben der Auswahl des Optimierers kann ebenfalls die Lernrate eine Rolle spielen und deshalb sollten verschiedene Lernraten ausprobiert werden. Die 
-standardmäßige Lernrate des Adam-Optimierers beträgt 0,001 \cite{KerasDoc}. Als weitere Lernraten werden 0,01 und 0,0001 gewählt, um zu prüfen, wie 
+Neben der Auswahl des Optimierers kann ebenfalls die Lernrate eine Rolle spielen. Die Lernrate ist ein Parameter, der den Optimierer beeinflusst, weshalb verschiedene Lernraten ausprobiert werden
+sollten. Standardmäßig beträgt die Lernrate des Adam-Optimierers 0,001 \cite{KerasDoc}. Als weitere Lernraten werden 0,01 und 0,0001 gewählt, um zu prüfen, wie 
 sich der Wert der Verlustfunktion ändert, wenn eine größere bzw. kleinere Lernrate gewählt wird.
 Die Lernrate des Optimierers kann bei Aufruf der compile()-Methode festgelegt werden, wie der Quellcode \ref*{lst:Learnrate} zeigt.
 
@@ -122,13 +124,13 @@ ein tieferes Minimum erreicht, weshalb der Wert der Lernrate in diesem Fall nich
 \subsection{Anpassen der Modellarchitektur}
 Nachdem mehrere Optimierer ausprobiert und sich für einen entschieden wurde, sollte im nächsten Schritt noch geprüft werden, ob durch eine Anpassung der Modellarchitektur
 gegebenenfalls ein besseres Ergebnis erzielt werden kann. Ähnlich wie bei der Wahl des Optimierers im vorherigen Schritt, wird dies wieder durch Ausprobieren und 
-anschließendes Visualisieren entschieden. Dabei kann die Anzahl an Schichten sowie die Anzahl an Neuronen in einer Schicht angepasst werden.
-Zudem kann geprüft werden ob mittels einer Dropout-Regularisierung ein besseres Ergebnis erzielt werden kann. 
+anschließendes Visualisieren entschieden. Dabei wird die Anzahl an Schichten sowie die Anzahl an Neuronen in einer Schicht angepasst.
+Zudem wird geprüft, ob mittels einer Dropout-Regularisierung ein besseres Ergebnis erzielt werden kann. 
 Folgende Modellarchitekturen werden dargestellt:
 \begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
     \item[M1] Modell mit zwei versteckten Schichten (32, 16 Neuronen)
-    \item[M2] besonders breites und tiefes Modell mit vier Schichten (256, 128, 64, 32 Neuronen) mit Dropout-Regularisierung
-    \item[M3] besonders breites und tiefes Modell mit vier Schichten (256, 128, 64, 32 Neuronen) ohne Dropout-Regularisierung
+    \item[M2] breiteres und tieferes Modell mit vier Schichten (256, 128, 64, 32 Neuronen) mit Dropout-Regularisierung
+    \item[M3] breiteres und tieferes Modell mit vier Schichten (256, 128, 64, 32 Neuronen) ohne Dropout-Regularisierung
     \item[M4] Modell mit einer versteckten Schicht mit 16 Neuronen
     \item[M5] Modell mit einer versteckten Schicht mit 512 Neuronen
 \end{description}

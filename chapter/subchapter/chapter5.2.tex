@@ -3,10 +3,10 @@
 
 In Kapitel \ref*{chap:DefineNN} wurde gezeigt, wie ein Modell für die Vorhersage für den Statuswert aussehen kann. Diese Schritte müssten ebenfalls für das dazugehörige Statement
 durchlaufen werden. Das Ergebnis wären zwei unabhängige Modelle, die beide jeweils einzeln und nacheinander trainiert werden müssen. Diese Aufteilung ist nötig gewesen,
-da die \glqq Sequential\grqq{}-Klasse es nicht erlaubt mehrere Ausgabeschichten zu definieren und da die \glqq softmax\grqq{}-Funktion allen Ausgabeneuronen 
+da die \glqq Sequential\grqq{}-Klasse es nicht erlaubt, mehrere Ausgabeschichten zu definieren und da die \glqq softmax\grqq{}-Funktion allen Ausgabeneuronen 
 einen Wert zuordnet, die addiert eins ergeben. Um dieses Problem zu umgehen, kann statt der \glqq Sequential\grqq{}-Klasse von Keras, 
 ein \ac{API}, nämlich die funktionale Keras-\ac{API} verwendet werden. 
-Dadurch wird es ermöglicht Modelle zu definieren, die mehr als eine Eingabe- oder Ausgabeschicht haben oder Verzweigungen zwischen den Layern besitzen \cite[vgl. S.299f.]{DL_PY}. 
+Dadurch wird es ermöglicht, Modelle zu definieren, die mehr als eine Eingabe- oder Ausgabeschicht haben oder Verzweigungen zwischen den Layern besitzen \cite[vgl. S.299f.]{DL_PY}. 
 Abbildung \ref*{fig:FunktionaleAPI} zeigt den Aufbau eines \ac{NN} mit zwei Ausgabeschichten. Genau so ein Modell wird im nächsten Schritt mit der funktionalen Keras-\ac{API} erstellt.
 
 \begin{figure}[H]
@@ -21,7 +21,7 @@ Deshalb wird als Erstes das bestehende und in Kapitel \ref*{chap:DefineNN} besch
 hinzugefügt.
 Mit der funktionalen \ac{API} werden Tensoren direkt bearbeitet und können den Schichten, wie bei einer Funktion, übergeben und entgegengenommen werden. Ein Tensor ist eine
 Datenstruktur, welche als n-dimensionales-Array beschrieben werden kann. Skalare sind Tensoren der Stufe 0, Vektoren sind Tensoren der Stufe 1, Matrizen sind Tensoren
-der Stufe 2 und so weiter \cite[vgl. S.128]{AI_Huawei}. Ziel dabei ist es 
+der Stufe 2 und so weiter \cite[vgl. S.128]{AI_Huawei}. Ziel dabei ist es, 
 aus einem Eingabetensor einen Ausgabetensor zu erzeugen. Dafür ruft die Bibliothek alle Schichten ab, die an dieser Transformation beteiligt sind, und fasst diese Struktur
 dann als Modell zusammen. Der Ausgabetensor entsteht also durch aufeinanderfolgende Transformationen des Eingabetensors \cite[vgl. S.305]{DL_PY}. 
 Quellcode \ref*{lst:SeqToFunc} zeigt die Definition des Modells aus Kapitel \ref*{chap:DefineNN} mit der funktionalen \ac{API} und kann mit Quellcode \ref*{lst:ModellSeq}
@@ -68,9 +68,9 @@ in Quellcode \ref*{lst:Outputs} gezeigt wird.
     model = Model(inputs=input, outputs=[output1, output2])
 \end{lstlisting}
 
-Beide Ausgabeschichten erhalten als Parameter die Anzahl an möglichen Ausprägungen ihres Zielattributs sowie eine Aktivierungsfunktion. An dieser Stelle wäre es möglich
-auch verschiedene Aktivierungsfunktionen auszuwählen, sollte beispielsweise ein Zielattribut das Ergebnis einer Regression sein, könnte hier auch 
-\glqq mse\grqq{} gewählt werden. Zudem erhalten die beiden Layer noch einen eindeutigen Namen. Beim Aufruf der compile()-Methode besteht dadurch die Möglichkeit 
+Beide Ausgabeschichten erhalten als Parameter die Anzahl an möglichen Ausprägungen ihres Zielattributs sowie eine Aktivierungsfunktion. An dieser Stelle wäre es auch
+möglich verschiedene Aktivierungsfunktionen auszuwählen. Sollte beispielsweise ein Zielattribut das Ergebnis einer Regression sein, könnte hier auch 
+\glqq mse\grqq{} gewählt werden. Zudem erhalten die beiden Layer noch einen eindeutigen Namen. Beim Aufruf der compile()-Methode besteht dadurch die Möglichkeit,
 den beiden Schichten unterschiedliche Verlustfunktionen zuzuweisen \cite[vgl. S.308f.]{DL_PY}. Da beide Layer hier jedoch eine Single-Label-Mehrfachklassifizierung lösen sollen,
 wird das nicht benötigt. 
 
@@ -144,7 +144,7 @@ Dieser Wert stellt den Anteil an Neuronen dar, dessen Ausgabe während des Train
 Der Verlauf des mittleren Wertes der Verlustfunktion wird in Abbildung \ref*{fig:LossModelle} für alle fünf Modelle dargestellt. Zu erkennen ist, dass die beiden Modelle mit 
 der geringsten Anzahl an Neuronen (M1 und M4) die besten Ergebnisse erzielen, während die beiden Modelle mit der höchsten Komplexität (M2 und M3) die schlechtesten Ergebnisse
 erzielen. Der Grund dafür ist vermutlich, dass die komplexeren Modelle zu komplex sind um das Problem zu lösen. Zudem wird der kleine Datensatz ebenfalls dafür sorgen,
-dass simplerer Modelle in diesem Anwendungsfall bessere Leistungen erzielen. Auch die Dropout-Regularisierung bringt in diesem Anwendungsfall kein besseres Ergebnis. Das Minimum
+dass simplere Modelle in diesem Anwendungsfall bessere Leistungen erzielen. Auch die Dropout-Regularisierung bringt in diesem Anwendungsfall kein besseres Ergebnis. Das Minimum
 des Modells M1 lässt sich mit der argmin()-Methode der Numpy-Bibliothek bestimmen. Bei Epoche 23 hat M1 sein globales Minimum. Deshalb sollte dieses Modell weiterhin genutzt werden
 und beim Trainieren des Modells sollte als Anzahl an Epochen ein Wert um 23 gewählt werden, um ein bestmögliches Ergebnis in diesem Anwendungsfall zu erreichen.
 

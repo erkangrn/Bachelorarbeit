@@ -116,8 +116,8 @@ Fortschrittsbalken ausgeben, ein Wert von null würde gar keine Ausgabe produzie
 
 Da ein Datensatz niemals mit den Trainingsdaten getestet werden sollte, muss eine Aufteilung in Testdaten erfolgen. Wie in Kapitel \ref*{chap:Trainingssplit} erwähnt, kann der Testsplit
 während des Anlernens erfolgen. Dafür bietet Keras die Möglichkeit automatisch einen Teil der Trainingsdaten zum Testen zu benutzen.
-In diesem Fall werden 25~\% des Datensatzes als Testdaten verwendet. Bei 17 Einträgen wären das 4,25 Einträge, die aber aufgerundet werden, also werden fünf Einträge 
-nicht zum Trainieren benutzt, sondern werden fürs Testen zurückgehalten.
+In diesem Fall werden 25~\% des Datensatzes als Testdaten verwendet. Bei 17 Einträgen wären das 4,25 Einträge, die aber aufgerundet werden. Also werden fünf Einträge 
+nicht zum Trainieren benutzt, sondern fürs Testen zurückgehalten.
 
 \begin{lstlisting}[language = python, caption={Trainieren des Modells},captionpos=b, label = lst:TrainModel, float, floatplacement=H]
     history = model.fit(trainX, trainYStatus,
@@ -231,7 +231,7 @@ dass das Modell die Trainingsdaten auswendig lernt und die Generalisierungsfähi
 
 Das Diagramm zur Genauigkeit zeigt, dass mehr Epochen nicht automatisch ein besseres Ergebnis liefern. Auf den Testdaten ändert sich die Genauigkeit 
 ab der fünfzigsten Epoche nicht mehr wesentlich und stagniert ab Epoche 150. Im Vergleich zur Genauigkeit in der Abbildung \ref*{fig:plotAcc} 
-ist der Durchschnitt der Genauigkeit von vier Modellen geringer. Daran kann erkannt werden, dass die Testdaten bei \ref*{fig:plotAcc} für das Modell günstig 
+ist der Durchschnitt der Genauigkeit von vier Modellen geringer. Daran kann erkannt werden, dass die Testdaten bei Abbildung \ref*{fig:plotAcc} für das Modell günstig 
 waren und das Modell auf diesen Daten gute Leistungen bringen konnte, was jedoch nicht so viel über die Leistung auf anderen Daten aussagt, da der Datensatz zu klein ist. 
 Gerade in diesem Fall bietet sich die k-cross-Validierung sehr an und bietet wesentlich verlässlichere Kenngrößen als das Testen mit einem Modell auf einem 
 Testdatensatz \cite[vgl. S.123]{DL_PY}.

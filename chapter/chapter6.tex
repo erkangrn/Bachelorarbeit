@@ -1,24 +1,28 @@
 \chapter{Fazit}
 \label{chap:Fazit}
-Das Ziel dieser Bachelorarbeit war der Entwurf eines \ac{KI}-Modells, das Vorschläge zur Bewertung von Anwendungsregeln machen sollte. Dieses Modell wurde
+Das Ziel dieser Bachelorarbeit war der Entwurf eines \ac{KI}-Modells, das Vorschläge zur Bewertung von Anwendungsregeln treffen soll.
+Dafür musste der Datensatz aus dem Praxisprojekt mit  Dieses Modell wurde
 in der Programmiersprachen Python mit der \ac{DL}-Bibliothek Keras erstellt. Es wurde gezeigt, wie ein Modell sowohl mit der \glqq Sequential\grqq{}-Klasse
-als auch mit der funktionalen \ac{API} erstellt werden kann. Zudem wurde gezeigt, wie ein Modell trainiert wird und welche Möglichkeiten zur Verbesserung eines 
-Modells bestehen. Durch Visualisierungen 
+als auch mit der funktionalen \ac{API} erstellt werden kann. Zudem wurde erläutert, wie ein Modell trainiert wird und welche Möglichkeiten zur Verbesserung eines 
+Modells bestehen. Mithilfe der k-cross-Validierung wurde geprüft, wie sich der mittlere Wert der Verlustfunktion von den Modellen ändert und anhand dessen 
+wurde geprüft, welches Modell mit welcher Architektur die beste Leistung erzielt. Zum Schluss wurde gezeigt, wie das Modell Vorhersagen zur Bewertung von Anwendungsregeln
+treffen kann. 
+
 \section{Ausblick}
 \label{chap:Ausblick}
 Im Anschluss an diese Bachelorarbeit kann das erstellte Modell genutzt werden, um eine Erweiterung für das Anforderungsmanagement-Tool \ac{DOORS} zu erstellen
 und somit direkt in \ac{DOORS} integriert zu werden.
-Dabei kann statt der Ausgabe auf der Konsole eine grafische Benutzeroberfläche erstellt und verwendet werden, um die Vorschläge des Modells ansehnlicher auszugeben.
+Dabei kann statt der Ausgabe auf der Konsole eine grafische Benutzeroberfläche erstellt und verwendet werden, um die Vorschläge des Modells anschaulicher auszugeben.
 Diese Benutzeroberfläche könnte dann beispielsweise die Möglichkeit besitzen, einen Vorschlag direkt in das Modul in \ac{DOORS} zu importieren. 
 Zudem könnte die Ausgabe auch mehrere Statements, sortiert nach prognostizierter Wahrscheinlichkeit, beinhalten, die der Benutzer dann durchgehen kann, um so einen Überblick 
 zu erhalten, weshalb ein Projekt eine Anwendungsregel auf eine spezifische Art bewertet hat. Auch könnten die erstellten Visualisierungen Teil der Erweiterung in \ac{DOORS} sein.
 Zum Beispiel könnte ein Benutzer sich ein Tortendiagramm anzeigen lassen, welches zeigt, wie oft eine Anwendungsregel mit einer bestimmten Ausprägung bewertet wurde.
 \\ \\
-Es ist zudem damit zu rechnen, dass mit zunehmender Zeit, der Trainingsdatensatz größer wird, da laufend Projekte Anwendungsregeln bewerten. Bei einem größeren Trainingsdatensatz 
+Es ist zudem damit zu rechnen, dass mit zunehmender Zeit der Trainingsdatensatz größer wird, da laufend Projekte Anwendungsregeln bewerten. Bei einem größeren Trainingsdatensatz 
 kann auch von einer besseren Leistung des Modells ausgegangen werden. Außerdem könnte, statt der Prognose des Statements als Klasse, Natural Language Processing (NLP) genutzt werden, 
-um für das Statement einen Text zu generieren. 
+um für das Statement einen individuellen Text zu generieren. 
 \\ \\
-Ein weiterer Aspekt ist das Ausführen der \ac{KI} in einer Cloud. Das Anlernen eines \ac{KI}-Modells
+Ein weiterer Aspekt ist die Ausführung der \ac{KI} in einer Cloud. Das Anlernen eines \ac{KI}-Modells
 kann bei zunehmender Komplexität und Größe des Datensatzes zeitintensiv werden. Das Ausführen in einer Cloud würde diesen Prozess beschleunigen,
-da diese Server über eine leistungsstärkere Hardware verfügen, als der Rechner, auf dem diese Arbeit geschrieben und erstellt wurde. Der Teil wurde in der Arbeit aufgrund von 
+da diese Server über eine leistungsstärkere Hardware verfügen. Der Teil wurde in der Arbeit aufgrund von 
 Kosten und möglichen Sicherheitsbedenken bei der Datensicherheit nicht erwähnt, sollte aber in Zukunft beachtet und evaluiert werden. 

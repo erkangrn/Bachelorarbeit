@@ -5,7 +5,7 @@ In Kapitel \ref*{chap:DefineNN} wurde gezeigt, wie ein Modell für die Vorhersag
 durchlaufen werden. Das Ergebnis wären zwei unabhängige Modelle, die beide jeweils einzeln und nacheinander trainiert werden müssen. Diese Aufteilung ist nötig gewesen,
 da die \glqq Sequential\grqq{}-Klasse es nicht erlaubt, mehrere Ausgabeschichten zu definieren und da die \glqq softmax\grqq{}-Funktion allen Ausgabeneuronen 
 einen Wert zuordnet, die addiert eins ergeben. Um dieses Problem zu umgehen, kann statt der \glqq Sequential\grqq{}-Klasse von Keras, 
-ein \ac{API}, nämlich die funktionale Keras-\ac{API} verwendet werden. 
+ein \ac{API}, die funktionale Keras-\ac{API}, verwendet werden. 
 Dadurch wird es ermöglicht, Modelle zu definieren, die mehr als eine Eingabe- oder Ausgabeschicht haben oder Verzweigungen zwischen den Layern besitzen \cite[vgl. S.299f.]{DL_PY}. 
 Abbildung \ref*{fig:FunktionaleAPI} zeigt den Aufbau eines \ac{NN} mit zwei Ausgabeschichten. Genau so ein Modell wird im nächsten Schritt mit der funktionalen Keras-\ac{API} erstellt.
 
@@ -23,7 +23,7 @@ Mit der funktionalen \ac{API} werden Tensoren direkt bearbeitet und können den 
 Datenstruktur, welche als n-dimensionales-Array beschrieben werden kann. Skalare sind Tensoren der Stufe 0, Vektoren sind Tensoren der Stufe 1, Matrizen sind Tensoren
 der Stufe 2 und so weiter \cite[vgl. S.128]{AI_Huawei}. Ziel dabei ist es, 
 aus einem Eingabetensor einen Ausgabetensor zu erzeugen. Dafür ruft die Bibliothek alle Schichten ab, die an dieser Transformation beteiligt sind, und fasst diese Struktur
-dann als Modell zusammen. Der Ausgabetensor entsteht also durch aufeinanderfolgende Transformationen des Eingabetensors \cite[vgl. S.305]{DL_PY}. 
+anschließend als Modell zusammen. Der Ausgabetensor entsteht also durch aufeinanderfolgende Transformationen des Eingabetensors \cite[vgl. S.305]{DL_PY}. 
 Quellcode \ref*{lst:SeqToFunc} zeigt die Definition des Modells aus Kapitel \ref*{chap:DefineNN} mit der funktionalen \ac{API} und kann mit Quellcode \ref*{lst:ModellSeq}
 verglichen werden. 
 
@@ -61,11 +61,13 @@ da sie keine Parameter besitzt. Bis auf diesen Unterschied ist die Zusammenfassu
 sowie des Optimierers sind ebenfalls identisch. Deshalb sind beide Modelle in der Anwendung äquivalent. Nun muss noch eine weitere zusätzliche Ausgabeschicht hinzugefügt werden,
 welche das Statement zur Bewertung der Anwendungsregel prognostizieren soll. Dafür werden Zeile vier und fünf des Quellcodes \ref*{lst:SeqToFunc} überarbeitet, was 
 in Quellcode \ref*{lst:Outputs} gezeigt wird.
-
+\\
 \begin{lstlisting}[language = python, caption={Zweite Ausgabeschicht hinzufügen},captionpos=b, label = lst:Outputs, floatplacement=H]
-    output1 = Dense(trainYStatus.shape[1], activation='softmax', name='status')(x)
-    output2 = Dense(trainYStatement.shape[1], activation='softmax', name='statement')(x)
-    model = Model(inputs=input, outputs=[output1, output2])
+   output1 = Dense(trainYStatus.shape[1], activation='softmax', 
+       name='status')(x)
+   output2 = Dense(trainYStatement.shape[1], activation='softmax', 
+       name='statement')(x)
+   model = Model(inputs=input, outputs=[output1, output2])
 \end{lstlisting}
 
 Beide Ausgabeschichten erhalten als Parameter die Anzahl an möglichen Ausprägungen ihres Zielattributs sowie eine Aktivierungsfunktion. An dieser Stelle wäre es auch
@@ -127,6 +129,7 @@ gegebenenfalls ein besseres Ergebnis erzielt werden kann. Ähnlich wie bei der W
 anschließendes Visualisieren entschieden. Dabei wird die Anzahl an Schichten sowie die Anzahl an Neuronen in einer Schicht angepasst.
 Zudem wird geprüft, ob mittels einer Dropout-Regularisierung ein besseres Ergebnis erzielt werden kann. 
 Folgende Modellarchitekturen werden dargestellt:
+\\
 \begin{description}[style=multiline,leftmargin=3cm,font=\bfseries, nolistsep]
     \item[M1] Modell mit zwei versteckten Schichten (32, 16 Neuronen)
     \item[M2] breiteres und tieferes Modell mit vier Schichten (256, 128, 64, 32 Neuronen) mit Dropout-Regularisierung

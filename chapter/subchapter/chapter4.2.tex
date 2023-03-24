@@ -2,10 +2,11 @@
 \label{chap:DatenSammeln}
 Wie in Kapitel \ref*{chap:DataPraxisprojekt} bereits erwähnt, besteht die Möglichkeit über eine Access-Datenbank noch weitere Daten über die Projekte zu sammeln.
 Aus den Inhalten dieser Access-Datenbank wird jeden Tag eine XML-Datei erstellt, welche ebenfalls in das Python-Skript mit der Pandas-Bibliothek importiert werden kann.
-In dieser XML-Datei kann dann nach den Projekten aus dem Datensatz gesucht werden und der Datensatz kann dann mit den Daten aus der XML-Datei erweitert werden.
-Zunächst wird eine Liste erstellt, die alle eindeutigen Projekte aus dem Datensatz enthält. Diese Liste wird dann verwendet, um eine Schleife durchzuführen, 
+In dieser XML-Datei kann nach den Projekten aus dem Datensatz gesucht werden und der Datensatz kann mit den Daten aus der XML-Datei erweitert werden.
+Zunächst wird eine Liste erstellt, die alle eindeutigen Projekte aus dem Datensatz enthält. Diese Liste wird verwendet, um eine Schleife durchzuführen, 
 in der jeder Projektname nacheinander durchlaufen wird. In der Schleife wird für jedes Projekt der Eintrag aus der Access-Datenbank gesucht.
 Dabei muss der Eintrag drei Bedingungen erfüllen:
+\\ \\
 \begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
     \item \glqq Type\grqq{} muss den Wert \glqq Real\grqq{} besitzen
         \begin{itemize}[itemindent=0cm]
@@ -22,20 +23,21 @@ Dabei muss der Eintrag drei Bedingungen erfüllen:
         \end{itemize}
 \end{enumerate}
 Das Prüfen dieser Bedingungen ist eingebettet in einen try-except-Block. Der try-except-Block sorgt dafür, dass eine Fehlermeldung auftritt, falls in der Access-Datenbank ein Eintrag nicht gefunden wird.
-Wenn hingegen ein Eintrag gefunden wird, dann wird die erste gefundene Zeile in einer Variable \glqq result\grqq{} gespeichert. Quellcode \ref*{lst:ImportAccess} zeigt den Code, um diese Schritte durchzuführen.
+Wenn hingegen ein Eintrag gefunden wird, wird die erste gefundene Zeile in einer Variable \glqq result\grqq{} gespeichert. Quellcode \ref*{lst:ImportAccess} zeigt den Code, um diese Schritte durchzuführen.
 \begin{lstlisting}[language = python, caption={Importieren der Access-Datenbank},captionpos=b, label = lst:ImportAccess, floatplacement=H]
     paths = df['Path'].unique()
-    accessDB = pd.read_xml(".../Input_BWG_Combined_Access.xml")
+    accDB = pd.read_xml(".../Input_BWG_Combined_Access.xml")
     for path in paths:
         try:
             if(path == "..."):
-                result = accessDB.loc[(accessDB['Type'] == "Real") 
-                & (accessDB['Location'] == "BWG") 
-                & (accessDB['Offset'] == "...")].iloc[0]
+                result = accDB.loc[(accDB['Type'] == "Real") 
+                & (accDB['Location'] == "BWG") 
+                & (accDB['Offset'] == "...")].iloc[0]
             else:
-                result = accessDB.loc[(accessDB['Type'] == "Real") 
-                & (accessDB['Location'] == "BWG") 
-                & ((accessDB['Offset'] == str(path)) | (accessDB['Offset'] == (str(path) + "/")))].iloc[0]           
+                result = accDB.loc[(accDB['Type'] == "Real") 
+                & (accDB['Location'] == "BWG") 
+                & ((accDB['Offset'] == str(path)) 
+                | (accDB['Offset'] == (str(path) + "/")))].iloc[0]           
         except:
             print(str(path) + " has no entry in the AccessDB!")
 \end{lstlisting}
@@ -75,12 +77,12 @@ Spalte \glqq Text\grqq{}, als Datensatz für das Anlernen des \ac{KI}-Modells:
 Eine weitere Möglichkeit zur Erzeugung weiterer Daten aus dem bestehenden Datensatz wäre die Data Augmentation. Bei diesem Verfahren werden die bestehenden Daten 
 leicht abgeändert, damit weitere Daten synthetisch erstellt werden können, was zu einem größeren Datensatz führt. Diese Praxis wird häufig im Bereich der Computer Vision,
 also dem \glqq maschinellen Sehen\grqq{}, genutzt. Computer Vision beschäftigt sich mit der Verarbeitung von Bildern und Videos, weshalb dabei die Datensätze 
-aus Bildern und Videos bestehen. Auf den Daten können dann verschiedene Transformationen ausgeführt werden, zum Beispiel kann ein Bild gespiegelt oder gedreht werden, um aus 
+aus Bildern und Videos bestehen. Auf den Daten können verschiedene Transformationen ausgeführt werden, zum Beispiel kann ein Bild gespiegelt oder gedreht werden, um aus 
 einem Bild mehrere zu erzeugen \cite[vgl. S.184f.]{DL_PY}. In dem in dieser Arbeit beschriebenem Anwendungsfall bietet sich Data Augmentation jedoch nicht an. Da der Datensatz überwiegend
 aus kategorischen Attributen besteht, müssten einige Kategorien andere Werte bekommen, um aus den vorhandenen Daten weitere zu erzeugen. Dies könnte zum Beispiel dazu führen,
 dass eine Zeile im Datensatz, die beispielsweise zu einem Projekt, das eigentlich der Kategorie \glqq A\grqq{} zugehört, unterschiedlichen Kategorien zugeordnet wird, 
-was dann aber zu einem Widerspruch im Datensatz führen könnte. Zudem könnten durch das Manipulieren des Datensatzes zufällige Strukturen und Zusammenhänge erzeugt werden,
-die in der Realität nicht existieren. Da der Datensatz relativ klein ist, könnte ein \ac{NN} dann diese falschen Strukturen erkennen und diese lernen. Dies wäre kritisch zu betrachten,
+was aber zu einem Widerspruch im Datensatz führen könnte. Zudem könnten durch das Manipulieren des Datensatzes zufällige Strukturen und Zusammenhänge erzeugt werden,
+die in der Realität nicht existieren. Da der Datensatz relativ klein ist, könnte ein \ac{NN} diese falschen Strukturen erkennen und diese lernen. Dies wäre kritisch zu betrachten,
 da Anwendungsregeln sicherheitsrelevant sein können. Deshalb wurde in dieser Arbeit davon abgesehen, dieses Verfahren zu verwenden.
 
 \section{Codierung der Attribute}
@@ -119,34 +121,35 @@ One-Hot-Codierung des Attributs \glqq ProjectYear\grqq{}.
 \\
 Um auf den Spalten des Dataframes in Python die One-Hot-Codierung auszuführen, wurde eine neue Funktion geschrieben, die dem Quellcode \ref{lst:OneHot} entnommen werden kann.
 Diese Funktion erhält als Parameter einen Dataframe sowie eine Liste an Spalten, auf denen die One-Hot-Codierung durchgeführt werden soll. In einer Schleife iteriert die Funktion 
-über jede Spalte, die in der Liste übergeben wurde und prüft anschließend, ob diese Spalte im Dataframe vorhanden ist. Wenn dies der Fall ist, dann wird mithilfe der 
+über jede Spalte, die in der Liste übergeben wurde und prüft anschließend, ob diese Spalte im Dataframe vorhanden ist. Wenn dies der Fall ist, wird mithilfe der 
 get\_dummies()-Methode aus der Pandas-Bibliothek die One-Hot-Codierung durchgeführt. Anschließend wird die ursprüngliche Spalte aus dem Dataframe entfernt und dafür werden
 die neuen codierten Spalten dem Dataframe hinzugefügt. Dafür werden die drop()- und concat()-Methode der Pandas-Bibliothek genutzt, die es ermöglichen Spalten und Zeilen
 hinzuzufügen oder zu entfernen \cite{PandasDoc}.
 
 \begin{lstlisting}[language = python, caption={Funktion zur One-Hot-Codierung},captionpos=b, label = lst:OneHot, floatplacement=H]
-    def column_one_hot (dataframe, columns): 
+    def col_one_hot (df, columns): 
         for column in columns:
-            if column in dataframe:
-                one_hot = pd.get_dummies(dataframe[column])
-                dataframe = dataframe.drop(column,axis = 1)
-                dataframe = pd.concat([dataframe, one_hot], axis=1)
-        return dataframe
+            if column in df:
+                one_hot = pd.get_dummies(df[column])
+                df = df.drop(column,axis = 1)
+                df = pd.concat([df, one_hot], axis=1)
+        return df
 \end{lstlisting}
 
 Die Attribute \glqq Product\grqq{} und \glqq ProductVersion\grqq{} stellen hier jedoch einen Sonderfall dar. Aufgrund der One-Hot-Codierung kann in jeder Zeile nur eine Ausprägung
 eines Attributs den Wert 1 annehmen, jedoch benutzen Projekte mehrere Produkte und verschiedene Produktversionen. Deshalb muss der Datensatz für diese beiden Attribute nochmal 
 überarbeitet werden. Zunächst wird über alle Projekte und Produkte iteriert. Für jedes Produkt wird nun geprüft, ob es in einem Projekt vorhanden ist. Wenn dies der Fall ist,
-dann wird der Wert für dieses Produkt in jeder Zeile des Projekts auf eins gesetzt. Äquivalent wird mit dem Attribut \glqq ProductVersion\grqq{} verfahren. 
+wird der Wert für dieses Produkt in jeder Zeile des Projekts auf eins gesetzt. Äquivalent wird mit dem Attribut \glqq ProductVersion\grqq{} verfahren. 
 
 \begin{lstlisting}[language = python, caption={Anpassung der Spalte \glqq Product\grqq},captionpos=b, label = lst:ProductOneHot, floatplacement=H]
-    df = column_one_hot(df, ['Product'])
+    df = col_one_hot(df, ['Product'])
     for project in projects:
         for product in products:
+            curProject = df.loc[df['Project_name'] == project]
             df.loc[df['Project_name'] == project, product] = 1 if 
-            (df.loc[df['Project_name'] == project][product].sum()) >= 1 else 0
-    df = column_one_hot(df, ['ProductVersion', 'Project_name', 'section',
-    'Project_category', 'BS', 'RU', 'ProjectYear'])
+                (curProject[product].sum()) >= 1 else 0
+    df = col_one_hot(df, ['ProductVersion', 'Project_name', 
+    'section', 'Project_category', 'BS', 'RU', 'ProjectYear'])
     ---------------------------------------
     Output:
     (14572, 180)

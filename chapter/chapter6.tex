@@ -1,28 +1,38 @@
 \chapter{Fazit}
 \label{chap:Fazit}
 Das Ziel dieser Bachelorarbeit war der Entwurf eines \ac{KI}-Modells, das Vorschläge zur Bewertung von Anwendungsregeln treffen soll.
-Dafür musste der Datensatz aus dem Praxisprojekt mit  Dieses Modell wurde
-in der Programmiersprachen Python mit der \ac{DL}-Bibliothek Keras erstellt. Es wurde gezeigt, wie ein Modell sowohl mit der \glqq Sequential\grqq{}-Klasse
+Dafür musste der Datensatz aus dem Praxisprojekt mit weiteren Daten aus einer Access-Datenbank zu den einzelnen Projekten erweitert werden.
+Diese Daten halfen dem Modell dabei eine Struktur bei der Bewertung von Anwendungsregeln zu erkennen. Zudem musste
+der Datensatz auf Fehler und Unregelmäßigkeiten geprüft werden. Zum Beispiel war bei einem Produkt die Ordnerstruktur innerhalb der zentralen Datenbank in 
+\ac{DOORS} anders als bei den anderen Produkten. Da die Attribute des Datensatzes allesamt Kategorien oder Jahreszahlen waren, mussten die Daten noch entsprechend codiert werden.
+Da die Attribute in keiner Beziehung zueinander stehen, wurde für die Codierung die One-Hot-Codierung gewählt und durchgeführt. 
+Um diese Schritte der Datenverarbeitung zu durchlaufen wurde die Datenverarbeitungs-Bibliothek Pandas genutzt. Anschließend konnte das Modell definiert werden. Dieses Modell wurde
+in der Programmiersprache Python mit der \ac{DL}-Bibliothek Keras erstellt. Es wurde gezeigt, wie ein Modell sowohl mit der \glqq Sequential\grqq{}-Klasse
 als auch mit der funktionalen \ac{API} erstellt werden kann. Zudem wurde erläutert, wie ein Modell trainiert wird und welche Möglichkeiten zur Verbesserung eines 
 Modells bestehen. Mithilfe der k-cross-Validierung wurde geprüft, wie sich der mittlere Wert der Verlustfunktion von den Modellen ändert und anhand dessen 
-wurde geprüft, welches Modell mit welcher Architektur die beste Leistung erzielt. Zum Schluss wurde gezeigt, wie das Modell Vorhersagen zur Bewertung von Anwendungsregeln
-treffen kann. 
+wurde entschieden, welches Modell mit welcher Architektur die beste Leistung erzielt. Dabei hat sich ergeben, dass für diesen Anwendungsfall 
+simplere Modelle bessere Leistungen erzielen als komplexere Modelle. Zudem hat der Adam-Optimierer mit seiner standardmäßig eingestellten Lernrate im Vergleich zu den anderen Optimierern
+besser abgeschnitten. Zum Schluss wurde gezeigt, wie das Modell Vorhersagen zur Bewertung von Anwendungsregeln treffen kann. Dabei wurde deutlich, dass das Modell in der Lage ist, 
+Strukturen im Datensatz bei der Bewertung von Anwendungsregeln zu erkennen und auf neue Daten anzuwenden um geeignete Vorschläge zu treffen. Die Vorhersage des Statements ist dabei jedoch 
+schwieriger, da diese in den meisten Fällen einzigartig waren für jede Anwendungsregel und somit keine genaue Übereinstimmung erzielt werden konnte. Dies erschwerte die Beurteilung des Modells,
+da so der Wert der Verlustfunktion und die Genauigkeit nicht aussagekräftig waren. In dem gezeigten Beispiel war das Modell jedoch in der Lage, ein Statement auszuwählen, 
+welches von der Bedeutung ähnlich war, wie das tatsächliche Statement zur Bewertung dieser Anwendungsregel. 
 
 \section{Ausblick}
 \label{chap:Ausblick}
 Im Anschluss an diese Bachelorarbeit kann das erstellte Modell genutzt werden, um eine Erweiterung für das Anforderungsmanagement-Tool \ac{DOORS} zu erstellen
-und somit direkt in \ac{DOORS} integriert zu werden.
+und somit direkt in \ac{DOORS} zu integrieren.
 Dabei kann statt der Ausgabe auf der Konsole eine grafische Benutzeroberfläche erstellt und verwendet werden, um die Vorschläge des Modells anschaulicher auszugeben.
-Diese Benutzeroberfläche könnte dann beispielsweise die Möglichkeit besitzen, einen Vorschlag direkt in das Modul in \ac{DOORS} zu importieren. 
-Zudem könnte die Ausgabe auch mehrere Statements, sortiert nach prognostizierter Wahrscheinlichkeit, beinhalten, die der Benutzer dann durchgehen kann, um so einen Überblick 
-zu erhalten, weshalb ein Projekt eine Anwendungsregel auf eine spezifische Art bewertet hat. Auch könnten die erstellten Visualisierungen Teil der Erweiterung in \ac{DOORS} sein.
-Zum Beispiel könnte ein Benutzer sich ein Tortendiagramm anzeigen lassen, welches zeigt, wie oft eine Anwendungsregel mit einer bestimmten Ausprägung bewertet wurde.
+Diese Benutzeroberfläche könnte beispielsweise die Möglichkeit besitzen, einen Vorschlag direkt in das Modul in \ac{DOORS} zu importieren. 
+Zudem könnte die Ausgabe auch mehrere Statements, sortiert nach prognostizierter Wahrscheinlichkeit, beinhalten, die der Benutzer durchgehen kann, um so einen Überblick 
+zu erhalten, weshalb ein Projekt eine Anwendungsregel auf eine spezifische Art bewertet hat. Auch könnten die erstellten Visualisierungen Teil der \ac{DOORS}-Erweiterung sein.
+Beispielsweise könnte ein Benutzer sich ein Tortendiagramm anzeigen lassen, welches zeigt, wie oft eine Anwendungsregel mit einer bestimmten Ausprägung bewertet wurde.
 \\ \\
-Es ist zudem damit zu rechnen, dass mit zunehmender Zeit der Trainingsdatensatz größer wird, da laufend Projekte Anwendungsregeln bewerten. Bei einem größeren Trainingsdatensatz 
-kann auch von einer besseren Leistung des Modells ausgegangen werden. Außerdem könnte, statt der Prognose des Statements als Klasse, Natural Language Processing (NLP) genutzt werden, 
+Es ist zudem damit zu rechnen, dass der Trainingsdatensatz mit der Zeit wächst, da laufend Projekte Anwendungsregeln bewerten. Bei einem größeren Trainingsdatensatz 
+kann auch von einer besseren Leistung des Modells ausgegangen werden. Außerdem könnte statt der Prognose des Statements als Klasse Natural Language Processing (NLP) genutzt werden, 
 um für das Statement einen individuellen Text zu generieren. 
 \\ \\
-Ein weiterer Aspekt ist die Ausführung der \ac{KI} in einer Cloud. Das Anlernen eines \ac{KI}-Modells
-kann bei zunehmender Komplexität und Größe des Datensatzes zeitintensiv werden. Das Ausführen in einer Cloud würde diesen Prozess beschleunigen,
-da diese Server über eine leistungsstärkere Hardware verfügen. Der Teil wurde in der Arbeit aufgrund von 
-Kosten und möglichen Sicherheitsbedenken bei der Datensicherheit nicht erwähnt, sollte aber in Zukunft beachtet und evaluiert werden. 
+Ein weiterer wichtiger Aspekt ist die Ausführung der \ac{KI} in einer Cloud. Bei zunehmender Komplexität des Modells und Größe des Datensatzes 
+kann das Anlernen eines \ac{KI}-Modells zeitaufwendig werden. Das Ausführen in einer Cloud würde diesen Prozess beschleunigen,
+da diese Server über eine leistungsstärkere Hardware verfügen. Das Ausführen des Modells in einer Cloud wurde in der Arbeit aufgrund von 
+Kosten und möglichen Sicherheitsbedenken bei der Datensicherheit nicht erwähnt, sollte aber in Zukunft beachtet und evaluiert werden, um die bestmögliche Lösung zu finden. 

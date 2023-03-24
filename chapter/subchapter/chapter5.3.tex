@@ -5,7 +5,7 @@ Da nun ein Modell definiert und mit Daten angelernt wurde, sollen mögliche Vorh
 Um die Anwendung des Modells vorzustellen, wurde vor dem Trainingsprozess eine Zeile aus dem Trainingsdatensatz entfernt. 
 Das Modell soll nun zu dieser Zeile einen Vorschlag zur Bewertung abgeben. Zum Treffen von Vorhersagen kann 
 die Methode predict() der Keras-Bibliothek benutzt werden. Mit dieser Methode können einem trainierten Modell neue Daten übergeben werden.
-Anhand dieser Daten erstellt das Modell dann eine Vorhersage. Quellcode \ref*{lst:Predict} zeigt, wie so eine Vorhersage getroffen werden kann.
+Anhand dieser Daten erstellt das Modell anschließend eine Vorhersage. Quellcode \ref*{lst:Predict} zeigt, wie so eine Vorhersage getroffen werden kann.
 Da das Modell zwei Ausgabeschichten besitzt, gibt diese Methode auch zwei Objekte zurück. Diese Objekte sind Listen, welche die Wahrscheinlichkeiten
 der einzelnen Ausprägungen beinhalten. Über diese Liste kann iteriert werden, um diese Wahrscheinlichkeiten auszugeben. Für den Statuswert 
 wurden alle möglichen Ausprägungen ausgegeben, da dort nur drei Verschiedene vorhanden sind. Aufgrund der Übersichtlichkeit wird für das Statement
@@ -29,8 +29,8 @@ Der tatsächliche Statuswert des Beispiels ist \glqq compliant\grqq{}. Die Ausga
     compliant 88.2~\%\\
     not applicable 9.8~\%
 \end{quotation}
-Vergleicht man diese Ausgabe mit der Verteilung der Statuswerte der beispielhaft bewerteten Anwendungsregel in Abbildung \ref*{fig:StatusTest}, erkannt man eindeutig, 
-dass das Modell eine Struktur erkennt und in der Lage ist, den Statuswert einer Anwendungsregel vorherzusagen.
+Im Vergleich zur Verteilung der Statuswerte der beispielhaft bewerteten Anwendungsregel in Abbildung \ref*{fig:StatusTest}, kann eindeutig erkannt werden, 
+dass das Modell eine Struktur erkennt und in der Lage dazu ist, den Statuswert einer Anwendungsregel vorherzusagen.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.5\textwidth]{abbildungen/StatusTest.png}

@@ -8,7 +8,7 @@ fünfmal bewertet. Das sorgt dafür, dass beim \ac{KI}-Modell mit Überanpassung
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{abbildungen/BalkenAR.png}
-    \caption{Säulendiagramm zur Häufigkeit der Bewertung von Anwendungsregeln}
+    \caption{Häufigkeit der Bewertung von Anwendungsregeln}
     \label{fig:ARMenge}
 \end{figure}
 
@@ -17,13 +17,17 @@ beispielhaft die Anwendungsregel ausgewählt, welche am häufigsten im Datensatz
 um diese Schritte durchzuführen.
 
 \begin{lstlisting}[language = python, caption={Definieren des Trainingsdatensatzes},captionpos=b, label = lst:defTraining, floatplacement=H]
-df_training = df
+df_train = df
 text = "Zur Anschaltung des Antriebes in der Außenanlage muessen Signalkabel nach VDE 0816/2 oder Kabel mit vergleichbaren Eigenschaften verwendet werden. Die Verlegevorschriften des Kabels sind einzuhalten."
-df_training = df_training.loc[df_training['Text'] == text]
+df_train = df_train.loc[df_train['Text'] == text]
 
-trainX = drop_columns(df_training, ['Status', 'Text', 'Statement'])
-trainYStatus = drop_column(column_one_hot(df_training[['Text', 'Status']], ['Status']), "Text")
-trainYStatement = drop_column(column_one_hot(df_training[['Text', 'Statement']], ['Statement']), "Text")
+trainX = drop_columns(df_train, ['Status', 'Text', 'Statement'])
+trainYStatus = col_one_hot(df_train[['Text', 'Status']], 
+    ['Status'])
+trainYStatus = drop_column(trainYStatus , "Text")
+trainYStatement = col_one_hot(df_train[['Text', 'Statement']], 
+    ['Statement'])
+trainYStatement = drop_column(trainYStatement, "Text")
 \end{lstlisting}
 
 Zeile 2 des Quellcodes \ref*{lst:defTraining} speichert den beispielhaft ausgewählten Text einer Anwendungsregel in eine Variable. Bei der späteren Anwendung würde dieser Text

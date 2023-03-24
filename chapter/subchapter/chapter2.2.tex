@@ -15,7 +15,7 @@ einer Frau. Ziel des Spiels ist es, dass der Fragesteller mithilfe von Fragen he
 die Frau ist. Der Mann soll dabei versuchen, den Fragesteller dazu zu bringen, ihn fälschlicherweise als die Frau zu identifizieren, während die Frau versuchen soll, 
 dass der Fragesteller sie korrekt als Frau identifiziert. Dafür befindet sich der Fragesteller in einem anderen Raum und die Fragen werden entweder 
 über eine außenstehende weitere Person oder einem Fernschreiber übermittelt. Was würde nun passieren, wenn eine Maschine die Rolle des Mannes übernehmen würde?
-Würde der Fragesteller dann häufiger oder seltener gewinnen? Alan Turing glaubte, dass eine Maschine dann als
+Würde der Fragesteller häufiger oder seltener gewinnen? Alan Turing glaubte, dass eine Maschine als
 intelligent bezeichnet werden könne, wenn eine Maschine in der Lage dazu wäre, menschliches Verhalten zu imitieren \cite[vgl. S.433f.]{TURING}.
 
 \begin{figure}[H]
@@ -25,7 +25,7 @@ intelligent bezeichnet werden könne, wenn eine Maschine in der Lage dazu wäre,
     \label{fig:KI_ML_DL}
 \end{figure} 
 
-François Chollet, der Entwickler der Deep-Learning-Bibliothek Keras, welche im Kapitel TODO näher beschrieben wird, definiert
+François Chollet, der Entwickler der Deep-Learning-Bibliothek Keras, welche im Kapitel \ref*{chap:Keras} näher beschrieben wird, definiert
 das Fachgebiet \ac{KI} als \glqq [den] Versuch, normalerweise von Menschen erledigte geistige Aufgaben automatisiert zu lösen\grqq{} \cite[S.22]{DL_PY}.
 Nach dieser Definition schließt \ac{KI} weitere Themen wie das \ac{ML} sowie das \ac{DL} ein. Wichtig zu beachten ist dabei,
 dass diese Gebiete sich voneinander unterschieden. Ihre Beziehung zueinander wird in Abbildung \ref*{fig:KI_ML_DL} verdeutlicht.\\
@@ -37,7 +37,7 @@ Dieses Kapitel wird näher erläutern, worum es sich bei den Themen \ac{ML} und 
 Das maschinelle Lernen ist ein Teilgebiet der \ac{KI} und beschäftigt sich mit der Frage, ob ein Computer in der Lage dazu ist selbstständig eine bestimmte Aufgabe
 zu erlernen. Ziel dabei ist es, dass eine Maschine aus einem vorgegebenem Datensatz und den dazugehörigen Antworten Regeln extrahieren soll, die den Datensatz erklären
 können. Anders als bei der klassischen Programmierung soll eine Maschine hier nicht die Antworten aus den Daten und Regeln herausgeben, sondern selber nach einer
-Struktur suchen, aus der die Maschine dann Regeln ableiten kann, die auch auf andere Aufgaben angewendet werden können \cite[vgl. S.23f.]{DL_PY}. Angenommen ein Datensatz bestünde aus
+Struktur suchen, aus der die Maschine Regeln ableiten kann, die auch auf andere Aufgaben angewendet werden können \cite[vgl. S.23f.]{DL_PY}. Angenommen ein Datensatz bestünde aus
 Bildern von Hunden und Menschen. Bei der klassischen Programmierung würde der Programmierer nun selber Regeln definieren und diese programmieren müssen. Beispiele für 
 mögliche Regeln könnten hier sein:
 \begin{quote}
@@ -47,7 +47,7 @@ mögliche Regeln könnten hier sein:
 Beim \ac{ML} hingegen müsste der Programmierer diese Regeln nicht selber definieren. Hier werden neben dem Datensatz noch die entsprechenden Antworten benötigt. 
 Jedes Bild bräuchte also ein Label, also eine Information darüber, ob es sich auf dem Bild um einen Hund oder einen Menschen handelt. Aufgabe der Maschine wäre es nun, 
 mithilfe des Datensatzes und der Label, Regeln zu definieren, ob auf einem Bild ein Hund oder ein Mensch zu sehen ist. Das \ac{ML}-System wird also sozusagen trainiert. 
-Dem trainiertem System können dann neue Bilder gezeigt werden und es wäre in der Lage anhand seiner definierten Regeln vorherzusagen, ob auf den neuen Bildern Hunde oder 
+Dem trainiertem System können neue Bilder gezeigt werden und es wäre in der Lage anhand seiner definierten Regeln vorherzusagen, ob auf den neuen Bildern Hunde oder 
 Menschen zu sehen sind. 
 
 \begin{figure}[H]
@@ -61,10 +61,10 @@ Abbildung \ref*{fig:Programmierparadigma} verdeutlicht nochmal die Unterschiede 
 notwendig, diese werden anhand des oben genannten Beispiels verdeutlicht: 
 
 \begin{description}[style=multiline,leftmargin=3cm,font=\bfseries]
-    \item[Eingabedaten] Bilder von Menschen und Hunden \cite[S.24]{DL_PY}
-    \item[Antworten] Label, ob auf dem Bild ein Mensch oder ein Hund abgebildet ist \cite[S.24]{DL_PY}
+    \item[Eingabedaten] Bilder von Menschen und Hunden \cite[vgl. S.24]{DL_PY}
+    \item[Antworten] Label, ob auf dem Bild ein Mensch oder ein Hund abgebildet ist \cite[vgl. S.24]{DL_PY}
     \item[Metrik zur Bewertung des Algorithmus] Benötigt, um die Abweichung zwischen Ausgabe des Modells und eigentlicher Antwort zu bestimmen. Wird als Feedback-Signal genutzt,
-    um Algorithmus anzupassen. Beispielsweise wie viel Prozent der Bilder richtig zugeordnet werden. \cite[S.24f.]{DL_PY}.  
+    um Algorithmus anzupassen. Beispielsweise wie viel Prozent der Bilder richtig zugeordnet werden. \cite[vgl. S.24f.]{DL_PY}.  
 \end{description}
 
 Die Aufgabe eines \ac{ML}-Modells ist es passende Repräsentationen der Eingabedaten zu erlernen, das heißt, dass die Daten vom Modell sinnvoll umgewandelt werden müssen. 
@@ -97,7 +97,7 @@ verbunden sind \cite[vgl. S.26]{NN}. In der Abbildung \ref*{fig:NN_Modell} wird 
 \end{figure}
 
 Die Verbindungen zwischen den Neuronen, die Kanten genannt werden, sind gerichtet und besitzen ein Gewicht. Wenn jedes Neuron eine Verbindung zu jedem Neuron in der nächsten Schicht hat, 
-dann wird diese Schicht auch als fully-connected bezeichnet. Das \ac{NN} in Abbildung \ref*{fig:NN_Modell} besteht aus drei Schichten, welche, bis auf die Ausgabeschicht, 
+wird diese Schicht auch als fully-connected bezeichnet. Das \ac{NN} in Abbildung \ref*{fig:NN_Modell} besteht aus drei Schichten, welche, bis auf die Ausgabeschicht, 
 fully-connected sind. Unabhängig davon bekommt jedes Neuron, welches sich nicht in der Eingabeschicht befindet, eine Netzeingabe, welche sich aus den Ausgaben der Neuronen zusammensetzt, 
 die eine Kante zu dem jeweiligen Neuron haben. Dabei wird jede Ausgabe eines Neurons mit dem Kantengewicht multipliziert.
 
@@ -119,11 +119,11 @@ verschiedene Aktivierungsfunktionen, in dieser Arbeit wird die \ac{ReLU}-Funktio
     f(net) = max(0; net)
 \end{align}
 
-Diese Funktion nimmt die Netzeingabe und wenn die Netzeingabe positiv ist, dann wird die Netzeingabe als Ausgabe ausgegeben, ansonsten gibt das Neuron 0 als Ausgabe aus.
+Diese Funktion nimmt die Netzeingabe und wenn die Netzeingabe positiv ist, wird die Netzeingabe als Ausgabe ausgegeben, ansonsten gibt das Neuron 0 als Ausgabe aus.
 Eine \ac{ReLU}-Funktion als Aktivierungsfunktion eines Neurons zu benutzen ist typisch im Bereich des \ac{DL} \cite[vgl. S.31]{NN}.
 
 Wie kommen nun die Kantengewichte zustande? Den Kanten werden zunächst zufällige Werte als Gewicht zugeordnet. Danach wird jede Eingabe an das Modell übergeben, die
-daraufhin die einzelnen Layer durchläuft. Die Vorhersage wird nun mit dem tatsächlichen Wert an eine Verlustfunktion übergeben, welche dann den Verlustscore berechnet.
+daraufhin die einzelnen Layer durchläuft. Die Vorhersage wird nun mit dem tatsächlichen Wert an eine Verlustfunktion übergeben, welche den Verlustscore berechnet.
 Für eine Regression, also die Vorhersage eines numerischen Wertes, bietet sich beispielsweise die Berechnung des mittleren quadratischen Fehlers (mean squared error) an.
 Dieser Verlustscore wird als Feedback-Signal genutzt und gibt an, wie gut das Modell die Aufgabe lösen kann. Das \ac{DL}-Modell versucht während des Trainings diesen 
 Wert zu minimieren, indem der Verlustscore an einen Optimierer übergeben wird, der anhand des Verlustscores die Gewichtungen der Kanten im \ac{NN} aktualisiert.

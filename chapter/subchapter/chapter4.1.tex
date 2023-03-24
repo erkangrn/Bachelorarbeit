@@ -8,10 +8,10 @@ in \ac{DOORS} überarbeitet werden.
 
 Dafür wurde ein Skript in \ac{DXL} geschrieben, was in den Modulen nach Duplikaten sucht und diese löscht. Die äußere Schleife durchläuft dazu alle 
 Elemente in dem Ordner, in welchem sich die Module mit den bewerteten Anwendungsregeln befinden. Wenn ein Element ein Formal Module ist, 
-dann wird dieses Modul geöffnet und in einer inneren Schleife werden alle Objekte des Moduls durchlaufen. Für jedes Objekt wird eine 
+wird dieses Modul geöffnet und in einer inneren Schleife werden alle Objekte des Moduls durchlaufen. Für jedes Objekt wird eine 
 Zeichenfolge erstellt, die aus den Attributen ObjectText, Status und Statement besteht. Anschließend wird überprüft, ob diese Zeichenfolge
-in einer Skiplist bereits vorhanden ist. Wenn dies der Fall ist, dann wird das Objekt als Duplikat erkannt und mittels der softDelete()-Funktion
-als gelöscht gekennzeichnet. Wenn diese Zeichenfolge noch nicht in der Skiplist vorhanden ist, dann ist dieses Objekt noch einzigartig und wird der Skiplist
+in einer Skiplist bereits vorhanden ist. Wenn dies der Fall ist, wird das Objekt als Duplikat erkannt und mittels der softDelete()-Funktion
+als gelöscht gekennzeichnet. Wenn diese Zeichenfolge noch nicht in der Skiplist vorhanden ist, ist dieses Objekt noch einzigartig und wird der Skiplist
 hinzugefügt, um sicherzustellen, dass zukünftige Duplikate erkannt werden. Anschließend wird die Zeichenfolge geleert. Nachdem die innere Schleife durchlaufen wurde,
 werden alle Objekte, welche als gelöscht gekennzeichnet wurden, endgültig aus dem Modul entfernt. Zudem wird der Inhalt der Skiplist entfernt, bevor das nächste Modul durchlaufen wird, um 
 zu gewährleisten, dass diese bei der nächsten Verwendung keine Elemente aus vorherigen Modulen mehr enthält.
@@ -22,7 +22,8 @@ zu gewährleisten, dass diese bei der nächsten Verwendung keine Elemente aus vo
         if (type(it) == "Formal"){
             m = edit(fullName(it), false)
             for o in entire m do{
-                szData = o."ObjectText""" o."Status""" o."Statement""";
+                szData = o."ObjectText""" o."Status""" 
+                         o."Statement""";
                 if(find(slUnique, szData)){
                     softDelete(o);
                 }else{
@@ -32,7 +33,7 @@ zu gewährleisten, dass diese bei der nächsten Verwendung keine Elemente aus vo
             }
             purgeObjects_(m)
             delete(slUnique)
-        // ...
+            // ...
 \end{lstlisting}
 
 Das Entfernen der Duplikate hatte zur Folge, dass der im Praxisprojekt gesammelte Datensatz von ursprünglich 195.518 auf 14.572 bewertete Anwendungsregeln reduziert wurde.
@@ -40,11 +41,11 @@ Der Grund, weshalb der Datensatz auf rund 7,5 \% seiner eigentlichen Größe ges
 wo sich aber die meisten Anwendungsregeln nicht verändert hatten. Dieser Schritt war wichtig, um dafür zu sorgen, dass bestimmte Bewertungen nicht stärker gewichtet werden,
 als andere. \\
 
-Nun besteht der Datensatz aus 14.572 Einträgen, die jeweils aus drei Attributen, nämlich dem eigentlichen Text der Anwendungsregel sowie dem Status und dem Statement bestehen.
+Nun besteht der Datensatz aus 14.572 Einträgen, die jeweils aus drei Attributen bestehen. Diese Attribute sind der eigentliche Text der Anwendungsregel sowie der Status und das Statement.
 Wie in der Abbildung \ref{fig:Programmierparadigma} dargestellt, benötigt ein Modell Eingabedaten und die dazugehörigen Antworten. Die Eingabedaten stellen in diesem Fall
 die Texte dar, während die Antworten hier in Form des Status und des Statements dargestellt werden. Angenommen der Status einer Anwendungsregel X wird 15-mal mit closed
 und zehnmal mit open bewertet und ein Modell wird mit diesen Daten angelernt. Würde ein neues Projekt nun diese Anwendungsregel X importieren und einen Vorschlag vom Modell
-generieren lassen, dann würde das Modell eine Mehrheitsentscheidung durchführen und prüfen, wie oft die Anwendungsregel in der Vergangenheit mit welchem Status bewertet wurde.
+generieren lassen, würde das Modell eine Mehrheitsentscheidung durchführen und prüfen, wie oft die Anwendungsregel in der Vergangenheit mit welchem Status bewertet wurde.
 Das Modell würde aufgrund der Mehrheitsentscheidung diese Anwendungsregeln immer mit closed bewerten. Das wäre ein legitimer Ansatz um Vorschläge zu generieren. 
 Dahinter steckt jedoch keine Struktur, die das Modell erkennen könnte, und somit auch keine Intelligenz. Dieses Problem könnte auch mit einer einfachen Tabelle 
 gelöst werden, das Nutzen eines \ac{NN} wäre hier unnötig. Daher benötigt der Datensatz noch weitere Eigenschaften, da die Bewertung von Anwendungsregeln nicht alleine durch die 
@@ -64,7 +65,7 @@ Dieses Projekt heißt RA Application Conditions und ist dabei wie folgt aufgebau
 Aus dem Zielobjekt des Links lässt sich das Modul bestimmen, in dem die jeweilige Anwendungsregel gespeichert ist. Das Modul trägt dabei als Namen die Versionsbezeichnung eines Produkts.
 Über den Speicherpfad lässt sich außerdem das Produkt, als das dritte Element des Pfades, bestimmen. Im \ac{DXL}-Skript muss also eine weitere Schleife hinzugefügt werden.
 Diese Schleife soll alle ausgehenden Links eines Objekts durchlaufen, bis ein Link gefunden wurde, dessen Zielobjekt sich im Projekt RA Application Conditions befindet.
-Wenn so ein Link gefunden wurde, dann wird der vollständige Pfad an eine spezielle Funktion übergeben, die als Rückgabewert den Namen des Produkts hat.
+Wenn so ein Link gefunden wurde, wird der vollständige Pfad an eine spezielle Funktion übergeben, die als Rückgabewert den Namen des Produkts hat.
 Außerdem wird die Versionsbezeichnung ebenfalls dem Link entnommen und in einer Variable gespeichert. Dabei ist zu beachten, dass die Funktion target(Link) überladen ist.
 Im ersten Fall wird eine Referenz auf das Modul zurückgegeben, auf das der Link zeigt. Diese Referenz beinhaltet den kompletten Pfad. Im zweiten Fall wird lediglich der Name des Zielmoduls 
 zurückgegeben \cite[vgl. S.391]{DXL}. Da der Name des Moduls bereits die Produktbezeichnung beinhaltet, ist hier der volle Pfad nicht relevant.
@@ -73,7 +74,8 @@ zurückgegeben \cite[vgl. S.391]{DXL}. Da der Name des Moduls bereits die Produk
     // ...
     for l in all o -> "*" do{
         mnTarget = target(l)
-        if(fullName (getParentProject(mnTarget)) == fullName (project("RA Application Conditions"))){
+        if(fullName (getParentProject(mnTarget)) == 
+        fullName (project("RA Application Conditions"))){
             szProduct = getProduct(target(l)) 
             szVersion = target(l)
             break;
@@ -177,11 +179,11 @@ Als Nächstes werden mithilfe der unique()-Methode alle Ausprägungen der weiter
 auf, diese wurden zur Verdeutlichung in der Ausgabe rot markiert. Die Produktbezeichnung ist bei manchen Fällen \glqq nan\grqq{} oder \glqq /\grqq{} und stellen somit
 keine wirklichen Produkte dar. Um die Ursache dafür herauszufinden, ist es sinnvoll, sich die Zeilen anzusehen, in der diese Probleme auftreten. Dafür wird die
 loc()-Methode aus der Pandas-Bibliothek genutzt. Diese Methode wird genutzt, um gezielt Datenbereiche eines Dataframes auszuwählen. Zudem können mithilfe dieser Methode
-Datenoperationen auf den ausgewählten Daten ausgeführt werden. In Zeile zwei des Quellcodes \ref*{lst:ProductUnique} werden alle Zeilen ausgewählt, die als Produkt
+Datenoperationen auf den ausgewählten Daten ausgeführt werden \cite{PandasDoc}. In Zeile zwei des Quellcodes \ref*{lst:ProductUnique} werden alle Zeilen ausgewählt, die als Produkt
 den Wert \glqq nan\grqq{} besitzen. Dabei werden nur die Spalten \glqq Product\grqq{}, \glqq Version\grqq{} und \glqq Path\grqq ausgewählt und zum Schluss
 wird die head()-Methode genutzt, um nur die ersten 5 Zeilen zurückzugeben. Die Ausgabe dieser Zeile kann der unteren Tabelle entnommen werden.
 In dieser Tabelle wird deutlich, dass die Produktbezeichnung in der Version enthalten ist. Da die Werte der Spalte \glqq Path\grqq{} sensible
-Unternehmensdaten sind, wurden diese hier entfernt.
+Unternehmensdaten beinhalten, wurden diese hier entfernt.
 
 \begin{lstlisting}[language = python, caption={Ausprägungen des Attributs Product},captionpos=b, label = lst:ProductUnique, floatplacement=H, escapechar={|}]
     print(df['Product'].unique())
@@ -211,14 +213,14 @@ Stattdessen enthält hier das Modul sowohl den Namen des Produkts als auch seine
 überarbeitet werden. 
 
 \begin{lstlisting}[language = python, caption={Eintragen der korrekten Produkt- und Versionsbezeichnung},captionpos=b, label = lst:UpdateProduct, floatplacement=H]
-    df.loc[df['Version'].str.contains('VICOS_S_D'), 'Product'] = 'VICOS_S_D'
-    df.loc[df['Version'].str.contains('VICOS_S_D'), 'Version'] = df['Version'].str[-5:]  
+    df.loc[df['Version'].str.contains('VICOS_S_D'), 'Product'] =    'VICOS_S_D'
+    df.loc[df['Version'].str.contains('VICOS_S_D'), 'Version'] =    df['Version'].str[-5:]  
 \end{lstlisting}
 
 In den beiden Zeilen im Quellcode \ref*{lst:UpdateProduct} werden alle Zeilen überarbeitet, deren Versionsbezeichnung \glqq VICOS\_S\_D\grqq{} enthält.
 Alle gefundenen Zeilen bekommen als Produkt den korrekten Wert \glqq VICOS\_S\_D\grqq{} zugeordnet. Die Versionsbezeichnung besteht aus den letzten 5 Zeichen
 der Spalte \glqq Version\grqq{} aus der Tabelle im Quellcode \ref*{lst:ProductUnique}. Deshalb wird nur ein Teil der ursprünglichen Versionsbezeichnung
-beibehalten. str[-5:] sorgt nämlich dafür, dass nur die letzten 5 Zeichen der Zeichenkette genutzt werden.
+beibehalten. str[-5:] sorgt dafür, dass nur die letzten 5 Zeichen der Zeichenkette genutzt werden.
 
 Dasselbe Verfahren wird auch für die Fälle durchgeführt, die als Produkt den Wert \glqq /\grqq{} besitzen. Dieser Sonderfall tritt bei 147 bewerteten Anwendungsregeln
 aus zwei ungarischen Projekten auf.

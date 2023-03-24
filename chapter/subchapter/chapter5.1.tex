@@ -10,15 +10,16 @@ Netzarchitektur die am häufigsten genutzte \cite[vgl. S.92]{DL_PY}.
     from keras.losses import CategoricalCrossentropy 
 
     model = Sequential()
-    model.add(Dense(8, input_shape=(trainX.shape[1],), activation='relu'))
+    model.add(Dense(8, input_shape=(trainX.shape[1],), 
+        activation='relu'))
     model.add(Dense(16, activation='relu'))
     model.add(Dense(trainYStatus.shape[1], activation='softmax'))
 \end{lstlisting}
 
 Der Quellcode \ref{lst:ModellSeq} zeigt die benötigten Imports und wie ein Modell zur Vorhersage des Statuswerts definiert werden kann. Zuerst wird ein Objekt vom Typ Sequential erstellt. Diesem Objekt 
-können dann die verschiedenen Schichten hinzugefügt werden. Dabei muss bestimmt werden, wie viele Schichten das Modell haben soll und wie viele Neuronen jede Schicht besitzen soll.
+können die verschiedenen Schichten hinzugefügt werden. Dabei muss bestimmt werden, wie viele Schichten das Modell haben soll und wie viele Neuronen jede Schicht besitzen soll.
 Als erste Schicht wird eine Dense-Layer als Eingabeschicht mit acht Neuronen definiert. Eine Dense-Layer ist eine fully-connected Schicht,
-wie beispielsweise die Schichten in der Abbildung \ref{fig:NN_Modell}, und erwartet als Parameter mindestens die Anzahl an Neuronen. Optional können noch weitere Parameter angegeben werden.
+wie beispielsweise die Schichten in der Abbildung \ref{fig:NN_Modell}, und erwartet als Parameter mindestens die Anzahl an Neuronen \cite[vgl. S.87]{DL_PY}. Optional können noch weitere Parameter angegeben werden.
 Die Eingabeschicht benötigt als Besonderheit noch zusätzlich die Anzahl an Attributen, diese können dem Dataframe mit den Eingabewerten entnommen werden. Als Aktivierungsfunktion wird
 die \ac{ReLU}-Funktion genutzt, die bereits in Kapitel \ref{chap:DL} vorgestellt wurde und auch die verbreitetste Aktivierungsfunktion beim \ac{DL} ist \cite[vgl. S.102]{DL_PY}. 
 Als erste versteckte Schicht wird eine weitere Dense-Layer genutzt, hier mit 16 Neuronen. 
@@ -61,7 +62,7 @@ Diese Zusammenfassung zeigt nochmal die verschiedenen Schichten, die Dimension d
 Zu erkennen sind dort die drei hinzugefügten Dense-Layer. Die erste Dimension der Ausgabe ist \glqq None\grqq{}, da die Anzahl an Einträgen vorher nicht festgelegt wurde. 
 Die zweite Dimension wird bestimmt durch die Anzahl an Neuronen in einer Schicht.\\
 
-Je nach Anwendungsfall würden andere Schichten als die Dense-Layer infrage kommen. Stehen die Daten in einem sequentiellen Zusammenhang, beispielsweise eine Zeitreihe von Wetterdaten, dann würden
+Je nach Anwendungsfall würden andere Schichten als die Dense-Layer infrage kommen. Stehen die Daten in einem sequentiellen Zusammenhang, beispielsweise eine Zeitreihe von Wetterdaten, würden
 die sogenannten LSTM-Layer infrage kommen. LSTM steht für Long Short-Term-Memory(auf Deutsch: langes Kurzzeitgedächtnis) und diese Art von Schicht ist in der Lage Informationen mehrere Zeitschritte
 lang zu erhalten \cite[vgl. S.260]{DL_PY}. Bei der Computer Vision werden häufig CNNs (Convolutional Neuronal Networks) genutzt. Ein CNN besteht dabei nicht aus Dense-Layern, wie in diesem 
 Anwendungsfall, sondern aus Convolutional-Layern. Diese Schichten können zum Beispiel lokale Muster in Bildern erlernen und diese in neuen Bildern wiedererkennen, auch wenn sie nicht an derselben Stelle
@@ -140,12 +141,13 @@ generiert. Diese Ausgabe beinhaltet die benötigte Zeit für jede Epoche sowie d
 \end{figure}
 Der Wert der Verlustfunktion sowie die Genauigkeit können auch zusätzlich visualisiert werden, um den Verlauf darzustellen. Dazu wird das Objekt genutzt, welches bei Aufruf der 
 fit()-Methode im Quellcode \ref*{lst:TrainModel} zurückgegeben und in der Variable \glqq history\grqq{} gespeichert wurde. Dieses Objekt beinhaltet 
-den Wert der Verlustfunktion und die Genauigkeit für die Trainings- und Testdaten. Mithilfe der Matplotlib-Bibliothek können diese Werte dann in einem Liniendiagramm visualisiert werden,
+den Wert der Verlustfunktion und die Genauigkeit für die Trainings- und Testdaten. Mithilfe der Matplotlib-Bibliothek können diese Werte in einem Liniendiagramm visualisiert werden,
 der Quellcode \ref*{lst:PlotLoss} zeigt die benötigten Schritte für das Erstellen eines Liniendiagramms für die Verlustfunktion, die Genauigkeit kann jedoch äquivalent dazu 
 dargestellt werden. Neben der Übergabe der Daten und der dazugehörigen Label können auch ein Titel und eine Achsenbeschriftung hinzugefügt werden, wie Zeile drei und vier des Quellcodes zeigen.
 \begin{lstlisting}[language = python, caption={Trainieren des Modells},captionpos=b, label = lst:PlotLoss, float, floatplacement=H]
     plt.plot(history.history['loss'], label = 'Training loss')
-    plt.plot(history.history['val_loss'], label = 'Validation loss')
+    plt.plot(history.history['val_loss'], 
+        label = 'Validation loss')
     plt.title('Wert der Verlustfunktion')
     plt.xlabel('Epochen')
     plt.legend()
@@ -196,10 +198,10 @@ zu können, damit der Verlauf wieder visualisiert werden kann.
     num_epochs = 250
     k = 4
     for i in range(k):
-        start = int(i/k * len(df_training))
-        end = int((i/k + 0.25) * len(df_training))
-        val_data = df_training.iloc[start:end] 
-        train_data = df_training.drop(range(start,end))
+        start = int(i/k * len(df_train))
+        end = int((i/k + 0.25) * len(df_train))
+        val_data = df_train.iloc[start:end] 
+        train_data = df_train.drop(range(start,end))
         #...
         history = model.fit(trainX, trainYStatus,
                             batch_size=2,
@@ -209,14 +211,15 @@ zu können, damit der Verlauf wieder visualisiert werden kann.
         all_val_loss.append(history.history['val_loss'])
         all_loss.append(history.history['loss'])
         all_acc.append(history.history['categorical_accuracy'])
-        all_val_acc.append(history.history['val_categorical_accuracy'])
+        all_val_acc.append(history.history
+            ['val_categorical_accuracy'])
 \end{lstlisting}
 
 Der Wert der Verlustfunktion sowie die Genauigkeit müssen noch gemittelt werden. Dafür wird, wie der Quellcode \ref*{lst:Durchschnitt} zeigt, der Durchschnitt 
 der vier Kenngrößen pro Epoche gebildet. Mit den Werten können im nächsten Schritt wieder Diagramme zur Visualisierung erstellt werden.
 \begin{lstlisting}[language = python, caption={Mitteln der Ergebnisse \cite{DL_PY}},captionpos=b, label = lst:Durchschnitt, floatplacement=H]
     avg_val_loss = [np.mean([x[i] for x in all_val_loss])
-                    for i in range(num_epochs-1)]
+                        for i in range(num_epochs-1)]
     avg_loss     = [np.mean([x[i] for x in all_loss])
                         for i in range(num_epochs-1)]
     avg_acc      = [np.mean([x[i] for x in all_acc])

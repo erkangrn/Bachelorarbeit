@@ -1,0 +1,21 @@
+for it in f do{
+    if (type(it) == "Formal"){
+        m = edit(fullName(it), false)
+        for o in entire m do{
+            szData = o."ARText""" o."Status""" o."Statement""";
+            if(find(slUnique, szData)){
+                softDelete(o);
+                iDeleted++;
+            }else{
+                put(slUnique, szData, szData)
+            }
+            szData = "" 
+        }
+        purgeObjects_(m)
+        delete(slUnique)
+
+
+    }
+}
+
+// Dark+ (default dark)
